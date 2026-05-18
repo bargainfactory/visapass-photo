@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Camera, ImageUp, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -12,17 +13,18 @@ interface UploadDropzoneProps {
 }
 
 export function UploadDropzone({ onAccept, onOpenCamera }: UploadDropzoneProps) {
+  const t = useTranslations('upload');
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [drag, setDrag] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
   const validate = (file: File) => {
     if (!/^image\/(jpeg|jpg|png|webp|heic|heif)$/i.test(file.type) && file.type !== '') {
-      setError('Please upload a JPG, PNG, WebP, or HEIC photo.');
+      setError(t('errorType'));
       return false;
     }
     if (file.size > 25 * 1024 * 1024) {
-      setError(`That file is ${formatBytes(file.size)} — please use a photo under 25 MB.`);
+      setError(t('errorSize', { size: formatBytes(file.size) }));
       return false;
     }
     setError(null);
@@ -56,9 +58,11 @@ export function UploadDropzone({ onAccept, onOpenCamera }: UploadDropzoneProps) 
         onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && inputRef.current?.click()}
         className={cn(
           'group relative grid cursor-pointer place-items-center overflow-hidden rounded-3xl border-2 border-dashed bg-card/60 px-6 py-14 text-center backdrop-blur transition-all',
-          drag ? 'border-brand-400 bg-brand-500/10 scale-[1.01]' : 'border-border hover:border-brand-400/70 hover:bg-brand-500/[0.04]'
+          drag
+            ? 'border-brand-400 bg-brand-500/10 scale-[1.01]'
+            : 'border-border hover:border-brand-400/70 hover:bg-brand-500/[0.04]'
         )}
-        aria-label="Upload a photo"
+        aria-label={t('title')}
       >
         <div className="pointer-events-none absolute -inset-px bg-[radial-gradient(circle_at_50%_-10%,hsl(var(--primary)/0.12),transparent_60%)] opacity-0 transition-opacity group-hover:opacity-100" />
         <div className="relative space-y-4">
@@ -66,10 +70,8 @@ export function UploadDropzone({ onAccept, onOpenCamera }: UploadDropzoneProps) 
             <ImageUp className="size-7" />
           </div>
           <div>
-            <p className="text-lg font-semibold">Drop a photo, or click to upload</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              JPG / PNG / HEIC · up to 25 MB · processed entirely on your device
-            </p>
+            <p className="text-lg font-semibold">{t('title')}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{t('hint')}</p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-2">
             <Button
@@ -81,7 +83,7 @@ export function UploadDropzone({ onAccept, onOpenCamera }: UploadDropzoneProps) 
                 inputRef.current?.click();
               }}
             >
-              <Sparkles className="size-4" /> Choose a photo
+              <Sparkles className="size-4" /> {t('choose')}
             </Button>
             {onOpenCamera && (
               <Button
@@ -93,7 +95,7 @@ export function UploadDropzone({ onAccept, onOpenCamera }: UploadDropzoneProps) 
                   onOpenCamera();
                 }}
               >
-                <Camera className="size-4" /> Use camera
+                <Camera className="size-4" /> {t('useCamera')}
               </Button>
             )}
           </div>

@@ -1,0 +1,168 @@
+{
+  "common": {
+    "skipToContent": "İçeriğe atla",
+    "back": "Geri",
+    "continue": "Devam",
+    "cancel": "İptal",
+    "buy": "Satın al",
+    "reset": "Sıfırla",
+    "open": "Aç",
+    "close": "Kapat",
+    "download": "İndir",
+    "or": "veya"
+  },
+  "brand": {
+    "name": "VisaPass Photo",
+    "tagline": "Cihazda AI",
+    "copyright": "© {year} VisaPass Photo — Next.js, MediaPipe ve imgly ile yapıldı."
+  },
+  "nav": { "countries": "Ülkeler", "pricing": "Fiyatlar", "editor": "Editör" },
+  "languageSwitcher": { "label": "Dil", "select": "Dil seç" },
+  "hero": {
+    "badge": "Cihazda MediaPipe + imgly",
+    "titleLine1": "Stüdyo kalitesinde pasaport ve",
+    "titleLine2": "vize fotoğrafları saniyeler içinde.",
+    "subtitle": "Selfie'nizi bırakın — VisaPass 468 yüz işaretini tespit eder, arka planı bir Web Worker'da kaldırır ve ülkenizin tam oranına göre kırpar. Tamamı cihazınızda.",
+    "chip468": "468 MediaPipe işareti",
+    "chip600dpi": "600 DPI arka plan",
+    "chipCountries": "20+ ülke",
+    "chipPrivacy": "Fotoğraf tarayıcınızdan çıkmaz",
+    "chipStripe": "Stripe ile baskı",
+    "seeCountries": "Desteklenen ülkeleri gör →"
+  },
+  "upload": {
+    "title": "Bir fotoğraf bırakın ya da yüklemek için tıklayın",
+    "hint": "JPG / PNG / HEIC · 25 MB'a kadar · tamamen cihazınızda işlenir",
+    "choose": "Fotoğraf seç",
+    "useCamera": "Kamerayı kullan",
+    "errorType": "Lütfen JPG, PNG, WebP veya HEIC bir fotoğraf yükleyin.",
+    "errorSize": "Bu dosya {size} — lütfen 25 MB altında bir fotoğraf kullanın."
+  },
+  "camera": { "title": "Kamera çekimi", "flip": "Çevir", "capture": "Çek", "denied": "Kamera erişimi reddedildi" },
+  "features": {
+    "heading": "İlk seferde geçmek için tasarlandı",
+    "subtitle": "Her piksel düzenleyicinin spesifikasyonuna göre hesaplanır — kafa oranı, göz hattı ve arka plan rengi.",
+    "landmarks": { "title": "468 yüz işareti", "body": "MediaPipe Face Landmarker, çene, kafa üstü ve göz hattını yakalayarak matematiksel kesinlikte kırpma sağlar." },
+    "bgswap": { "title": "Yüksek çözünürlükte arka plan", "body": "Web Worker'da 600 DPI eşdeğerinde işleyerek saç ve omuzların net kalmasını sağlarız." },
+    "presets": { "title": "20+ ülke ön ayarı", "body": "Schengen, ABD 2×2, İngiltere 35×45, Kanada 50×70, Hindistan 2×2, Çin 33×48 ve daha fazlası." },
+    "validation": { "title": "Gerçek zamanlı doğrulama", "body": "Güven puanı, gözlük politikası ipuçları ve düşük çözünürlükte canlı uyarılar." },
+    "privacy": { "title": "Cihazınızda kalır", "body": "Varsayılan olarak sunucuya yükleme yok — fotoğraf yalnızca fiziksel baskı sipariş ederseniz çıkar." },
+    "print": { "title": "Baskıya hazır çıktı", "body": "ICAO uyumlu JPEG ve 300 DPI 4×6 inç sayfayı indirip her eczanede bastırabilirsiniz." }
+  },
+  "countryShowcase": {
+    "badge": "20+ özellik",
+    "heading": "Her ülke için her zaman mükemmel",
+    "subtitle": "Her ön ayarda kafa yüksekliği, göz hattı, gözlük politikası ve arka plan tonu yer alır.",
+    "headSize": "{w}×{h} mm",
+    "glassesOk": "Gözlük serbest",
+    "glassesNo": "Gözlük yok"
+  },
+  "stepper": { "upload": "Yükle", "select": "Ülke", "edit": "Stüdyo", "result": "İndir" },
+  "editorPage": {
+    "uploadTitle": "Fotoğrafınızı yükleyin",
+    "uploadSubtitle": "İyi aydınlatılmış ve cepheden çekilmiş herhangi bir fotoğraf yeterlidir. Teknik uyumluluğu biz hallederiz.",
+    "selectTitle": "Ülke ve belge seçin",
+    "selectSubtitle": "ABD 2×2 pasaporttan Schengen ICAO'ya kadar 20'den fazla aranabilir spesifikasyon.",
+    "selectContinue": "Stüdyoya devam et",
+    "studioTitle": "Stüdyo",
+    "studioSubtitle": "Solda MediaPipe katmanı, sağda ICAO uyumlu önizleme.",
+    "resultTitle": "Fotoğrafınız hazır",
+    "resultSubtitle": "Dijital dosyayı indirin veya profesyonelce basılmış kopyalar sipariş edin."
+  },
+  "countrySelector": {
+    "search": "20+ ülkede ara — pasaport, vize, kimlik…",
+    "empty": "Eşleşme yok — “Schengen”, “Hindistan” veya “2x2” deneyin.",
+    "headPct": "kafa {pct}%",
+    "bgLabel": "arka plan {color}",
+    "typeVisa": "vize",
+    "typePassport": "pasaport",
+    "typeIdCard": "kimlik",
+    "typeDriverLicense": "ehliyet"
+  },
+  "studio": {
+    "sourceBadge": "Orijinal",
+    "previewBadge": "Uyumlu önizleme",
+    "loading": "AI ısınıyor…",
+    "complete": "İşlem tamamlandı",
+    "rerunPipeline": "Tekrar işle",
+    "continue": "Devam",
+    "detection": "Tespit",
+    "confidence": "%{pct} güven",
+    "showLandmarks": "468 noktayı göster",
+    "showLandmarksHelp": "MediaPipe ağını aç/kapat",
+    "showCrop": "Uyumlu kırpmayı göster",
+    "showCropHelp": "Orijinal üzerinde turuncu kesik çizgili dikdörtgen",
+    "colorTuning": "Renk ayarı",
+    "brightness": "Parlaklık",
+    "contrast": "Kontrast",
+    "specsLine": "{w}×{h} mm · {dpi} DPI · {glasses}",
+    "glassesForbidden": "gözlük yok",
+    "glassesAllowedNoGlare": "gözlük serbest (parlama yok)",
+    "glassesMedicalOnly": "yalnızca tıbbi gözlük",
+    "messages": {
+      "loadingPhoto": "Fotoğraf yükleniyor…",
+      "aligningLandmarks": "468 yüz işareti hizalanıyor…",
+      "processingBg": "Arka plan yüksek çözünürlükte işleniyor…",
+      "downloadingModel": "AI modeli indiriliyor…",
+      "decodingImage": "Görüntü yüksek çözünürlükte çözülüyor…",
+      "refiningEdges": "Saç ve omuz kenarları rafine ediliyor…",
+      "encodingCutout": "Temiz RGBA kesim kodlanıyor…",
+      "compositing": "Baskıya hazır çıktı oluşturuluyor…",
+      "readyToDownload": "İndirmeye hazır"
+    },
+    "errors": {
+      "noFace": "Yüz algılanmadı. Daha net, eşit aydınlatılmış cepheden bir fotoğraf deneyin.",
+      "loadImage": "Fotoğraf yüklenemedi.",
+      "generic": "Beklenmeyen hata",
+      "lowConfidence": "Algılama güveni %{pct}. Daha net ve cepheden bir fotoğraf önerilir.",
+      "scaledDown": "Fotoğraf sığması için küçültüldü — en iyi kalite için daha yüksek çözünürlükte bir fotoğraf yükleyin."
+    }
+  },
+  "results": {
+    "compliant": "Uyumlu",
+    "specsLine": "{w}×{h} mm · {dpi} DPI · ICAO uyumlu",
+    "downloadPhoto": "Fotoğraf JPEG",
+    "downloadSheet": "4×6 sayfa",
+    "noEmail": "Fotoğrafınızı asla e-posta ile göndermiyoruz — indirmeler tamamen tarayıcınızda gerçekleşir.",
+    "shipping": "Fiziksel baskılar 1 iş gününde gönderilir.",
+    "shopHeading": "Eve götürün veya bastırın",
+    "shopSubtitle": "Dijital seçin veya gerçek baskılar isteyin — tüm paketler 4×6 sayfa içerir.",
+    "mostPopular": "En popüler",
+    "buy": "Satın al",
+    "checkoutError": "Ödeme başlatılamadı"
+  },
+  "packages": {
+    "digital": { "name": "Dijital indirme", "description": "Yüksek çözünürlüklü JPEG + baskıya hazır 4×6 sayfa" },
+    "prints4": { "name": "4 fiziksel baskı", "description": "ICAO uyumlu 4 fotoğraf kapınıza gönderilir" },
+    "prints8": { "name": "8 fiziksel baskı", "description": "ICAO uyumlu 8 fotoğraf öncelikli teslimat" }
+  },
+  "success": {
+    "title": "Sipariş alındı",
+    "subtitle": "Stripe ödemenizi onayladı. Aşağıda canlı işlem durumu — bu sayfa webhook'u birkaç saniyede bir sorgular.",
+    "paymentConfirmed": "Ödeme onaylandı",
+    "fulfillment": "İşleme",
+    "receiptTo": "Makbuz gönderildi",
+    "shippingEta": "Tahmini teslimat",
+    "etaText": "1–3 iş günü",
+    "another": "Başka bir fotoğraf oluştur",
+    "pollLine": "Webhook sorgusu #{count} · oturum {session}…",
+    "status": {
+      "pending": "Webhook bekleniyor",
+      "paid": "Ödendi · kuyrukta",
+      "fulfilled": "Basılıyor",
+      "shipped": "Gönderildi",
+      "unknown": "Sipariş aranıyor…"
+    }
+  },
+  "footer": {
+    "productHeading": "Ürün",
+    "openEditor": "Editörü aç",
+    "supportedCountries": "Desteklenen ülkeler",
+    "pricing": "Fiyatlar",
+    "trustHeading": "Güven",
+    "wcag": "WCAG 2.2 AA erişilebilir",
+    "encrypted": "Uçtan uca şifreli ödemeler",
+    "noUpload": "Sunucularımıza görsel yüklenmez",
+    "description": "ICAO uyumlu pasaport ve vize fotoğraflarını saniyeler içinde, cihaz üzerinde AI ile üretin. Fiziksel baskı sipariş etmediğiniz sürece fotoğrafınız tarayıcınızdan çıkmaz."
+  }
+}

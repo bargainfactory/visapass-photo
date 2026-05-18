@@ -1,0 +1,212 @@
+{
+  "common": {
+    "skipToContent": "Saltar al contenido",
+    "back": "Atrás",
+    "continue": "Continuar",
+    "cancel": "Cancelar",
+    "buy": "Comprar",
+    "reset": "Restablecer",
+    "open": "Abrir",
+    "close": "Cerrar",
+    "download": "Descargar",
+    "or": "o"
+  },
+  "brand": {
+    "name": "VisaPass Photo",
+    "tagline": "IA en el dispositivo",
+    "copyright": "© {year} VisaPass Photo — Construido con Next.js, MediaPipe e imgly."
+  },
+  "nav": {
+    "countries": "Países",
+    "pricing": "Precios",
+    "editor": "Editor"
+  },
+  "languageSwitcher": {
+    "label": "Idioma",
+    "select": "Seleccionar idioma"
+  },
+  "hero": {
+    "badge": "MediaPipe + imgly en el dispositivo",
+    "titleLine1": "Fotos de pasaporte y",
+    "titleLine2": "visa de calidad estudio.",
+    "subtitle": "Sube cualquier selfie — VisaPass detecta 468 puntos faciales, elimina el fondo en un Web Worker y recorta a la proporción exacta que requiere tu país. Todo en tu dispositivo.",
+    "chip468": "468 puntos de MediaPipe",
+    "chip600dpi": "Fondo a 600 DPI",
+    "chipCountries": "Más de 20 países",
+    "chipPrivacy": "La foto no sale de tu navegador",
+    "chipStripe": "Impresiones con Stripe",
+    "seeCountries": "Ver países compatibles →"
+  },
+  "upload": {
+    "title": "Suelta una foto, o haz clic para subirla",
+    "hint": "JPG / PNG / HEIC · hasta 25 MB · procesada en tu dispositivo",
+    "choose": "Elegir foto",
+    "useCamera": "Usar cámara",
+    "errorType": "Sube una foto JPG, PNG, WebP o HEIC.",
+    "errorSize": "Ese archivo pesa {size} — usa una foto de menos de 25 MB."
+  },
+  "camera": {
+    "title": "Captura con cámara",
+    "flip": "Voltear",
+    "capture": "Capturar",
+    "denied": "Acceso a la cámara denegado"
+  },
+  "features": {
+    "heading": "Diseñada para pasar a la primera",
+    "subtitle": "Cada píxel se calcula según las especificaciones oficiales: proporción de cabeza, línea de ojos y color de fondo.",
+    "landmarks": {
+      "title": "468 puntos faciales",
+      "body": "MediaPipe Face Landmarker fija barbilla, coronilla y línea de ojos para un recorte matemáticamente preciso."
+    },
+    "bgswap": {
+      "title": "Cambio de fondo en alta resolución",
+      "body": "Procesamos al equivalente de 600 DPI en un Web Worker para que el cabello y los hombros queden nítidos."
+    },
+    "presets": {
+      "title": "Más de 20 plantillas",
+      "body": "Schengen, EE. UU. 2×2, RU 35×45, Canadá 50×70, India 2×2, China 33×48 y muchas más."
+    },
+    "validation": {
+      "title": "Validación en tiempo real",
+      "body": "Puntuación de confianza, consejos sobre lentes y avisos en vivo si la foto tiene poca resolución."
+    },
+    "privacy": {
+      "title": "Se queda en tu dispositivo",
+      "body": "Sin subida al servidor por defecto: la foto solo sale del navegador si pides impresiones físicas."
+    },
+    "print": {
+      "title": "Listo para imprimir",
+      "body": "Descarga un JPEG conforme a ICAO y una hoja 4×6” a 300 DPI para imprimir en cualquier farmacia."
+    }
+  },
+  "countryShowcase": {
+    "badge": "Más de 20 especificaciones",
+    "heading": "Perfecto para cada país, siempre",
+    "subtitle": "Cada plantilla codifica el tamaño de cabeza, la línea de ojos, la política de lentes y el tono del fondo.",
+    "headSize": "{w}×{h} mm",
+    "glassesOk": "Lentes permitidos",
+    "glassesNo": "Sin lentes"
+  },
+  "stepper": {
+    "upload": "Subir",
+    "select": "País",
+    "edit": "Estudio",
+    "result": "Descargar"
+  },
+  "editorPage": {
+    "uploadTitle": "Sube tu foto",
+    "uploadSubtitle": "Cualquier foto bien iluminada y de frente sirve. Nosotros nos encargamos del cumplimiento técnico.",
+    "selectTitle": "Elige un país y documento",
+    "selectSubtitle": "Lista buscable con más de 20 especificaciones, desde pasaporte 2×2” de EE. UU. hasta Schengen ICAO.",
+    "selectContinue": "Continuar al estudio",
+    "studioTitle": "Estudio",
+    "studioSubtitle": "Capa de MediaPipe a la izquierda, vista previa conforme a ICAO a la derecha.",
+    "resultTitle": "Tu foto está lista",
+    "resultSubtitle": "Descarga el archivo digital o pide copias impresas profesionalmente."
+  },
+  "countrySelector": {
+    "search": "Buscar entre más de 20 países: pasaporte, visa, DNI…",
+    "empty": "Sin resultados — prueba “Schengen”, “India” o “2x2”.",
+    "headPct": "cabeza {pct}%",
+    "bgLabel": "fondo {color}",
+    "typeVisa": "visa",
+    "typePassport": "pasaporte",
+    "typeIdCard": "cédula",
+    "typeDriverLicense": "licencia"
+  },
+  "studio": {
+    "sourceBadge": "Origen",
+    "previewBadge": "Vista previa válida",
+    "loading": "Calentando la IA…",
+    "complete": "Procesamiento completo",
+    "rerunPipeline": "Volver a procesar",
+    "continue": "Continuar",
+    "detection": "Detección",
+    "confidence": "{pct}% de confianza",
+    "showLandmarks": "Mostrar 468 puntos",
+    "showLandmarksHelp": "Activa la malla de MediaPipe",
+    "showCrop": "Mostrar recorte conforme",
+    "showCropHelp": "Rectángulo naranja punteado sobre el original",
+    "colorTuning": "Ajustes de color",
+    "brightness": "Brillo",
+    "contrast": "Contraste",
+    "specsLine": "{w}×{h} mm · {dpi} DPI · {glasses}",
+    "glassesForbidden": "sin lentes",
+    "glassesAllowedNoGlare": "lentes permitidos (sin reflejos)",
+    "glassesMedicalOnly": "solo lentes médicos",
+    "messages": {
+      "loadingPhoto": "Cargando foto…",
+      "aligningLandmarks": "Alineando 468 puntos faciales…",
+      "processingBg": "Procesando fondo en alta resolución…",
+      "downloadingModel": "Descargando modelo de IA…",
+      "decodingImage": "Decodificando imagen en alta resolución…",
+      "refiningEdges": "Refinando cabello y hombros…",
+      "encodingCutout": "Codificando recorte RGBA limpio…",
+      "compositing": "Componiendo salida lista para imprimir…",
+      "readyToDownload": "Lista para descargar"
+    },
+    "errors": {
+      "noFace": "No se detectó la cara. Usa una foto frontal más clara y bien iluminada.",
+      "loadImage": "No se pudo cargar la foto.",
+      "generic": "Error inesperado",
+      "lowConfidence": "La confianza de detección es del {pct}%. Considera una foto frontal más clara.",
+      "scaledDown": "La foto se redujo para encajar — sube una imagen de mayor resolución para máxima calidad."
+    }
+  },
+  "results": {
+    "compliant": "Conforme",
+    "specsLine": "{w}×{h} mm · {dpi} DPI · alineada con ICAO",
+    "downloadPhoto": "JPEG de foto",
+    "downloadSheet": "Hoja 4×6",
+    "noEmail": "Nunca enviamos tu foto por correo — las descargas son solo en tu navegador.",
+    "shipping": "Las impresiones físicas se envían en 1 día hábil.",
+    "shopHeading": "Llévatela a casa o imprímela",
+    "shopSubtitle": "Elige digital o haz que te envíen fotos reales — todos los paquetes incluyen hoja 4×6.",
+    "mostPopular": "Más popular",
+    "buy": "Comprar",
+    "checkoutError": "No se pudo iniciar el pago"
+  },
+  "packages": {
+    "digital": {
+      "name": "Descarga digital",
+      "description": "JPEG de alta resolución + hoja 4×6 lista para imprimir"
+    },
+    "prints4": {
+      "name": "4 impresiones físicas",
+      "description": "4 fotos conformes a ICAO enviadas a tu puerta"
+    },
+    "prints8": {
+      "name": "8 impresiones físicas",
+      "description": "8 fotos conformes a ICAO con envío prioritario"
+    }
+  },
+  "success": {
+    "title": "Pedido recibido",
+    "subtitle": "Stripe confirmó tu pago. Abajo está el estado del envío en vivo — esta página consulta el webhook cada pocos segundos.",
+    "paymentConfirmed": "Pago confirmado",
+    "fulfillment": "Cumplimiento",
+    "receiptTo": "Recibo enviado a",
+    "shippingEta": "Tiempo de envío",
+    "etaText": "1–3 días hábiles",
+    "another": "Crear otra foto",
+    "pollLine": "Consulta del webhook n.º {count} · sesión {session}…",
+    "status": {
+      "pending": "Esperando webhook",
+      "paid": "Pagado · poniendo en cola",
+      "fulfilled": "Imprimiendo",
+      "shipped": "Enviado",
+      "unknown": "Localizando pedido…"
+    }
+  },
+  "footer": {
+    "productHeading": "Producto",
+    "openEditor": "Abrir editor",
+    "supportedCountries": "Países compatibles",
+    "pricing": "Precios",
+    "trustHeading": "Confianza",
+    "wcag": "Accesible WCAG 2.2 AA",
+    "encrypted": "Pagos cifrados de extremo a extremo",
+    "noUpload": "Ninguna imagen sube a nuestros servidores",
+    "description": "Genera fotos de pasaporte y visa conformes a ICAO en segundos, con IA en el dispositivo. Tu foto nunca sale del navegador a menos que pidas impresiones físicas."
+  }
+}

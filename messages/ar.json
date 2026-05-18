@@ -1,0 +1,168 @@
+{
+  "common": {
+    "skipToContent": "تخطَّ إلى المحتوى",
+    "back": "رجوع",
+    "continue": "متابعة",
+    "cancel": "إلغاء",
+    "buy": "شراء",
+    "reset": "إعادة ضبط",
+    "open": "فتح",
+    "close": "إغلاق",
+    "download": "تنزيل",
+    "or": "أو"
+  },
+  "brand": {
+    "name": "VisaPass Photo",
+    "tagline": "ذكاء اصطناعي على جهازك",
+    "copyright": "© {year} VisaPass Photo — مبني باستخدام Next.js وMediaPipe وimgly."
+  },
+  "nav": { "countries": "الدول", "pricing": "الأسعار", "editor": "المحرر" },
+  "languageSwitcher": { "label": "اللغة", "select": "اختر اللغة" },
+  "hero": {
+    "badge": "MediaPipe و imgly على جهازك",
+    "titleLine1": "صور جواز السفر وتأشيرات",
+    "titleLine2": "بجودة الاستوديو خلال ثوانٍ.",
+    "subtitle": "اسحب أي صورة سيلفي — يكتشف VisaPass 468 نقطة على الوجه، ويزيل الخلفية داخل Web Worker، ويقتص بالنسبة الدقيقة التي تطلبها دولتك. كل ذلك على جهازك.",
+    "chip468": "468 نقطة من MediaPipe",
+    "chip600dpi": "إزالة خلفية بدقة 600 DPI",
+    "chipCountries": "أكثر من 20 دولة",
+    "chipPrivacy": "الصورة لا تغادر متصفحك",
+    "chipStripe": "طباعة عبر Stripe",
+    "seeCountries": "عرض الدول المدعومة ←"
+  },
+  "upload": {
+    "title": "أفلت صورة أو انقر للرفع",
+    "hint": "JPG / PNG / HEIC · حتى 25 ميغابايت · المعالجة بالكامل على جهازك",
+    "choose": "اختيار صورة",
+    "useCamera": "استخدام الكاميرا",
+    "errorType": "يرجى رفع صورة بصيغة JPG أو PNG أو WebP أو HEIC.",
+    "errorSize": "حجم هذا الملف {size} — يرجى استخدام صورة أقل من 25 ميغابايت."
+  },
+  "camera": { "title": "التقاط بالكاميرا", "flip": "قلب", "capture": "التقاط", "denied": "تم رفض الوصول إلى الكاميرا" },
+  "features": {
+    "heading": "مصممة لتنجح من المحاولة الأولى",
+    "subtitle": "كل بكسل يُحسب وفق مواصفات الجهة المُصدِرة — نسبة الرأس، مستوى العينين، ولون الخلفية.",
+    "landmarks": { "title": "468 نقطة على الوجه", "body": "يثبت MediaPipe Face Landmarker الذقن وقمة الرأس وخط العينين لاقتصاص رياضي دقيق." },
+    "bgswap": { "title": "تبديل خلفية بدقة عالية", "body": "نعالج بما يعادل 600 DPI داخل Web Worker، فيبقى الشعر والكتفان واضحَين قبل التصغير." },
+    "presets": { "title": "أكثر من 20 إعدادًا للدول", "body": "شنغن، الولايات المتحدة 2×2، المملكة المتحدة 35×45، كندا 50×70، الهند 2×2، الصين 33×48 وغيرها." },
+    "validation": { "title": "تحقق فوري", "body": "نتيجة الثقة، إرشادات النظارات، وتنبيهات مباشرة عند انخفاض الدقة." },
+    "privacy": { "title": "تبقى على جهازك", "body": "لا رفع للخادم افتراضيًا — لا تغادر الصورة المتصفح إلا عند طلب نسخ مطبوعة." },
+    "print": { "title": "جاهزة للطباعة", "body": "حمّل JPEG متوافقة مع ICAO وورقة 4×6 بوصة بدقة 300 DPI للطباعة في أي صيدلية." }
+  },
+  "countryShowcase": {
+    "badge": "أكثر من 20 مواصفة",
+    "heading": "مثالية لكل دولة في كل مرة",
+    "subtitle": "كل إعداد يتضمن ارتفاع الرأس، مستوى العينين، سياسة النظارات، ولون الخلفية.",
+    "headSize": "{w}×{h} مم",
+    "glassesOk": "النظارات مسموحة",
+    "glassesNo": "لا نظارات"
+  },
+  "stepper": { "upload": "رفع", "select": "الدولة", "edit": "الاستوديو", "result": "تنزيل" },
+  "editorPage": {
+    "uploadTitle": "ارفع صورتك",
+    "uploadSubtitle": "أي صورة أمامية ذات إضاءة جيدة تكفي. نتولى نحن المطابقة الفنية.",
+    "selectTitle": "اختر دولة ومستندًا",
+    "selectSubtitle": "قائمة قابلة للبحث بأكثر من 20 مواصفة — من جواز السفر الأمريكي 2×2 إلى شنغن ICAO.",
+    "selectContinue": "متابعة إلى الاستوديو",
+    "studioTitle": "الاستوديو",
+    "studioSubtitle": "طبقة MediaPipe على اليسار، معاينة ICAO على اليمين.",
+    "resultTitle": "صورتك جاهزة",
+    "resultSubtitle": "حمّل الملف الرقمي أو اطلب نسخًا مطبوعة باحترافية."
+  },
+  "countrySelector": {
+    "search": "ابحث في 20+ دولة — جواز سفر، تأشيرة، هوية…",
+    "empty": "لا توجد نتائج — جرّب «شنغن» أو «الهند» أو «2x2».",
+    "headPct": "الرأس {pct}%",
+    "bgLabel": "الخلفية {color}",
+    "typeVisa": "تأشيرة",
+    "typePassport": "جواز سفر",
+    "typeIdCard": "بطاقة هوية",
+    "typeDriverLicense": "رخصة قيادة"
+  },
+  "studio": {
+    "sourceBadge": "الأصل",
+    "previewBadge": "معاينة متوافقة",
+    "loading": "جارٍ تهيئة الذكاء الاصطناعي…",
+    "complete": "اكتملت المعالجة",
+    "rerunPipeline": "إعادة المعالجة",
+    "continue": "متابعة",
+    "detection": "الاكتشاف",
+    "confidence": "ثقة {pct}%",
+    "showLandmarks": "إظهار 468 نقطة",
+    "showLandmarksHelp": "تبديل شبكة MediaPipe",
+    "showCrop": "إظهار الاقتصاص المتوافق",
+    "showCropHelp": "مستطيل برتقالي متقطع فوق الأصل",
+    "colorTuning": "ضبط اللون",
+    "brightness": "السطوع",
+    "contrast": "التباين",
+    "specsLine": "{w}×{h} مم · {dpi} DPI · {glasses}",
+    "glassesForbidden": "بدون نظارات",
+    "glassesAllowedNoGlare": "النظارات مسموحة (بدون انعكاس)",
+    "glassesMedicalOnly": "النظارات الطبية فقط",
+    "messages": {
+      "loadingPhoto": "جارٍ تحميل الصورة…",
+      "aligningLandmarks": "جارٍ محاذاة 468 نقطة على الوجه…",
+      "processingBg": "جارٍ معالجة الخلفية بدقة عالية…",
+      "downloadingModel": "جارٍ تنزيل نموذج الذكاء الاصطناعي…",
+      "decodingImage": "جارٍ فك ترميز الصورة بدقة عالية…",
+      "refiningEdges": "جارٍ تنقيح الشعر والكتفين…",
+      "encodingCutout": "جارٍ ترميز قَصّ RGBA النظيف…",
+      "compositing": "جارٍ تجميع المخرجات الجاهزة للطباعة…",
+      "readyToDownload": "جاهز للتنزيل"
+    },
+    "errors": {
+      "noFace": "لم يتم اكتشاف وجه. جرّب صورة أمامية أوضح بإضاءة متساوية.",
+      "loadImage": "تعذر تحميل الصورة.",
+      "generic": "خطأ غير متوقع",
+      "lowConfidence": "نسبة ثقة الاكتشاف {pct}%. ننصح بصورة أمامية أوضح وذات إضاءة جيدة.",
+      "scaledDown": "تم تصغير الصورة لتناسب — لجودة قصوى، ارفع صورة بدقة أعلى."
+    }
+  },
+  "results": {
+    "compliant": "متوافقة",
+    "specsLine": "{w}×{h} مم · {dpi} DPI · متوافقة مع ICAO",
+    "downloadPhoto": "JPEG للصورة",
+    "downloadSheet": "ورقة 4×6",
+    "noEmail": "لا نرسل صورتك بالبريد — التنزيل يتم بالكامل داخل المتصفح.",
+    "shipping": "تُشحن النسخ المطبوعة خلال يوم عمل واحد.",
+    "shopHeading": "احتفظ بها أو اطبعها",
+    "shopSubtitle": "اختر النسخة الرقمية أو شحن نسخ مطبوعة — كل الباقات تشمل ورقة 4×6.",
+    "mostPopular": "الأكثر شيوعًا",
+    "buy": "شراء",
+    "checkoutError": "تعذر بدء عملية الدفع"
+  },
+  "packages": {
+    "digital": { "name": "تنزيل رقمي", "description": "JPEG عالية الدقة + ورقة 4×6 جاهزة للطباعة" },
+    "prints4": { "name": "4 نسخ مطبوعة", "description": "4 صور متوافقة مع ICAO تُشحن إلى بابك" },
+    "prints8": { "name": "8 نسخ مطبوعة", "description": "8 صور متوافقة مع ICAO بشحن سريع" }
+  },
+  "success": {
+    "title": "تم استلام الطلب",
+    "subtitle": "أكد Stripe دفعتك. أدناه حالة التنفيذ المباشرة — تستعلم هذه الصفحة عن Webhook كل بضع ثوانٍ.",
+    "paymentConfirmed": "تم تأكيد الدفع",
+    "fulfillment": "التنفيذ",
+    "receiptTo": "الإيصال أُرسِل إلى",
+    "shippingEta": "الوقت المتوقع للشحن",
+    "etaText": "1 إلى 3 أيام عمل",
+    "another": "إنشاء صورة أخرى",
+    "pollLine": "استعلام Webhook رقم {count} · جلسة {session}…",
+    "status": {
+      "pending": "بانتظار Webhook",
+      "paid": "مدفوع · في قائمة الانتظار",
+      "fulfilled": "قيد الطباعة",
+      "shipped": "تم الشحن",
+      "unknown": "جارٍ تحديد الطلب…"
+    }
+  },
+  "footer": {
+    "productHeading": "المنتج",
+    "openEditor": "افتح المحرر",
+    "supportedCountries": "الدول المدعومة",
+    "pricing": "الأسعار",
+    "trustHeading": "الثقة",
+    "wcag": "متوافق مع WCAG 2.2 AA",
+    "encrypted": "مدفوعات مشفّرة من طرف إلى طرف",
+    "noUpload": "لا تُرفع أي صورة إلى خوادمنا",
+    "description": "أنشئ صور جواز سفر وتأشيرات متوافقة مع ICAO خلال ثوانٍ بذكاء اصطناعي على جهازك. لن تغادر صورتك متصفحك ما لم تطلب نسخًا مطبوعة."
+  }
+}

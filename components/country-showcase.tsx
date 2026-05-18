@@ -1,20 +1,18 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import { COUNTRIES } from '@/lib/countries';
 import { Badge } from '@/components/ui/badge';
 
 export function CountryShowcase() {
+  const t = useTranslations('countryShowcase');
   return (
     <section id="countries" className="container py-16">
       <div className="mx-auto mb-10 max-w-2xl text-center">
-        <Badge variant="brand">20+ specifications</Badge>
-        <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight md:text-4xl">
-          Country-perfect, every time
-        </h2>
-        <p className="mt-3 text-muted-foreground">
-          Each preset encodes head height ranges, eye line, glasses policy, and background tone.
-        </p>
+        <Badge variant="brand">{t('badge')}</Badge>
+        <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight md:text-4xl">{t('heading')}</h2>
+        <p className="mt-3 text-muted-foreground">{t('subtitle')}</p>
       </div>
       <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {COUNTRIES.map((c, i) => {
@@ -37,10 +35,10 @@ export function CountryShowcase() {
               </div>
               <div className="mt-3 flex flex-wrap gap-1">
                 <Badge variant="secondary" className="text-[10px]">
-                  {doc.widthMm}×{doc.heightMm} mm
+                  {t('headSize', { w: doc.widthMm, h: doc.heightMm })}
                 </Badge>
                 <Badge variant="outline" className="text-[10px]">
-                  {doc.glasses === 'forbidden' ? 'No glasses' : 'Glasses ok'}
+                  {doc.glasses === 'forbidden' ? t('glassesNo') : t('glassesOk')}
                 </Badge>
               </div>
             </motion.div>

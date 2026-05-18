@@ -1,0 +1,168 @@
+{
+  "common": {
+    "skipToContent": "Naar inhoud springen",
+    "back": "Terug",
+    "continue": "Doorgaan",
+    "cancel": "Annuleren",
+    "buy": "Kopen",
+    "reset": "Herstellen",
+    "open": "Openen",
+    "close": "Sluiten",
+    "download": "Downloaden",
+    "or": "of"
+  },
+  "brand": {
+    "name": "VisaPass Photo",
+    "tagline": "AI op je apparaat",
+    "copyright": "© {year} VisaPass Photo — Gebouwd met Next.js, MediaPipe en imgly."
+  },
+  "nav": { "countries": "Landen", "pricing": "Prijzen", "editor": "Editor" },
+  "languageSwitcher": { "label": "Taal", "select": "Kies taal" },
+  "hero": {
+    "badge": "MediaPipe + imgly op je apparaat",
+    "titleLine1": "Paspoort- en visumfoto's",
+    "titleLine2": "in studiokwaliteit.",
+    "subtitle": "Upload elke selfie — VisaPass detecteert 468 gezichtspunten, verwijdert de achtergrond in een Web Worker en snijdt bij volgens de eisen van jouw land. Alles op je apparaat.",
+    "chip468": "468 MediaPipe-punten",
+    "chip600dpi": "Achtergrond op 600 DPI",
+    "chipCountries": "20+ landen",
+    "chipPrivacy": "Foto verlaat je browser nooit",
+    "chipStripe": "Afdrukken via Stripe",
+    "seeCountries": "Bekijk ondersteunde landen →"
+  },
+  "upload": {
+    "title": "Sleep een foto of klik om te uploaden",
+    "hint": "JPG / PNG / HEIC · tot 25 MB · volledig op je apparaat verwerkt",
+    "choose": "Foto kiezen",
+    "useCamera": "Camera gebruiken",
+    "errorType": "Upload een JPG-, PNG-, WebP- of HEIC-foto.",
+    "errorSize": "Dat bestand is {size} — gebruik een foto onder 25 MB."
+  },
+  "camera": { "title": "Camera-opname", "flip": "Spiegelen", "capture": "Vastleggen", "denied": "Toegang tot camera geweigerd" },
+  "features": {
+    "heading": "Ontworpen om de eerste keer door te komen",
+    "subtitle": "Elke pixel wordt berekend volgens de officiële specificatie — hoofdverhouding, ooglijn en achtergrondkleur.",
+    "landmarks": { "title": "468 gezichtspunten", "body": "MediaPipe Face Landmarker fixeert kin, kruin en ooglijn voor wiskundig nauwkeurig bijsnijden." },
+    "bgswap": { "title": "Hoge-resolutie achtergrond", "body": "We verwerken het equivalent van 600 DPI in een Web Worker zodat haar en schouders scherp blijven." },
+    "presets": { "title": "20+ landpresets", "body": "Schengen, VS 2×2, VK 35×45, Canada 50×70, India 2×2, China 33×48 en veel meer." },
+    "validation": { "title": "Realtime validatie", "body": "Betrouwbaarheidsscore, brilrichtlijnen en live waarschuwingen bij lage resolutie." },
+    "privacy": { "title": "Blijft op je apparaat", "body": "Standaard geen serveronload — de foto verlaat de browser alleen bij fysieke afdrukken." },
+    "print": { "title": "Klaar voor de printer", "body": "Download een ICAO-conforme JPEG en een 4×6\" vel op 300 DPI om bij elke drogist af te drukken." }
+  },
+  "countryShowcase": {
+    "badge": "20+ specificaties",
+    "heading": "Voor elk land perfect",
+    "subtitle": "Elke preset bevat hoofdhoogte, ooglijn, brilregels en achtergrondkleur.",
+    "headSize": "{w}×{h} mm",
+    "glassesOk": "Bril toegestaan",
+    "glassesNo": "Geen bril"
+  },
+  "stepper": { "upload": "Upload", "select": "Land", "edit": "Studio", "result": "Download" },
+  "editorPage": {
+    "uploadTitle": "Upload je foto",
+    "uploadSubtitle": "Elke goed belichte frontale foto werkt. De technische naleving regelen wij.",
+    "selectTitle": "Kies land en document",
+    "selectSubtitle": "Doorzoekbare lijst met 20+ specificaties — van VS 2×2\" paspoort tot Schengen ICAO.",
+    "selectContinue": "Door naar studio",
+    "studioTitle": "Studio",
+    "studioSubtitle": "MediaPipe-overlay links, ICAO-conforme preview rechts.",
+    "resultTitle": "Je foto is klaar",
+    "resultSubtitle": "Download het digitale bestand of bestel professioneel afgedrukte exemplaren."
+  },
+  "countrySelector": {
+    "search": "Zoek in 20+ landen — paspoort, visum, ID…",
+    "empty": "Geen resultaten — probeer “Schengen”, “India” of “2x2”.",
+    "headPct": "hoofd {pct}%",
+    "bgLabel": "achtergrond {color}",
+    "typeVisa": "visum",
+    "typePassport": "paspoort",
+    "typeIdCard": "identiteitsbewijs",
+    "typeDriverLicense": "rijbewijs"
+  },
+  "studio": {
+    "sourceBadge": "Origineel",
+    "previewBadge": "Conforme preview",
+    "loading": "AI opwarmen…",
+    "complete": "Pipeline voltooid",
+    "rerunPipeline": "Pipeline opnieuw",
+    "continue": "Doorgaan",
+    "detection": "Detectie",
+    "confidence": "{pct}% vertrouwen",
+    "showLandmarks": "Toon 468 punten",
+    "showLandmarksHelp": "Wissel het MediaPipe-mesh",
+    "showCrop": "Toon conforme uitsnede",
+    "showCropHelp": "Oranje gestreepte rechthoek op het origineel",
+    "colorTuning": "Kleurregeling",
+    "brightness": "Helderheid",
+    "contrast": "Contrast",
+    "specsLine": "{w}×{h} mm · {dpi} DPI · {glasses}",
+    "glassesForbidden": "geen bril",
+    "glassesAllowedNoGlare": "bril toegestaan (zonder reflectie)",
+    "glassesMedicalOnly": "alleen medische bril",
+    "messages": {
+      "loadingPhoto": "Foto laden…",
+      "aligningLandmarks": "468 gezichtspunten uitlijnen…",
+      "processingBg": "Achtergrond op hoge resolutie verwerken…",
+      "downloadingModel": "AI-model downloaden…",
+      "decodingImage": "Afbeelding op hoge resolutie decoderen…",
+      "refiningEdges": "Haar en schouders verfijnen…",
+      "encodingCutout": "RGBA-uitsnede coderen…",
+      "compositing": "Afdrukklare output samenstellen…",
+      "readyToDownload": "Klaar om te downloaden"
+    },
+    "errors": {
+      "noFace": "Geen gezicht gedetecteerd. Probeer een helderdere, frontale, goed belichte foto.",
+      "loadImage": "Kan de foto niet laden.",
+      "generic": "Onverwachte fout",
+      "lowConfidence": "Detectiebetrouwbaarheid is {pct}%. Probeer een helderdere frontale foto.",
+      "scaledDown": "Foto is verkleind — upload een hogere resolutie voor topkwaliteit."
+    }
+  },
+  "results": {
+    "compliant": "Conform",
+    "specsLine": "{w}×{h} mm · {dpi} DPI · ICAO-uitgelijnd",
+    "downloadPhoto": "Foto-JPEG",
+    "downloadSheet": "4×6 vel",
+    "noEmail": "We mailen je foto nooit — downloads gebeuren in je browser.",
+    "shipping": "Fysieke afdrukken worden binnen 1 werkdag verzonden.",
+    "shopHeading": "Mee naar huis of laten afdrukken",
+    "shopSubtitle": "Kies digitaal of laat echte foto's verzenden — alle pakketten bevatten het 4×6 vel.",
+    "mostPopular": "Meest gekozen",
+    "buy": "Kopen",
+    "checkoutError": "Kan checkout niet starten"
+  },
+  "packages": {
+    "digital": { "name": "Digitale download", "description": "JPEG in hoge resolutie + 4×6 vel klaar voor de printer" },
+    "prints4": { "name": "4 fysieke afdrukken", "description": "4 ICAO-conforme foto's bij je thuisbezorgd" },
+    "prints8": { "name": "8 fysieke afdrukken", "description": "8 ICAO-conforme foto's met prioriteitsverzending" }
+  },
+  "success": {
+    "title": "Bestelling ontvangen",
+    "subtitle": "Stripe bevestigde je betaling. Hieronder de live verwerkingsstatus — deze pagina pollt de webhook elke paar seconden.",
+    "paymentConfirmed": "Betaling bevestigd",
+    "fulfillment": "Verwerking",
+    "receiptTo": "Bon verzonden naar",
+    "shippingEta": "Verwachte levering",
+    "etaText": "1–3 werkdagen",
+    "another": "Nog een foto maken",
+    "pollLine": "Webhook-poll #{count} · sessie {session}…",
+    "status": {
+      "pending": "Wacht op webhook",
+      "paid": "Betaald · in wachtrij",
+      "fulfilled": "Wordt geprint",
+      "shipped": "Verzonden",
+      "unknown": "Bestelling zoeken…"
+    }
+  },
+  "footer": {
+    "productHeading": "Product",
+    "openEditor": "Editor openen",
+    "supportedCountries": "Ondersteunde landen",
+    "pricing": "Prijzen",
+    "trustHeading": "Vertrouwen",
+    "wcag": "Toegankelijk WCAG 2.2 AA",
+    "encrypted": "End-to-end versleutelde betalingen",
+    "noUpload": "Geen afbeelding naar onze servers",
+    "description": "Genereer ICAO-conforme paspoort- en visumfoto's in seconden, met AI op je apparaat. Je foto verlaat je browser nooit, tenzij je fysieke afdrukken bestelt."
+  }
+}

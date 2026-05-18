@@ -1,0 +1,168 @@
+{
+  "common": {
+    "skipToContent": "跳到内容",
+    "back": "返回",
+    "continue": "继续",
+    "cancel": "取消",
+    "buy": "购买",
+    "reset": "重置",
+    "open": "打开",
+    "close": "关闭",
+    "download": "下载",
+    "or": "或"
+  },
+  "brand": {
+    "name": "VisaPass Photo",
+    "tagline": "本地 AI",
+    "copyright": "© {year} VisaPass Photo — 由 Next.js、MediaPipe 与 imgly 构建。"
+  },
+  "nav": { "countries": "国家", "pricing": "价格", "editor": "编辑器" },
+  "languageSwitcher": { "label": "语言", "select": "选择语言" },
+  "hero": {
+    "badge": "本地运行的 MediaPipe + imgly",
+    "titleLine1": "工作室级护照与",
+    "titleLine2": "签证照片,几秒搞定。",
+    "subtitle": "拖入任意自拍 — VisaPass 检测 468 个面部关键点,在 Web Worker 中去除背景,并按你所在国家的精确比例裁剪。全部在你的设备上完成。",
+    "chip468": "468 个 MediaPipe 关键点",
+    "chip600dpi": "600 DPI 去背景",
+    "chipCountries": "20+ 国家",
+    "chipPrivacy": "照片不离开你的浏览器",
+    "chipStripe": "Stripe 支付印刷",
+    "seeCountries": "查看支持的国家 →"
+  },
+  "upload": {
+    "title": "拖入照片或点击上传",
+    "hint": "JPG / PNG / HEIC · 最大 25 MB · 完全在你的设备上处理",
+    "choose": "选择照片",
+    "useCamera": "使用相机",
+    "errorType": "请上传 JPG、PNG、WebP 或 HEIC 格式的照片。",
+    "errorSize": "该文件为 {size} — 请使用小于 25 MB 的照片。"
+  },
+  "camera": { "title": "相机拍摄", "flip": "翻转", "capture": "拍摄", "denied": "相机访问被拒绝" },
+  "features": {
+    "heading": "为一次过审而设计",
+    "subtitle": "每个像素都按签发机构的规范计算 — 头部比例、眼线位置和背景颜色。",
+    "landmarks": { "title": "468 个面部关键点", "body": "MediaPipe Face Landmarker 锁定下巴、头顶和眼线,实现数学级精确裁剪。" },
+    "bgswap": { "title": "高分辨率换背景", "body": "我们在 Web Worker 中以相当于 600 DPI 的精度处理,以保持发丝与肩部清晰。" },
+    "presets": { "title": "20+ 国家预设", "body": "申根、美国 2×2、英国 35×45、加拿大 50×70、印度 2×2、中国 33×48 等。" },
+    "validation": { "title": "实时校验", "body": "置信度评分、眼镜规则提示,以及照片分辨率不足时的即时警告。" },
+    "privacy": { "title": "保存在你的设备", "body": "默认不上传服务器 — 仅在你订购实体照片时,图片才离开浏览器。" },
+    "print": { "title": "可直接打印", "body": "下载符合 ICAO 的 JPEG 与 300 DPI 4×6 英寸打印纸张,可在任何照片店打印。" }
+  },
+  "countryShowcase": {
+    "badge": "20+ 项规格",
+    "heading": "每个国家都做到完美",
+    "subtitle": "每个预设都编码了头部高度、眼线、眼镜规则和背景色调。",
+    "headSize": "{w}×{h} 毫米",
+    "glassesOk": "可戴眼镜",
+    "glassesNo": "禁戴眼镜"
+  },
+  "stepper": { "upload": "上传", "select": "国家", "edit": "工作室", "result": "下载" },
+  "editorPage": {
+    "uploadTitle": "上传你的照片",
+    "uploadSubtitle": "任何光线良好、正面的照片都可以,技术合规交给我们。",
+    "selectTitle": "选择国家和证件",
+    "selectSubtitle": "可搜索的 20+ 规格列表 — 从美国 2×2 英寸护照到申根 ICAO。",
+    "selectContinue": "继续进入工作室",
+    "studioTitle": "工作室",
+    "studioSubtitle": "左侧为 MediaPipe 实时叠加,右侧为 ICAO 合规预览。",
+    "resultTitle": "你的照片已就绪",
+    "resultSubtitle": "下载数字文件或订购专业冲印的纸质版本。"
+  },
+  "countrySelector": {
+    "search": "搜索 20+ 国家 — 护照、签证、身份证…",
+    "empty": "暂无匹配 — 试试“申根”、“印度”或“2x2”。",
+    "headPct": "头部 {pct}%",
+    "bgLabel": "背景 {color}",
+    "typeVisa": "签证",
+    "typePassport": "护照",
+    "typeIdCard": "身份证",
+    "typeDriverLicense": "驾照"
+  },
+  "studio": {
+    "sourceBadge": "原图",
+    "previewBadge": "合规预览",
+    "loading": "AI 启动中…",
+    "complete": "处理完成",
+    "rerunPipeline": "重新处理",
+    "continue": "继续",
+    "detection": "检测",
+    "confidence": "{pct}% 置信度",
+    "showLandmarks": "显示 468 个关键点",
+    "showLandmarksHelp": "切换 MediaPipe 网格叠加",
+    "showCrop": "显示合规裁剪",
+    "showCropHelp": "原图上的橙色虚线方框",
+    "colorTuning": "色彩微调",
+    "brightness": "亮度",
+    "contrast": "对比度",
+    "specsLine": "{w}×{h} 毫米 · {dpi} DPI · {glasses}",
+    "glassesForbidden": "不可戴眼镜",
+    "glassesAllowedNoGlare": "可戴眼镜(无反光)",
+    "glassesMedicalOnly": "仅限医疗眼镜",
+    "messages": {
+      "loadingPhoto": "正在加载照片…",
+      "aligningLandmarks": "正在对齐 468 个面部关键点…",
+      "processingBg": "正在高分辨率处理背景…",
+      "downloadingModel": "正在下载 AI 模型…",
+      "decodingImage": "正在解码高分辨率图像…",
+      "refiningEdges": "正在精修发丝与肩部…",
+      "encodingCutout": "正在编码 RGBA 抠图…",
+      "compositing": "正在合成可打印输出…",
+      "readyToDownload": "可以下载了"
+    },
+    "errors": {
+      "noFace": "未检测到人脸。请使用更清晰、光线均匀的正面照片。",
+      "loadImage": "无法加载照片。",
+      "generic": "发生未知错误",
+      "lowConfidence": "检测置信度为 {pct}%。建议使用更清晰、光线良好的正面照。",
+      "scaledDown": "照片已被缩小以适配 — 上传更高分辨率的图像可获得最佳质量。"
+    }
+  },
+  "results": {
+    "compliant": "合规",
+    "specsLine": "{w}×{h} 毫米 · {dpi} DPI · 符合 ICAO",
+    "downloadPhoto": "照片 JPEG",
+    "downloadSheet": "4×6 打印纸",
+    "noEmail": "我们绝不通过邮件发送你的照片 — 下载完全在浏览器内进行。",
+    "shipping": "实体照片将在 1 个工作日内发货。",
+    "shopHeading": "带回家或直接打印",
+    "shopSubtitle": "选择数字版或寄送实体照片 — 所有套餐均包含 4×6 打印纸。",
+    "mostPopular": "最受欢迎",
+    "buy": "购买",
+    "checkoutError": "无法启动支付"
+  },
+  "packages": {
+    "digital": { "name": "数字版下载", "description": "高分辨率 JPEG + 可打印的 4×6 纸张" },
+    "prints4": { "name": "4 张实体打印", "description": "4 张符合 ICAO 的照片送到你家门口" },
+    "prints8": { "name": "8 张实体打印", "description": "8 张符合 ICAO 的照片,优先派送" }
+  },
+  "success": {
+    "title": "订单已收到",
+    "subtitle": "Stripe 已确认你的付款。下方为实时履约状态 — 本页每隔几秒轮询 Webhook。",
+    "paymentConfirmed": "付款已确认",
+    "fulfillment": "履约",
+    "receiptTo": "收据已发送至",
+    "shippingEta": "配送预计",
+    "etaText": "1–3 个工作日",
+    "another": "再制作一张照片",
+    "pollLine": "Webhook 轮询 第 {count} 次 · 会话 {session}…",
+    "status": {
+      "pending": "等待 Webhook",
+      "paid": "已付款 · 排队中",
+      "fulfilled": "正在打印",
+      "shipped": "已发货",
+      "unknown": "正在查找订单…"
+    }
+  },
+  "footer": {
+    "productHeading": "产品",
+    "openEditor": "打开编辑器",
+    "supportedCountries": "支持的国家",
+    "pricing": "价格",
+    "trustHeading": "信任",
+    "wcag": "符合 WCAG 2.2 AA",
+    "encrypted": "端到端加密支付",
+    "noUpload": "不会向服务器上传任何图像",
+    "description": "在几秒内生成符合 ICAO 的护照和签证照片,使用本地 AI。除非你订购实体照片,否则你的照片不会离开浏览器。"
+  }
+}

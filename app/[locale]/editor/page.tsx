@@ -1,7 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -15,10 +16,11 @@ import { usePhotoStore } from '@/lib/store';
 import { findDocument } from '@/lib/countries';
 
 export default function EditorPage() {
+  const t = useTranslations('editorPage');
+  const tCommon = useTranslations('common');
   const router = useRouter();
   const step = usePhotoStore((s) => s.step);
   const sourceUrl = usePhotoStore((s) => s.sourceUrl);
-  const sourceMime = usePhotoStore((s) => s.sourceMime);
   const documentId = usePhotoStore((s) => s.documentId);
   const resultDataUrl = usePhotoStore((s) => s.resultDataUrl);
   const printSheetDataUrl = usePhotoStore((s) => s.printSheetDataUrl);
@@ -27,7 +29,6 @@ export default function EditorPage() {
   const setDocument = usePhotoStore((s) => s.setDocument);
   const [cameraOpen, setCameraOpen] = React.useState(false);
 
-  // If user lands directly on /editor without a source — start at upload step.
   React.useEffect(() => {
     if (!sourceUrl && step !== 'upload') setStep('upload');
   }, [sourceUrl, step, setStep]);
@@ -50,7 +51,7 @@ export default function EditorPage() {
       <div className="mb-8 space-y-4">
         <div className="flex items-center justify-between gap-3">
           <Button variant="ghost" size="sm" onClick={goBack}>
-            <ArrowLeft className="size-4" /> Back
+            <ArrowLeft className="size-4 rtl:rotate-180" /> {tCommon('back')}
           </Button>
           <ProgressStepper step={step} />
         </div>
@@ -66,10 +67,8 @@ export default function EditorPage() {
             transition={{ duration: 0.3 }}
             className="mx-auto max-w-2xl space-y-3"
           >
-            <h1 className="font-display text-3xl font-semibold">Upload your photo</h1>
-            <p className="text-muted-foreground">
-              Any well-lit, front-facing photo works. We'll handle the technical compliance.
-            </p>
+            <h1 className="font-display text-3xl font-semibold">{t('uploadTitle')}</h1>
+            <p className="text-muted-foreground">{t('uploadSubtitle')}</p>
             <UploadDropzone onAccept={handleFile} onOpenCamera={() => setCameraOpen(true)} />
             <CameraCapture open={cameraOpen} onOpenChange={setCameraOpen} onCapture={handleFile} />
           </motion.section>
@@ -85,24 +84,16 @@ export default function EditorPage() {
             className="grid gap-8 lg:grid-cols-[1fr_1.2fr]"
           >
             <div className="space-y-3">
-              <h1 className="font-display text-3xl font-semibold">Pick a country & document</h1>
-              <p className="text-muted-foreground">
-                Searchable list of 20+ specifications — from US 2×2” passport to Schengen ICAO.
-              </p>
+              <h1 className="font-display text-3xl font-semibold">{t('selectTitle')}</h1>
+              <p className="text-muted-foreground">{t('selectSubtitle')}</p>
               {sourceUrl && (
                 <div className="overflow-hidden rounded-2xl border bg-muted/40">
-                  {/* Source thumbnail */}
-                  <img src={sourceUrl} alt="Your upload" className="aspect-square w-full object-cover" />
+                  <img src={sourceUrl} alt="" className="aspect-square w-full object-cover" />
                 </div>
               )}
             </div>
             <div className="space-y-3">
-              <CountrySelector
-                selectedDocId={documentId}
-                onSelect={(_c, d) => {
-                  setDocument(d.id);
-                }}
-              />
+              <CountrySelector selectedDocId={documentId} onSelect={(_c, d) => setDocument(d.id)} />
               <Button
                 size="lg"
                 variant="brand"
@@ -110,7 +101,7 @@ export default function EditorPage() {
                 disabled={!documentId}
                 onClick={() => setStep('edit')}
               >
-                Continue to studio <ArrowRight className="size-4" />
+                {t('selectContinue')} <ArrowRight className="size-4 rtl:rotate-180" />
               </Button>
             </div>
           </motion.section>
@@ -126,10 +117,8 @@ export default function EditorPage() {
             className="space-y-4"
           >
             <div>
-              <h1 className="font-display text-3xl font-semibold">Studio</h1>
-              <p className="text-muted-foreground">
-                Live MediaPipe overlay on the left, ICAO-compliant preview on the right.
-              </p>
+              <h1 className="font-display text-3xl font-semibold">{t('studioTitle')}</h1>
+              <p className="text-muted-foreground">{t('studioSubtitle')}</p>
             </div>
             <EditorStudio
               sourceUrl={sourceUrl}
@@ -149,10 +138,8 @@ export default function EditorPage() {
             className="space-y-4"
           >
             <div>
-              <h1 className="font-display text-3xl font-semibold">Your photo is ready</h1>
-              <p className="text-muted-foreground">
-                Download the digital file or order professionally printed copies.
-              </p>
+              <h1 className="font-display text-3xl font-semibold">{t('resultTitle')}</h1>
+              <p className="text-muted-foreground">{t('resultSubtitle')}</p>
             </div>
             <ResultsPanel
               resultDataUrl={resultDataUrl}

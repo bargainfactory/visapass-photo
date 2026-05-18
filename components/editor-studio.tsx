@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   AlertTriangle,
@@ -37,29 +38,29 @@ type Stage = 'idle' | 'detecting' | 'removing-bg' | 'composing' | 'done' | 'erro
 
 interface PipelineState {
   stage: Stage;
-  message: string;
+  messageKey: string;
   progress: number;
   face: FaceAnalysis | null;
   crop: CropRect | null;
   cutoutBlob: Blob | null;
   imageEl: HTMLImageElement | null;
-  warnings: string[];
   error: string | null;
 }
 
 const initialState: PipelineState = {
   stage: 'idle',
-  message: '',
+  messageKey: '',
   progress: 0,
   face: null,
   crop: null,
   cutoutBlob: null,
   imageEl: null,
-  warnings: [],
   error: null,
 };
 
 export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudioProps) {
+  const t = useTranslations('studio');
+  const tCommon = useTranslations('common');
   const docPair = React.useMemo(() => findDocument(documentId), [documentId]);
   const setResult = usePhotoStore((s) => s.setResult);
   const brightness = usePhotoStore((s) => s.brightness);
@@ -74,12 +75,17 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
 
   const runPipeline = React.useCallback(async () => {
     if (!docPair) return;
-    setState({ ...initialState, stage: 'detecting', message: 'Loading photo…', progress: 5 });
+    setState({ ...initialState, stage: 'detecting', messageKey: 'messages.loadingPhoto', progress: 5 });
     try {
       const img = await loadImage(sourceUrl);
-      setState((s) => ({ ...s, imageEl: img, message: 'Aligning 468 facial landmarks…', progress: 18 }));
+      setState((s) => ({
+        ...s,
+        imageEl: img,
+        messageKey: 'messages.aligningLandmarks',
+        progress: 18,
+      }));
       const face = await detectFace(img);
-      if (!face) throw new Error('No face detected. Try a clearer, front-facing photo with even lighting.');
+      if (!face) throw new Error('NO_FACE');
       setFaceConfidence(face.confidence);
       const crop = calculateCrop(face, docPair.doc, img.naturalWidth, img.naturalHeight);
 
@@ -88,21 +94,26 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
         face,
         crop,
         stage: 'removing-bg',
-        message: 'Processing background at high resolution…',
+        messageKey: 'messages.processingBg',
         progress: 35,
-        warnings: crop.warnings,
       }));
 
       const blob = await fetch(sourceUrl).then((r) => r.blob());
       const cutoutBlob = await removeBackground(blob, (label, ratio) => {
         setState((s) => ({
           ...s,
-          message: prettyLabel(label),
+          messageKey: progressLabelKey(label),
           progress: 35 + Math.round(ratio * 45),
         }));
       });
 
-      setState((s) => ({ ...s, cutoutBlob, stage: 'composing', message: 'Compositing print-ready output…', progress: 88 }));
+      setState((s) => ({
+        ...s,
+        cutoutBlob,
+        stage: 'composing',
+        messageKey: 'messages.compositing',
+        progress: 88,
+      }));
       const out = await composeFinal({
         source: img,
         cutoutBlob,
@@ -113,9 +124,13 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
       });
       setResult(out.dataUrl, out.printSheetDataUrl);
       setPreviewUrl(out.dataUrl);
-      setState((s) => ({ ...s, stage: 'done', message: 'Ready to download', progress: 100 }));
+      setState((s) => ({ ...s, stage: 'done', messageKey: 'messages.readyToDownload', progress: 100 }));
     } catch (e: any) {
-      setState((s) => ({ ...s, stage: 'error', error: e?.message ?? 'Unexpected error', message: '' }));
+      let errKey: string;
+      if (e?.message === 'NO_FACE') errKey = t('errors.noFace');
+      else if (typeof e?.message === 'string' && e.message.includes('Could not load')) errKey = t('errors.loadImage');
+      else errKey = e?.message ?? t('errors.generic');
+      setState((s) => ({ ...s, stage: 'error', error: errKey, messageKey: '' }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sourceUrl, documentId]);
@@ -124,7 +139,6 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
     runPipeline();
   }, [runPipeline]);
 
-  // Re-composite quickly when brightness/contrast adjusted (no re-detection / no re-bg-removal).
   const recompose = React.useCallback(async () => {
     if (!docPair || !state.imageEl || !state.crop) return;
     const out = await composeFinal({
@@ -146,26 +160,27 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
 
   if (!docPair) return null;
   const { doc, country } = docPair;
+  const glassesLabel =
+    doc.glasses === 'forbidden'
+      ? t('glassesForbidden')
+      : doc.glasses === 'allowed_no_glare'
+        ? t('glassesAllowedNoGlare')
+        : t('glassesMedicalOnly');
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-      {/* Live split-view preview */}
       <Card className="overflow-hidden">
         <CardContent className="p-0">
-          <div className="grid grid-cols-2 divide-x">
+          <div className="grid grid-cols-2 divide-x rtl:divide-x-reverse">
             <div className="relative aspect-square bg-[radial-gradient(circle_at_50%_30%,hsl(var(--muted)),transparent)]">
-              <div className="absolute left-3 top-3 z-10">
+              <div className="absolute start-3 top-3 z-10">
                 <Badge variant="secondary" className="gap-1">
-                  <ScanFace className="size-3" /> Source
+                  <ScanFace className="size-3" /> {t('sourceBadge')}
                 </Badge>
               </div>
               {state.imageEl && (
                 <div className="relative h-full w-full">
-                  <img
-                    src={sourceUrl}
-                    alt="Original upload"
-                    className="h-full w-full object-contain"
-                  />
+                  <img src={sourceUrl} alt="" className="h-full w-full object-contain" />
                   <LandmarkOverlay
                     imageWidth={state.imageEl.naturalWidth}
                     imageHeight={state.imageEl.naturalHeight}
@@ -177,13 +192,10 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
                 </div>
               )}
             </div>
-            <div
-              className="relative aspect-square"
-              style={{ background: doc.background }}
-            >
-              <div className="absolute left-3 top-3 z-10">
+            <div className="relative aspect-square" style={{ background: doc.background }}>
+              <div className="absolute start-3 top-3 z-10">
                 <Badge variant="brand" className="gap-1">
-                  <CheckCircle2 className="size-3" /> Compliant preview
+                  <CheckCircle2 className="size-3" /> {t('previewBadge')}
                 </Badge>
               </div>
               <AnimatePresence mode="wait">
@@ -191,7 +203,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
                   <motion.img
                     key={previewUrl}
                     src={previewUrl}
-                    alt="Compliant preview"
+                    alt=""
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
@@ -207,7 +219,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
                   >
                     <div className="flex flex-col items-center gap-2">
                       <Loader2 className="size-5 animate-spin" />
-                      <span>{state.message || 'Warming up the AI…'}</span>
+                      <span>{state.messageKey ? t(state.messageKey) : t('loading')}</span>
                     </div>
                   </motion.div>
                 )}
@@ -219,24 +231,20 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
               <div className="text-xs font-medium text-muted-foreground">
                 {state.stage === 'done' ? (
                   <span className="inline-flex items-center gap-1 text-emerald-600">
-                    <CheckCircle2 className="size-3.5" /> Pipeline complete
+                    <CheckCircle2 className="size-3.5" /> {t('complete')}
                   </span>
-                ) : (
-                  state.message
-                )}
+                ) : state.messageKey ? (
+                  t(state.messageKey)
+                ) : null}
               </div>
               <div className="text-xs tabular-nums text-muted-foreground">{state.progress}%</div>
             </div>
             <Progress value={state.progress} />
-            {state.warnings.length > 0 && (
-              <div className="space-y-1 pt-1">
-                {state.warnings.map((w, i) => (
-                  <p key={i} className="flex items-center gap-1.5 text-xs text-amber-600">
-                    <AlertTriangle className="size-3.5" /> {w}
-                  </p>
-                ))}
-              </div>
-            )}
+            {state.crop?.warnings.map((w, i) => (
+              <p key={i} className="flex items-center gap-1.5 text-xs text-amber-600">
+                <AlertTriangle className="size-3.5" /> {t(`errors.${w.key}`, w.params)}
+              </p>
+            ))}
             {state.error && (
               <p className="flex items-center gap-1.5 text-sm text-destructive">
                 <AlertTriangle className="size-4" /> {state.error}
@@ -246,7 +254,6 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
         </CardContent>
       </Card>
 
-      {/* Right-hand controls */}
       <div className="space-y-4">
         <Card>
           <CardContent className="space-y-3 p-5">
@@ -255,7 +262,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
               <div className="min-w-0">
                 <p className="truncate text-sm font-semibold">{doc.label}</p>
                 <p className="truncate text-xs text-muted-foreground">
-                  {doc.widthMm}×{doc.heightMm}mm · {doc.dpi} DPI · {doc.glasses.replace('_', ' ')}
+                  {t('specsLine', { w: doc.widthMm, h: doc.heightMm, dpi: doc.dpi, glasses: glassesLabel })}
                 </p>
               </div>
             </div>
@@ -274,28 +281,26 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
         <Card>
           <CardContent className="space-y-4 p-5">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold">Detection</p>
+              <p className="text-sm font-semibold">{t('detection')}</p>
               {state.face && (
                 <Badge variant={state.face.confidence > 0.6 ? 'success' : 'warning'}>
-                  {(state.face.confidence * 100).toFixed(0)}% confidence
+                  {t('confidence', { pct: (state.face.confidence * 100).toFixed(0) })}
                 </Badge>
               )}
             </div>
             <div className="flex items-center justify-between gap-3">
               <Label htmlFor="landmarks" className="flex flex-col">
-                <span>Show 468 landmarks</span>
+                <span>{t('showLandmarks')}</span>
                 <span className="text-xs font-normal text-muted-foreground">
-                  Toggle the MediaPipe mesh overlay
+                  {t('showLandmarksHelp')}
                 </span>
               </Label>
               <Switch id="landmarks" checked={showLandmarks} onCheckedChange={setShowLandmarks} />
             </div>
             <div className="flex items-center justify-between gap-3">
               <Label htmlFor="crop" className="flex flex-col">
-                <span>Show compliant crop</span>
-                <span className="text-xs font-normal text-muted-foreground">
-                  Dashed orange rectangle on the source
-                </span>
+                <span>{t('showCrop')}</span>
+                <span className="text-xs font-normal text-muted-foreground">{t('showCropHelp')}</span>
               </Label>
               <Switch id="crop" checked={showCrop} onCheckedChange={setShowCrop} />
             </div>
@@ -305,19 +310,19 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
         <Card>
           <CardContent className="space-y-5 p-5">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold">Color tuning</p>
+              <p className="text-sm font-semibold">{t('colorTuning')}</p>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setAdjustments(0, 0)}
                 disabled={brightness === 0 && contrast === 0}
               >
-                <RefreshCw className="size-3" /> Reset
+                <RefreshCw className="size-3" /> {tCommon('reset')}
               </Button>
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-xs">
-                <Label>Brightness</Label>
+                <Label>{t('brightness')}</Label>
                 <span className="tabular-nums text-muted-foreground">{brightness}</span>
               </div>
               <Slider
@@ -330,7 +335,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-xs">
-                <Label>Contrast</Label>
+                <Label>{t('contrast')}</Label>
                 <span className="tabular-nums text-muted-foreground">{contrast}</span>
               </div>
               <Slider
@@ -346,7 +351,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
 
         <div className="flex gap-2">
           <Button variant="outline" size="lg" onClick={runPipeline} className="flex-1">
-            <Wand2 className="size-4" /> Re-run pipeline
+            <Wand2 className="size-4" /> {t('rerunPipeline')}
           </Button>
           <Button
             variant="brand"
@@ -355,7 +360,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
             disabled={state.stage !== 'done'}
             className="flex-1"
           >
-            <Aperture className="size-4" /> Continue
+            <Aperture className="size-4" /> {t('continue')}
           </Button>
         </div>
       </div>
@@ -368,15 +373,15 @@ function loadImage(src: string): Promise<HTMLImageElement> {
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error('Could not load the photo.'));
+    img.onerror = () => reject(new Error('Could not load image'));
     img.src = src;
   });
 }
 
-function prettyLabel(key: string): string {
-  if (key.startsWith('fetch')) return 'Downloading AI model…';
-  if (key.includes('decode')) return 'Decoding image at high resolution…';
-  if (key.includes('process')) return 'Refining hair & shoulder edges…';
-  if (key.includes('encode')) return 'Encoding clean RGBA cutout…';
-  return 'Processing background at high resolution…';
+function progressLabelKey(key: string): string {
+  if (key.startsWith('fetch')) return 'messages.downloadingModel';
+  if (key.includes('decode')) return 'messages.decodingImage';
+  if (key.includes('process')) return 'messages.refiningEdges';
+  if (key.includes('encode')) return 'messages.encodingCutout';
+  return 'messages.processingBg';
 }

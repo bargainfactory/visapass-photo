@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useTranslations } from 'next-intl';
 import { Check, ChevronRight, Search } from 'lucide-react';
 import { COUNTRIES, type CountrySpec, type DocumentSpec, midpoint } from '@/lib/countries';
 import { Badge } from '@/components/ui/badge';
@@ -14,7 +15,9 @@ interface CountrySelectorProps {
 }
 
 export function CountrySelector({ selectedDocId, onSelect }: CountrySelectorProps) {
+  const t = useTranslations('countrySelector');
   const [query, setQuery] = React.useState('');
+
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return COUNTRIES;
@@ -26,24 +29,35 @@ export function CountrySelector({ selectedDocId, onSelect }: CountrySelectorProp
     );
   }, [query]);
 
+  const typeLabel = (type: DocumentSpec['type']) => {
+    switch (type) {
+      case 'visa':
+        return t('typeVisa');
+      case 'passport':
+        return t('typePassport');
+      case 'id_card':
+        return t('typeIdCard');
+      case 'driver_license':
+        return t('typeDriverLicense');
+    }
+  };
+
   return (
     <div className="space-y-3">
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+        <Search className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
-          placeholder="Search 20+ countries — passport, visa, ID…"
-          className="pl-10"
+          placeholder={t('search')}
+          className="ps-10"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          aria-label="Search countries"
+          aria-label={t('search')}
         />
       </div>
       <ScrollArea className="h-[420px] rounded-xl border bg-card/40">
         <ul className="divide-y">
           {filtered.length === 0 && (
-            <li className="px-4 py-6 text-center text-sm text-muted-foreground">
-              No matches — try “Schengen”, “India”, or “2x2”.
-            </li>
+            <li className="px-4 py-6 text-center text-sm text-muted-foreground">{t('empty')}</li>
           )}
           {filtered.map((country) => (
             <li key={country.code} className="px-1 py-1">
@@ -59,7 +73,7 @@ export function CountrySelector({ selectedDocId, onSelect }: CountrySelectorProp
                     type="button"
                     onClick={() => onSelect(country, doc)}
                     className={cn(
-                      'group flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2 text-left transition-all',
+                      'group flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2 text-start transition-all',
                       selectedDocId === doc.id
                         ? 'bg-brand-500/10 ring-1 ring-brand-500/30'
                         : 'hover:bg-accent'
@@ -69,18 +83,19 @@ export function CountrySelector({ selectedDocId, onSelect }: CountrySelectorProp
                     <div className="min-w-0">
                       <p className="truncate text-sm font-medium">{doc.label}</p>
                       <p className="truncate text-xs text-muted-foreground">
-                        {doc.widthMm}×{doc.heightMm} mm · head {(midpoint(doc.headHeightRatio) * 100).toFixed(0)}% ·
-                        bg {doc.background}
+                        {doc.widthMm}×{doc.heightMm} mm ·{' '}
+                        {t('headPct', { pct: Math.round(midpoint(doc.headHeightRatio) * 100) })} ·{' '}
+                        {t('bgLabel', { color: doc.background })}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
                       <Badge variant={doc.type === 'visa' ? 'warning' : 'brand'} className="capitalize">
-                        {doc.type.replace('_', ' ')}
+                        {typeLabel(doc.type)}
                       </Badge>
                       {selectedDocId === doc.id ? (
                         <Check className="size-4 text-brand-600" />
                       ) : (
-                        <ChevronRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                        <ChevronRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 rtl:rotate-180" />
                       )}
                     </div>
                   </button>

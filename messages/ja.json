@@ -1,0 +1,168 @@
+{
+  "common": {
+    "skipToContent": "コンテンツへスキップ",
+    "back": "戻る",
+    "continue": "次へ",
+    "cancel": "キャンセル",
+    "buy": "購入",
+    "reset": "リセット",
+    "open": "開く",
+    "close": "閉じる",
+    "download": "ダウンロード",
+    "or": "または"
+  },
+  "brand": {
+    "name": "VisaPass Photo",
+    "tagline": "端末内AI",
+    "copyright": "© {year} VisaPass Photo — Next.js、MediaPipe、imgly で構築。"
+  },
+  "nav": { "countries": "国一覧", "pricing": "料金", "editor": "エディター" },
+  "languageSwitcher": { "label": "言語", "select": "言語を選択" },
+  "hero": {
+    "badge": "端末内で動く MediaPipe + imgly",
+    "titleLine1": "スタジオ品質のパスポートと",
+    "titleLine2": "ビザ写真を数秒で。",
+    "subtitle": "セルフィーをドロップするだけ — VisaPass が468のフェイシャルランドマークを検出し、Web Worker で背景を除去、国ごとの正確な比率でトリミングします。すべて端末上で完結。",
+    "chip468": "468 MediaPipe ランドマーク",
+    "chip600dpi": "600 DPI 背景処理",
+    "chipCountries": "20以上の国に対応",
+    "chipPrivacy": "写真はブラウザから出ません",
+    "chipStripe": "Stripe による印刷",
+    "seeCountries": "対応国を見る →"
+  },
+  "upload": {
+    "title": "写真をドロップ、またはクリックでアップロード",
+    "hint": "JPG / PNG / HEIC · 25 MB まで · 完全に端末内で処理",
+    "choose": "写真を選択",
+    "useCamera": "カメラを使う",
+    "errorType": "JPG、PNG、WebP、HEIC のいずれかでアップロードしてください。",
+    "errorSize": "そのファイルは {size} です — 25 MB 未満の写真を使用してください。"
+  },
+  "camera": { "title": "カメラ撮影", "flip": "反転", "capture": "撮影", "denied": "カメラへのアクセスが拒否されました" },
+  "features": {
+    "heading": "一度で通すために設計",
+    "subtitle": "頭部比、目線、背景色まで、すべて発行機関の仕様どおりに計算されます。",
+    "landmarks": { "title": "468 のフェイシャルランドマーク", "body": "MediaPipe Face Landmarker が顎・頭頂・目線を捉え、数学的に正確なトリミングを実現します。" },
+    "bgswap": { "title": "高解像度の背景置換", "body": "Web Worker で 600 DPI 相当を処理。髪の毛や肩のディテールを保ったまま縮小します。" },
+    "presets": { "title": "20以上の国別プリセット", "body": "シェンゲン、米国 2×2、英国 35×45、カナダ 50×70、インド 2×2、中国 33×48 など。" },
+    "validation": { "title": "リアルタイム検証", "body": "信頼度スコア、眼鏡ポリシーのヒント、解像度不足の即時警告。" },
+    "privacy": { "title": "端末から出ません", "body": "デフォルトでサーバー送信なし — 物理プリント注文時のみブラウザを離れます。" },
+    "print": { "title": "印刷準備済みの出力", "body": "ICAO 準拠の JPEG と 300 DPI の 4×6 インチシートをダウンロード。コンビニで印刷できます。" }
+  },
+  "countryShowcase": {
+    "badge": "20以上の仕様",
+    "heading": "どの国にもいつでもぴったり",
+    "subtitle": "各プリセットは頭部サイズ・目線・眼鏡規則・背景色をすべて含みます。",
+    "headSize": "{w}×{h} mm",
+    "glassesOk": "眼鏡可",
+    "glassesNo": "眼鏡不可"
+  },
+  "stepper": { "upload": "アップロード", "select": "国", "edit": "スタジオ", "result": "ダウンロード" },
+  "editorPage": {
+    "uploadTitle": "写真をアップロード",
+    "uploadSubtitle": "明るく正面を向いた写真ならOK。技術的な準拠は当社が対応します。",
+    "selectTitle": "国と書類を選択",
+    "selectSubtitle": "米国 2×2 パスポートからシェンゲン ICAO まで、20以上の仕様を検索できます。",
+    "selectContinue": "スタジオへ進む",
+    "studioTitle": "スタジオ",
+    "studioSubtitle": "左に MediaPipe オーバーレイ、右に ICAO 準拠プレビュー。",
+    "resultTitle": "写真が完成しました",
+    "resultSubtitle": "デジタルでダウンロードするか、プロ印刷をご注文ください。"
+  },
+  "countrySelector": {
+    "search": "20以上の国を検索 — パスポート、ビザ、ID…",
+    "empty": "該当なし — 「シェンゲン」「インド」「2x2」などで検索してみてください。",
+    "headPct": "頭部 {pct}%",
+    "bgLabel": "背景 {color}",
+    "typeVisa": "ビザ",
+    "typePassport": "パスポート",
+    "typeIdCard": "身分証",
+    "typeDriverLicense": "運転免許"
+  },
+  "studio": {
+    "sourceBadge": "オリジナル",
+    "previewBadge": "準拠プレビュー",
+    "loading": "AI を起動中…",
+    "complete": "処理完了",
+    "rerunPipeline": "再処理",
+    "continue": "次へ",
+    "detection": "検出",
+    "confidence": "信頼度 {pct}%",
+    "showLandmarks": "468 ランドマークを表示",
+    "showLandmarksHelp": "MediaPipe メッシュを切替",
+    "showCrop": "準拠クロップを表示",
+    "showCropHelp": "オリジナル上のオレンジの破線",
+    "colorTuning": "色調整",
+    "brightness": "明るさ",
+    "contrast": "コントラスト",
+    "specsLine": "{w}×{h} mm · {dpi} DPI · {glasses}",
+    "glassesForbidden": "眼鏡不可",
+    "glassesAllowedNoGlare": "眼鏡可(反射なし)",
+    "glassesMedicalOnly": "医療用眼鏡のみ",
+    "messages": {
+      "loadingPhoto": "写真を読み込み中…",
+      "aligningLandmarks": "468 のフェイシャルランドマークを整列中…",
+      "processingBg": "背景を高解像度で処理中…",
+      "downloadingModel": "AI モデルをダウンロード中…",
+      "decodingImage": "画像を高解像度でデコード中…",
+      "refiningEdges": "髪と肩を精緻化中…",
+      "encodingCutout": "RGBA カットアウトをエンコード中…",
+      "compositing": "印刷用出力を合成中…",
+      "readyToDownload": "ダウンロード可能"
+    },
+    "errors": {
+      "noFace": "顔を検出できませんでした。明るく正面を向いた写真をお試しください。",
+      "loadImage": "写真を読み込めませんでした。",
+      "generic": "予期せぬエラー",
+      "lowConfidence": "検出信頼度は {pct}% です。より明るく正面を向いた写真を推奨します。",
+      "scaledDown": "写真は縮小されました — 最高画質には、より高解像度の画像をアップロードしてください。"
+    }
+  },
+  "results": {
+    "compliant": "準拠",
+    "specsLine": "{w}×{h} mm · {dpi} DPI · ICAO 準拠",
+    "downloadPhoto": "写真 JPEG",
+    "downloadSheet": "4×6 シート",
+    "noEmail": "写真をメールで送ることはありません — ダウンロードはブラウザ内で完結します。",
+    "shipping": "物理プリントは 1 営業日以内に発送します。",
+    "shopHeading": "持ち帰るか、印刷する",
+    "shopSubtitle": "デジタルか実物プリントから選択 — すべてのプランに 4×6 シートが含まれます。",
+    "mostPopular": "人気No.1",
+    "buy": "購入",
+    "checkoutError": "チェックアウトを開始できませんでした"
+  },
+  "packages": {
+    "digital": { "name": "デジタルダウンロード", "description": "高解像度 JPEG + 印刷可能な 4×6 シート" },
+    "prints4": { "name": "4枚の物理プリント", "description": "ICAO 準拠の写真 4 枚をご自宅にお届け" },
+    "prints8": { "name": "8枚の物理プリント", "description": "ICAO 準拠の写真 8 枚を優先配送" }
+  },
+  "success": {
+    "title": "注文を受け付けました",
+    "subtitle": "Stripe で支払いが確認されました。下記はライブの履行状況 — 本ページは数秒ごとに Webhook をポーリングします。",
+    "paymentConfirmed": "支払い確認済み",
+    "fulfillment": "履行",
+    "receiptTo": "領収書送付先",
+    "shippingEta": "配送予定",
+    "etaText": "1〜3 営業日",
+    "another": "別の写真を作成",
+    "pollLine": "Webhook ポーリング #{count} · セッション {session}…",
+    "status": {
+      "pending": "Webhook 待ち",
+      "paid": "支払い済み · キュー投入",
+      "fulfilled": "印刷中",
+      "shipped": "発送済み",
+      "unknown": "注文を検索中…"
+    }
+  },
+  "footer": {
+    "productHeading": "プロダクト",
+    "openEditor": "エディターを開く",
+    "supportedCountries": "対応国",
+    "pricing": "料金",
+    "trustHeading": "信頼",
+    "wcag": "WCAG 2.2 AA に準拠",
+    "encrypted": "エンドツーエンド暗号化決済",
+    "noUpload": "画像をサーバーに送信しません",
+    "description": "端末内 AI で ICAO 準拠のパスポート・ビザ写真を数秒で生成。物理プリントを注文しない限り、写真はブラウザを離れません。"
+  }
+}

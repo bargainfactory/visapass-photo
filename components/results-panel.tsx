@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Download, Loader2, Mail, ShieldCheck, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -18,6 +19,8 @@ interface ResultsPanelProps {
 }
 
 export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: ResultsPanelProps) {
+  const t = useTranslations('results');
+  const tPackages = useTranslations('packages');
   const docPair = findDocument(documentId);
   const [pendingPkg, setPendingPkg] = React.useState<string | null>(null);
   const addOrder = usePhotoStore((s) => s.addOrder);
@@ -31,7 +34,7 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
         body: JSON.stringify({ packageId, documentId }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Checkout failed');
+      if (!res.ok) throw new Error(data.error || t('checkoutError'));
       addOrder({
         id: data.sessionId,
         documentId,
@@ -41,7 +44,7 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
       });
       window.location.href = data.url;
     } catch (err: any) {
-      alert(err?.message ?? 'Could not start checkout');
+      alert(err?.message ?? t('checkoutError'));
     } finally {
       setPendingPkg(null);
     }
@@ -50,14 +53,12 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
   if (!docPair) return null;
   const { country, doc } = docPair;
 
+  const pkgKey = (id: string) => (id === 'prints-4' ? 'prints4' : id === 'prints-8' ? 'prints8' : 'digital');
+
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
       <div className="space-y-4">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-        >
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
           <Card className="overflow-hidden">
             <div
               className="grid place-items-center p-8"
@@ -65,7 +66,7 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
             >
               <img
                 src={resultDataUrl}
-                alt={`${country.name} ${doc.label} compliant photo`}
+                alt=""
                 className="max-h-80 rounded-lg border bg-white shadow-2xl"
               />
             </div>
@@ -74,28 +75,26 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
                 <div>
                   <p className="text-sm font-semibold">{country.flag} {doc.label}</p>
                   <p className="text-xs text-muted-foreground">
-                    {doc.widthMm}×{doc.heightMm} mm · {doc.dpi} DPI · ICAO-aligned
+                    {t('specsLine', { w: doc.widthMm, h: doc.heightMm, dpi: doc.dpi })}
                   </p>
                 </div>
                 <Badge variant="success" className="gap-1">
-                  <ShieldCheck className="size-3" /> Compliant
+                  <ShieldCheck className="size-3" /> {t('compliant')}
                 </Badge>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => downloadDataUrl(resultDataUrl, `${doc.id}.jpg`)}
-                >
-                  <Download className="size-4" /> Photo JPEG
+                <Button size="sm" variant="outline" onClick={() => downloadDataUrl(resultDataUrl, `${doc.id}.jpg`)}>
+                  <Download className="size-4" /> {t('downloadPhoto')}
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
                   disabled={!printSheetDataUrl}
-                  onClick={() => printSheetDataUrl && downloadDataUrl(printSheetDataUrl, `${doc.id}-print-sheet.jpg`)}
+                  onClick={() =>
+                    printSheetDataUrl && downloadDataUrl(printSheetDataUrl, `${doc.id}-print-sheet.jpg`)
+                  }
                 >
-                  <Download className="size-4" /> 4×6 Sheet
+                  <Download className="size-4" /> {t('downloadSheet')}
                 </Button>
               </div>
             </CardContent>
@@ -105,10 +104,10 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
         <Card>
           <CardContent className="space-y-2 p-5 text-xs text-muted-foreground">
             <p className="flex items-center gap-1.5">
-              <Mail className="size-3.5" /> We never email your photo — downloads happen entirely in your browser.
+              <Mail className="size-3.5" /> {t('noEmail')}
             </p>
             <p className="flex items-center gap-1.5">
-              <Truck className="size-3.5" /> Physical prints ship within 1 business day.
+              <Truck className="size-3.5" /> {t('shipping')}
             </p>
           </CardContent>
         </Card>
@@ -116,10 +115,8 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
 
       <div className="space-y-3" id="pricing">
         <div>
-          <h2 className="font-display text-2xl font-semibold tracking-tight">Send it home or print it</h2>
-          <p className="text-sm text-muted-foreground">
-            Choose digital or have real photos shipped — all packages include a print-ready 4×6 sheet.
-          </p>
+          <h2 className="font-display text-2xl font-semibold tracking-tight">{t('shopHeading')}</h2>
+          <p className="text-sm text-muted-foreground">{t('shopSubtitle')}</p>
         </div>
         {PRINT_PACKAGES.map((pkg, idx) => (
           <motion.div
@@ -138,10 +135,10 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
               <CardContent className="flex items-center justify-between gap-4 p-5">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-semibold">{pkg.name}</p>
-                    {pkg.id === 'prints-4' && <Badge variant="brand">Most popular</Badge>}
+                    <p className="text-sm font-semibold">{tPackages(`${pkgKey(pkg.id)}.name`)}</p>
+                    {pkg.id === 'prints-4' && <Badge variant="brand">{t('mostPopular')}</Badge>}
                   </div>
-                  <p className="truncate text-xs text-muted-foreground">{pkg.description}</p>
+                  <p className="truncate text-xs text-muted-foreground">{tPackages(`${pkgKey(pkg.id)}.description`)}</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="font-display text-xl font-semibold">
@@ -153,7 +150,7 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
                     disabled={pendingPkg !== null}
                     onClick={() => startCheckout(pkg.id)}
                   >
-                    {pendingPkg === pkg.id ? <Loader2 className="size-4 animate-spin" /> : 'Buy'}
+                    {pendingPkg === pkg.id ? <Loader2 className="size-4 animate-spin" /> : t('buy')}
                   </Button>
                 </div>
               </CardContent>

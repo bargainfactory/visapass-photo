@@ -1,22 +1,20 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
-const STEPS = [
-  { id: 'upload', label: 'Upload' },
-  { id: 'select', label: 'Country' },
-  { id: 'edit', label: 'Studio' },
-  { id: 'result', label: 'Download' },
-] as const;
+const STEPS = ['upload', 'select', 'edit', 'result'] as const;
+type StepId = (typeof STEPS)[number];
 
 interface ProgressStepperProps {
-  step: (typeof STEPS)[number]['id'];
+  step: StepId;
 }
 
 export function ProgressStepper({ step }: ProgressStepperProps) {
-  const activeIndex = STEPS.findIndex((s) => s.id === step);
+  const t = useTranslations('stepper');
+  const activeIndex = STEPS.indexOf(step);
 
   return (
     <ol className="flex w-full items-center gap-2 sm:gap-3" aria-label="Progress">
@@ -24,7 +22,7 @@ export function ProgressStepper({ step }: ProgressStepperProps) {
         const isDone = i < activeIndex;
         const isActive = i === activeIndex;
         return (
-          <li key={s.id} className="flex flex-1 items-center gap-2">
+          <li key={s} className="flex flex-1 items-center gap-2">
             <div className="flex items-center gap-2">
               <motion.div
                 initial={false}
@@ -44,15 +42,12 @@ export function ProgressStepper({ step }: ProgressStepperProps) {
                   isActive ? 'font-semibold text-foreground' : 'text-muted-foreground'
                 )}
               >
-                {s.label}
+                {t(s)}
               </span>
             </div>
             {i < STEPS.length - 1 && (
               <div
-                className={cn(
-                  'h-px flex-1 transition-colors',
-                  i < activeIndex ? 'bg-brand-500' : 'bg-border'
-                )}
+                className={cn('h-px flex-1 transition-colors', i < activeIndex ? 'bg-brand-500' : 'bg-border')}
               />
             )}
           </li>

@@ -1,9 +1,10 @@
 'use client';
 
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Brain, Cpu, Globe2, Lock, Sparkles, Zap } from 'lucide-react';
+import { useRouter } from '@/i18n/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { UploadDropzone } from '@/components/upload-dropzone';
@@ -11,6 +12,7 @@ import { CameraCapture } from '@/components/camera-capture';
 import { usePhotoStore } from '@/lib/store';
 
 export function Hero() {
+  const t = useTranslations();
   const router = useRouter();
   const setSource = usePhotoStore((s) => s.setSource);
   const setStep = usePhotoStore((s) => s.setStep);
@@ -25,7 +27,6 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden">
-      {/* Mesh gradient background */}
       <div className="pointer-events-none absolute inset-0 -z-10 bg-mesh-light opacity-90 dark:bg-mesh-dark" />
       <div className="pointer-events-none absolute inset-x-0 -top-40 -z-10 h-[40rem] bg-[radial-gradient(circle_at_50%_30%,hsl(220_100%_70%/0.2),transparent_60%)] dark:opacity-30" />
 
@@ -38,33 +39,31 @@ export function Hero() {
             className="space-y-6"
           >
             <Badge variant="brand" className="px-3 py-1 text-xs uppercase tracking-wider">
-              <Sparkles className="mr-1 size-3" /> On-device MediaPipe + imgly
+              <Sparkles className="me-1 size-3" /> {t('hero.badge')}
             </Badge>
             <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl">
-              Studio-grade passport &<br />
+              {t('hero.titleLine1')}
+              <br />
               <span className="bg-gradient-to-tr from-brand-700 via-brand-500 to-brand-300 bg-clip-text text-transparent">
-                visa photos in seconds.
+                {t('hero.titleLine2')}
               </span>
             </h1>
-            <p className="max-w-xl text-base text-muted-foreground md:text-lg">
-              Drop any selfie — VisaPass detects 468 facial landmarks, removes the background in
-              a Web Worker, and crops to the exact ratio your country requires. All on your device.
-            </p>
+            <p className="max-w-xl text-base text-muted-foreground md:text-lg">{t('hero.subtitle')}</p>
             <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
               <span className="inline-flex items-center gap-1.5 rounded-full border bg-card/60 px-3 py-1.5">
-                <Brain className="size-3.5 text-brand-500" /> 468 MediaPipe landmarks
+                <Brain className="size-3.5 text-brand-500" /> {t('hero.chip468')}
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border bg-card/60 px-3 py-1.5">
-                <Cpu className="size-3.5 text-brand-500" /> 600 DPI background removal
+                <Cpu className="size-3.5 text-brand-500" /> {t('hero.chip600dpi')}
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border bg-card/60 px-3 py-1.5">
-                <Globe2 className="size-3.5 text-brand-500" /> 20+ countries
+                <Globe2 className="size-3.5 text-brand-500" /> {t('hero.chipCountries')}
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border bg-card/60 px-3 py-1.5">
-                <Lock className="size-3.5 text-brand-500" /> Photo never leaves your browser
+                <Lock className="size-3.5 text-brand-500" /> {t('hero.chipPrivacy')}
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border bg-card/60 px-3 py-1.5">
-                <Zap className="size-3.5 text-brand-500" /> Stripe-powered prints
+                <Zap className="size-3.5 text-brand-500" /> {t('hero.chipStripe')}
               </span>
             </div>
           </motion.div>
@@ -78,7 +77,7 @@ export function Hero() {
             <CameraCapture open={cameraOpen} onOpenChange={setCameraOpen} onCapture={handleFile} />
             <div className="mt-4 flex justify-center">
               <Button variant="link" size="sm" asChild>
-                <a href="#countries">See supported countries →</a>
+                <a href="#countries">{t('hero.seeCountries')}</a>
               </Button>
             </div>
           </motion.div>

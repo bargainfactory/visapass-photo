@@ -1,8 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
+import { Link } from '@/i18n/navigation';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Loader2, Mail, Truck } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -17,6 +18,7 @@ interface OrderStatus {
 }
 
 export default function SuccessPage() {
+  const t = useTranslations('success');
   const params = useSearchParams();
   const sessionId = params.get('session_id');
   const [status, setStatus] = React.useState<OrderStatus | null>(null);
@@ -57,17 +59,14 @@ export default function SuccessPage() {
               <CheckCircle2 className="size-7" />
             </div>
             <div>
-              <h1 className="font-display text-3xl font-semibold">Order received</h1>
-              <p className="mt-2 text-muted-foreground">
-                Stripe confirmed your payment. Below is the live fulfillment status — this page
-                polls the webhook handler every few seconds.
-              </p>
+              <h1 className="font-display text-3xl font-semibold">{t('title')}</h1>
+              <p className="mt-2 text-muted-foreground">{t('subtitle')}</p>
             </div>
 
-            <div className="grid gap-3 text-left">
+            <div className="grid gap-3 text-start">
               <Row
                 icon={<CheckCircle2 className="size-4 text-emerald-600" />}
-                label="Payment confirmed"
+                label={t('paymentConfirmed')}
                 value={status?.amountCents ? `$${(status.amountCents / 100).toFixed(2)}` : '—'}
               />
               <Row
@@ -78,25 +77,25 @@ export default function SuccessPage() {
                     <Loader2 className="size-4 animate-spin text-brand-600" />
                   )
                 }
-                label="Fulfillment"
-                value={statusLabel(status?.status)}
+                label={t('fulfillment')}
+                value={t(`status.${status?.status ?? 'unknown'}`)}
               />
               <Row
                 icon={<Mail className="size-4" />}
-                label="Receipt sent to"
+                label={t('receiptTo')}
                 value={status?.email ?? '—'}
               />
               <Row
                 icon={<Truck className="size-4" />}
-                label="Shipping ETA"
-                value="1–3 business days"
+                label={t('shippingEta')}
+                value={t('etaText')}
               />
             </div>
             <p className="text-xs text-muted-foreground">
-              Webhook poll #{polls + 1} · session {sessionId?.slice(0, 14)}…
+              {t('pollLine', { count: polls + 1, session: sessionId?.slice(0, 14) ?? '' })}
             </p>
             <Button asChild variant="brand" size="lg" className="w-full">
-              <Link href="/editor">Create another photo</Link>
+              <Link href="/editor">{t('another')}</Link>
             </Button>
           </CardContent>
         </Card>
@@ -115,19 +114,4 @@ function Row({ icon, label, value }: { icon: React.ReactNode; label: string; val
       <Badge variant="outline">{value}</Badge>
     </div>
   );
-}
-
-function statusLabel(status?: OrderStatus['status']) {
-  switch (status) {
-    case 'pending':
-      return 'Awaiting webhook';
-    case 'paid':
-      return 'Paid · queueing print';
-    case 'fulfilled':
-      return 'Printing now';
-    case 'shipped':
-      return 'Shipped';
-    default:
-      return 'Locating order…';
-  }
 }

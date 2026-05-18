@@ -73,6 +73,24 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
   const [showCrop, setShowCrop] = React.useState(true);
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
 
+  // Decoded cutout reused across slider-driven recomposes — pays the
+  // blob → bitmap decode cost once instead of on every brightness/contrast tick.
+  const cutoutBitmapRef = React.useRef<ImageBitmap | null>(null);
+  // Monotonic id for in-flight recomposes; only the latest one is allowed to
+  // commit its result. Prevents flicker when sliders fire faster than compose.
+  const recomposeSeqRef = React.useRef(0);
+  // Slider-change debounce so dragging at full speed doesn't queue 30+ composes.
+  const debounceRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Free the cached bitmap on unmount / route change.
+  React.useEffect(() => {
+    return () => {
+      cutoutBitmapRef.current?.close?.();
+      cutoutBitmapRef.current = null;
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
+
   const runPipeline = React.useCallback(async () => {
     if (!docPair) return;
     setState({ ...initialState, stage: 'detecting', messageKey: 'messages.loadingPhoto', progress: 5 });
@@ -114,9 +132,13 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
         messageKey: 'messages.compositing',
         progress: 88,
       }));
+      // Decode the cutout once and stash it — subsequent slider-driven
+      // recomposes reuse this bitmap and skip the ~50-150 ms decode hit.
+      cutoutBitmapRef.current?.close?.();
+      cutoutBitmapRef.current = await createImageBitmap(cutoutBlob);
       const out = await composeFinal({
         source: img,
-        cutoutBlob,
+        cutout: cutoutBitmapRef.current,
         doc: docPair.doc,
         crop,
         brightness,
@@ -141,20 +163,35 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
 
   const recompose = React.useCallback(async () => {
     if (!docPair || !state.imageEl || !state.crop) return;
+    const seq = ++recomposeSeqRef.current;
     const out = await composeFinal({
       source: state.imageEl,
-      cutoutBlob: state.cutoutBlob,
+      cutout: cutoutBitmapRef.current,
+      cutoutBlob: cutoutBitmapRef.current ? null : state.cutoutBlob,
       doc: docPair.doc,
       crop: state.crop,
       brightness,
       contrast,
     });
+    // Drop the result if a newer recompose has started — avoids flicker when
+    // multiple slider ticks are in flight at once.
+    if (seq !== recomposeSeqRef.current) return;
     setResult(out.dataUrl, out.printSheetDataUrl);
     setPreviewUrl(out.dataUrl);
   }, [docPair, state.imageEl, state.crop, state.cutoutBlob, brightness, contrast, setResult]);
 
+  // Debounce slider-driven recomposes so dragging at full speed doesn't queue
+  // a recompose per tick. ~110 ms is below the perceptual delay threshold but
+  // long enough that a continuous drag coalesces into one render.
   React.useEffect(() => {
-    if (state.stage === 'done') recompose();
+    if (state.stage !== 'done') return;
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      recompose();
+    }, 110);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [brightness, contrast]);
 

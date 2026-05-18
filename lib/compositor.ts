@@ -19,11 +19,18 @@ export interface CompositeOptions {
   source: ImageBitmap | HTMLImageElement;
   /** Background-removed RGBA blob (transparent background). Optional — composite the source if absent. */
   cutoutBlob?: Blob | null;
+  /**
+   * Pre-decoded cutout ImageBitmap. Preferred over cutoutBlob because the
+   * editor cache it once after background removal — every subsequent slider
+   * tick reuses the same bitmap instead of paying the blob → bitmap decode
+   * cost (~50-150 ms) on each recompose.
+   */
+  cutout?: ImageBitmap | null;
   doc: DocumentSpec;
   crop: CropRect;
-  /** -100..100 */
+  /** -50..50 — maps linearly to a brightness multiplier of 0.5×..1.5×. */
   brightness?: number;
-  /** -100..100 */
+  /** -50..50 — maps linearly to a contrast multiplier of 0.5×..1.5×. */
   contrast?: number;
   /** Force background hex (overrides doc.background). */
   backgroundHex?: string;
@@ -44,15 +51,19 @@ async function blobToImageBitmap(blob: Blob): Promise<ImageBitmap> {
 }
 
 function applyFilters(ctx: CanvasRenderingContext2D, brightness = 0, contrast = 0) {
-  // CSS-style filter: brightness(1.0±) contrast(1.0±). Range -100..100 maps to 0.5..1.5.
-  const b = 1 + brightness / 200;
-  const c = 1 + contrast / 200;
+  // Slider range ±50 maps to a CSS-style filter multiplier of 0.5×..1.5× —
+  // i.e. brightness=+50 → +50% brighter, brightness=-50 → 50% darker. The
+  // previous /200 mapping was too subtle (only ±25%) so users couldn't see
+  // their adjustments; /100 gives a clearly visible delta on every tick.
+  const b = 1 + brightness / 100;
+  const c = 1 + contrast / 100;
   ctx.filter = `brightness(${b}) contrast(${c})`;
 }
 
 export async function composeFinal({
   source,
   cutoutBlob,
+  cutout,
   doc,
   crop,
   brightness = 0,
@@ -75,34 +86,22 @@ export async function composeFinal({
 
   applyFilters(wctx, brightness, contrast);
 
-  if (cutoutBlob) {
-    // Draw the cut-out subject (transparent background already removed).
-    const cutout = await blobToImageBitmap(cutoutBlob);
-    wctx.drawImage(
-      cutout,
-      crop.x,
-      crop.y,
-      crop.width,
-      crop.height,
-      0,
-      0,
-      work.width,
-      work.height
-    );
-  } else {
-    // Fallback — composite raw source.
-    wctx.drawImage(
-      source,
-      crop.x,
-      crop.y,
-      crop.width,
-      crop.height,
-      0,
-      0,
-      work.width,
-      work.height
-    );
-  }
+  // Prefer the caller-supplied (cached) cutout bitmap. Fall back to decoding
+  // the blob, then to the raw source if no background removal was performed.
+  let subject: ImageBitmap | HTMLImageElement | null = cutout ?? null;
+  if (!subject && cutoutBlob) subject = await blobToImageBitmap(cutoutBlob);
+  if (!subject) subject = source;
+  wctx.drawImage(
+    subject,
+    crop.x,
+    crop.y,
+    crop.width,
+    crop.height,
+    0,
+    0,
+    work.width,
+    work.height
+  );
   wctx.filter = 'none';
 
   // Step 2: downscale to final compliant dimensions with high-quality smoothing.

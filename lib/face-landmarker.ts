@@ -83,10 +83,20 @@ export function analyseFace(
 
   const chin = px[CHIN_INDEX];
   const forehead = px[FOREHEAD_INDEX];
-  // The hairline / crown sits ~1.4x above the forehead landmark relative to chin.
-  // Empirical correction so head height includes hair, matching ICAO measurement.
-  const crownLift = (forehead.y - chin.y) * 0.18;
-  const crown = { x: forehead.x, y: forehead.y + crownLift };
+  // MediaPipe face landmarks stop at the upper-forehead / hairline area —
+  // they do NOT extend into the hair on top of the head. The ICAO definition
+  // of "head height" is chin → crown (top of head INCLUDING hair), so we lift
+  // the crown estimate above the forehead landmark by an anthropometric ratio.
+  //
+  // Face span (forehead-landmark → chin) is ~70% of the full head height for
+  // an average adult with typical hair, giving a 1/0.70 ≈ 1.43 head-to-face
+  // ratio. We use a 0.45 lift (head-to-face = 1.45) which sits between bald
+  // and voluminous hair and keeps the crown above the visible hair for the
+  // overwhelming majority of inputs. Note: image coordinates increase downward
+  // so the lift is a NEGATIVE delta on top of forehead.y.
+  const faceSpan = chin.y - forehead.y; // > 0 in image coords
+  const crownLift = faceSpan * 0.45;
+  const crown = { x: forehead.x, y: forehead.y - crownLift };
 
   const leftEye = px[LEFT_EYE_INDEX];
   const rightEye = px[RIGHT_EYE_INDEX];
@@ -95,12 +105,13 @@ export function analyseFace(
     y: (leftEye.y + rightEye.y) / 2,
   };
 
-  // Heuristic confidence: tightness of bounding box vs detected face, with eye distance sanity check.
+  // Heuristic confidence: with head height including hair, the eye distance is
+  // typically ~25-30% of the full head height for a frontal portrait. Penalise
+  // distance from that target.
   const eyeDist = Math.hypot(rightEye.x - leftEye.x, rightEye.y - leftEye.y);
   const headHeightPx = Math.abs(chin.y - crown.y);
   const ratio = eyeDist / Math.max(1, headHeightPx);
-  // Healthy eye distance is ~30-45% of head height for a frontal portrait.
-  const confidence = Math.max(0, Math.min(1, 1 - Math.abs(ratio - 0.37) * 3));
+  const confidence = Math.max(0, Math.min(1, 1 - Math.abs(ratio - 0.27) * 3));
 
   return {
     found: true,

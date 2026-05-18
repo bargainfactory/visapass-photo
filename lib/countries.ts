@@ -152,6 +152,8 @@ export const COUNTRIES: CountrySpec[] = [
         heightMm: 70,
         headHeightRatio: [0.45, 0.55],
         eyeLineFromBottom: [0.55, 0.67],
+        headHeightMm: 35,
+        crownFromTopMm: 18,
         background: '#FFFFFF',
         glasses: 'allowed_no_glare',
         expression: 'neutral',

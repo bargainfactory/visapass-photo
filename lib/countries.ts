@@ -40,6 +40,18 @@ export interface DocumentSpec {
    * as a ratio of photo height. Many specs target eye line between ~55-71% from bottom.
    */
   eyeLineFromBottom: [number, number];
+  /**
+   * Optional exact head height (chin → crown) in millimetres. Overrides
+   * headHeightRatio when set — used by countries that specify an absolute
+   * head measurement (e.g. US passport: 34 mm).
+   */
+  headHeightMm?: number;
+  /**
+   * Optional exact distance from the top of the photo to the crown of the head,
+   * in millimetres. Overrides eyeLineFromBottom positioning when set — the crop
+   * is anchored on the crown rather than the eye line.
+   */
+  crownFromTopMm?: number;
   /** Background hex color (sRGB). */
   background: string;
   /** Glasses policy. */
@@ -62,8 +74,13 @@ export const COUNTRIES: CountrySpec[] = [
         label: 'US Passport (2×2 in)',
         widthMm: 51,
         heightMm: 51,
-        headHeightRatio: [0.5, 0.69],
+        // 34 mm head height inside a 51 mm photo == ratio of 0.667 (kept in
+        // sync with headHeightMm so the existing ratio-based UI badges read
+        // sensibly even though crown anchoring is what actually positions).
+        headHeightRatio: [0.667, 0.667],
         eyeLineFromBottom: [0.56, 0.69],
+        headHeightMm: 34,
+        crownFromTopMm: 3,
         background: '#FFFFFF',
         glasses: 'forbidden',
         expression: 'neutral_or_natural_smile',
@@ -71,7 +88,9 @@ export const COUNTRIES: CountrySpec[] = [
         notes: [
           '2×2 inches (51×51 mm), plain white background',
           'No glasses (effective Nov 1, 2016)',
-          'Head 1 to 1⅜ inches (25–35 mm) from chin to top of head',
+          '3 mm gap from top of photo to crown of head',
+          'Head measures exactly 34 mm from crown to chin',
+          'Remaining 14 mm below chin shows shoulders & upper body',
         ],
       },
       {
@@ -80,12 +99,20 @@ export const COUNTRIES: CountrySpec[] = [
         label: 'US Visa (2×2 in)',
         widthMm: 51,
         heightMm: 51,
-        headHeightRatio: [0.5, 0.69],
+        headHeightRatio: [0.667, 0.667],
         eyeLineFromBottom: [0.56, 0.69],
+        headHeightMm: 34,
+        crownFromTopMm: 3,
         background: '#FFFFFF',
         glasses: 'forbidden',
         expression: 'neutral_or_natural_smile',
         dpi: 300,
+        notes: [
+          '2×2 inches (51×51 mm), plain white background',
+          '3 mm gap from top of photo to crown of head',
+          'Head measures exactly 34 mm from crown to chin',
+          'Remaining 14 mm below chin shows shoulders & upper body',
+        ],
       },
     ],
   },

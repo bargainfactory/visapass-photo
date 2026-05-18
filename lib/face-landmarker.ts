@@ -118,7 +118,6 @@ export async function detectFace(
   image: HTMLImageElement | HTMLCanvasElement | ImageBitmap
 ): Promise<FaceAnalysis | null> {
   const lm = await getFaceLandmarker();
-  // @ts-expect-error – mediapipe accepts all three input types at runtime.
   const result: FaceLandmarkerResult = lm.detect(image);
   const w = 'width' in image ? image.width : (image as HTMLImageElement).naturalWidth;
   const h = 'height' in image ? image.height : (image as HTMLImageElement).naturalHeight;

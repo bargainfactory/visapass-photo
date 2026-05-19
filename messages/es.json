@@ -166,9 +166,21 @@
     "compliant": "Conforme",
     "specsLine": "{w}×{h} mm · {dpi} DPI · alineada con ICAO",
     "tabs": {
-      "digital": "JPEG digital",
+      "digital": "Digital",
       "print": "Imprimible 4×6"
     },
+    "front": "Frontal",
+    "format": "Formato",
+    "preview": "Vista previa",
+    "previewCaptionDigital": "{w}×{h} mm · foto única · {dpi} DPI · {format}",
+    "previewCaptionPrint": "Hoja 4×6\" · {count} fotos · {dpi} DPI · {format}",
+    "chooseYourPackage": "Elige tu paquete",
+    "oneTimePayment": "Pago único. Sin suscripción.",
+    "saveAmount": "AHORRA {amount}",
+    "secureCheckoutLine": "USD · Pago seguro con Stripe",
+    "payAndDownload": "Paga {price} y descarga",
+    "downloadCta": "Descargar {name}",
+    "secure": "Seguro",
     "downloadPhoto": "JPEG de foto",
     "downloadSheet": "Hoja 4×6",
     "locked": "Las descargas y capturas están bloqueadas hasta completar el pago.",
@@ -183,15 +195,15 @@
   "packages": {
     "digital": {
       "name": "Descarga digital",
-      "description": "JPEG de alta resolución + hoja 4×6 lista para imprimir"
+      "description": "JPEG de alta resolución · lista para envío en línea"
     },
-    "prints4": {
-      "name": "4 impresiones físicas",
-      "description": "4 fotos conformes a ICAO enviadas a tu puerta"
+    "printSheet": {
+      "name": "Hoja 4×6\"",
+      "description": "Hoja multi-foto · impresión en casa o laboratorio"
     },
-    "prints8": {
-      "name": "8 impresiones físicas",
-      "description": "8 fotos conformes a ICAO con envío prioritario"
+    "bundle": {
+      "name": "Pack combinado",
+      "description": "Descarga digital + hoja 4×6\" · mejor valor"
     }
   },
   "success": {

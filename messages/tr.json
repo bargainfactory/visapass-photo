@@ -131,9 +131,21 @@
     "compliant": "Uyumlu",
     "specsLine": "{w}×{h} mm · {dpi} DPI · ICAO uyumlu",
     "tabs": {
-      "digital": "Dijital JPEG",
+      "digital": "Dijital",
       "print": "Yazdırılabilir 4×6"
     },
+    "front": "Ön",
+    "format": "Biçim",
+    "preview": "Önizleme",
+    "previewCaptionDigital": "{w}×{h} mm · tek fotoğraf · {dpi} DPI · {format}",
+    "previewCaptionPrint": "4×6\" sayfa · {count} fotoğraf · {dpi} DPI · {format}",
+    "chooseYourPackage": "Paketinizi seçin",
+    "oneTimePayment": "Tek seferlik ödeme. Abonelik yok.",
+    "saveAmount": "{amount} TASARRUF",
+    "secureCheckoutLine": "USD · Stripe ile güvenli ödeme",
+    "payAndDownload": "{price} öde ve indir",
+    "downloadCta": "{name} indir",
+    "secure": "Güvenli",
     "downloadPhoto": "Fotoğraf JPEG",
     "downloadSheet": "4×6 sayfa",
     "locked": "Ödeme tamamlanana kadar indirme ve ekran görüntüsü devre dışıdır.",
@@ -146,9 +158,9 @@
     "checkoutError": "Ödeme başlatılamadı"
   },
   "packages": {
-    "digital": { "name": "Dijital indirme", "description": "Yüksek çözünürlüklü JPEG + baskıya hazır 4×6 sayfa" },
-    "prints4": { "name": "4 fiziksel baskı", "description": "ICAO uyumlu 4 fotoğraf kapınıza gönderilir" },
-    "prints8": { "name": "8 fiziksel baskı", "description": "ICAO uyumlu 8 fotoğraf öncelikli teslimat" }
+    "digital": { "name": "Dijital indirme", "description": "Yüksek çözünürlüklü JPEG · online başvuruya hazır" },
+    "printSheet": { "name": "4×6\" sayfa", "description": "Çoklu fotoğraf sayfası · evde veya laboratuvarda baskı" },
+    "bundle": { "name": "Paket indirim", "description": "Dijital indirme + 4×6\" sayfa · en iyi değer" }
   },
   "success": {
     "title": "Sipariş alındı",

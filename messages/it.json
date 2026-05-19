@@ -131,9 +131,21 @@
     "compliant": "Conforme",
     "specsLine": "{w}×{h} mm · {dpi} DPI · allineata ICAO",
     "tabs": {
-      "digital": "JPEG digitale",
+      "digital": "Digitale",
       "print": "Stampabile 4×6"
     },
+    "front": "Fronte",
+    "format": "Formato",
+    "preview": "Anteprima",
+    "previewCaptionDigital": "{w}×{h} mm · foto singola · {dpi} DPI · {format}",
+    "previewCaptionPrint": "Foglio 4×6\" · {count} foto · {dpi} DPI · {format}",
+    "chooseYourPackage": "Scegli il tuo pacchetto",
+    "oneTimePayment": "Pagamento singolo. Nessun abbonamento.",
+    "saveAmount": "RISPARMI {amount}",
+    "secureCheckoutLine": "USD · Checkout sicuro con Stripe",
+    "payAndDownload": "Paga {price} e scarica",
+    "downloadCta": "Scarica {name}",
+    "secure": "Sicuro",
     "downloadPhoto": "JPEG della foto",
     "downloadSheet": "Foglio 4×6",
     "locked": "Download e screenshot sono bloccati fino al completamento del pagamento.",
@@ -146,9 +158,9 @@
     "checkoutError": "Impossibile avviare il pagamento"
   },
   "packages": {
-    "digital": { "name": "Download digitale", "description": "JPEG ad alta risoluzione + foglio 4×6 pronto per la stampa" },
-    "prints4": { "name": "4 stampe fisiche", "description": "4 foto conformi ICAO consegnate a casa tua" },
-    "prints8": { "name": "8 stampe fisiche", "description": "8 foto conformi ICAO con consegna prioritaria" }
+    "digital": { "name": "Download digitale", "description": "JPEG ad alta risoluzione · pronto per invio online" },
+    "printSheet": { "name": "Foglio 4×6\"", "description": "Foglio multi-foto · stampa a casa o in laboratorio" },
+    "bundle": { "name": "Pacchetto combinato", "description": "Download digitale + foglio 4×6\" · miglior valore" }
   },
   "success": {
     "title": "Ordine ricevuto",

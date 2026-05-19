@@ -131,9 +131,21 @@
     "compliant": "準拠",
     "specsLine": "{w}×{h} mm · {dpi} DPI · ICAO 準拠",
     "tabs": {
-      "digital": "デジタル JPEG",
+      "digital": "デジタル",
       "print": "印刷可能 4×6"
     },
+    "front": "表面",
+    "format": "形式",
+    "preview": "プレビュー",
+    "previewCaptionDigital": "{w}×{h} mm · 単一写真 · {dpi} DPI · {format}",
+    "previewCaptionPrint": "4×6\" シート · 写真 {count} 枚 · {dpi} DPI · {format}",
+    "chooseYourPackage": "パッケージを選択",
+    "oneTimePayment": "1回払い。サブスクなし。",
+    "saveAmount": "{amount} お得",
+    "secureCheckoutLine": "USD · Stripe で安全に決済",
+    "payAndDownload": "{price} を支払ってダウンロード",
+    "downloadCta": "{name} をダウンロード",
+    "secure": "安全",
     "downloadPhoto": "写真 JPEG",
     "downloadSheet": "4×6 シート",
     "locked": "お支払いが完了するまで、ダウンロードとスクリーンショットはできません。",
@@ -146,9 +158,9 @@
     "checkoutError": "チェックアウトを開始できませんでした"
   },
   "packages": {
-    "digital": { "name": "デジタルダウンロード", "description": "高解像度 JPEG + 印刷可能な 4×6 シート" },
-    "prints4": { "name": "4枚の物理プリント", "description": "ICAO 準拠の写真 4 枚をご自宅にお届け" },
-    "prints8": { "name": "8枚の物理プリント", "description": "ICAO 準拠の写真 8 枚を優先配送" }
+    "digital": { "name": "デジタルダウンロード", "description": "高解像度 JPEG · オンライン申請対応" },
+    "printSheet": { "name": "4×6\" シート", "description": "複数枚シート · 自宅またはラボで印刷" },
+    "bundle": { "name": "セット割引", "description": "デジタル + 4×6\" シート · 一番お得" }
   },
   "success": {
     "title": "注文を受け付けました",

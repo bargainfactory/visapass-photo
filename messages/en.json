@@ -166,9 +166,21 @@
     "compliant": "Compliant",
     "specsLine": "{w}×{h} mm · {dpi} DPI · ICAO-aligned",
     "tabs": {
-      "digital": "Digital JPEG",
+      "digital": "Digital",
       "print": "Printable 4×6"
     },
+    "front": "Front",
+    "format": "Format",
+    "preview": "Preview",
+    "previewCaptionDigital": "{w}×{h} mm · single photo · {dpi} DPI · {format}",
+    "previewCaptionPrint": "4×6\" print sheet · {count} photos · {dpi} DPI · {format}",
+    "chooseYourPackage": "Choose Your Package",
+    "oneTimePayment": "One-time payment. No subscription.",
+    "saveAmount": "SAVE {amount}",
+    "secureCheckoutLine": "USD · Secure Stripe checkout",
+    "payAndDownload": "Pay {price} & Download",
+    "downloadCta": "Download {name}",
+    "secure": "Secure",
     "downloadPhoto": "Photo JPEG",
     "downloadSheet": "4×6 Sheet",
     "locked": "Downloads and screenshots are disabled until payment is complete.",
@@ -182,16 +194,16 @@
   },
   "packages": {
     "digital": {
-      "name": "Digital download",
-      "description": "High-resolution JPEG + print-ready 4×6 sheet"
+      "name": "Digital Download",
+      "description": "High-resolution JPEG · online submission ready"
     },
-    "prints4": {
-      "name": "4 physical prints",
-      "description": "4 ICAO-compliant photos shipped to your door"
+    "printSheet": {
+      "name": "4×6\" Print Sheet",
+      "description": "Multi-up print sheet · home or lab printing"
     },
-    "prints8": {
-      "name": "8 physical prints",
-      "description": "8 ICAO-compliant photos shipped with priority delivery"
+    "bundle": {
+      "name": "Bundled Deal",
+      "description": "Digital download + 4×6\" print sheet · best value"
     }
   },
   "success": {

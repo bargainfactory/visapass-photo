@@ -131,9 +131,21 @@
     "compliant": "合规",
     "specsLine": "{w}×{h} 毫米 · {dpi} DPI · 符合 ICAO",
     "tabs": {
-      "digital": "数字 JPEG",
+      "digital": "数字版",
       "print": "可打印 4×6"
     },
+    "front": "正面",
+    "format": "格式",
+    "preview": "预览",
+    "previewCaptionDigital": "{w}×{h} 毫米 · 单张照片 · {dpi} DPI · {format}",
+    "previewCaptionPrint": "4×6 英寸打印纸 · {count} 张照片 · {dpi} DPI · {format}",
+    "chooseYourPackage": "选择您的套餐",
+    "oneTimePayment": "一次性付款,无订阅。",
+    "saveAmount": "节省 {amount}",
+    "secureCheckoutLine": "USD · 由 Stripe 安全结账",
+    "payAndDownload": "支付 {price} 并下载",
+    "downloadCta": "下载 {name}",
+    "secure": "安全",
     "downloadPhoto": "照片 JPEG",
     "downloadSheet": "4×6 打印纸",
     "locked": "付款完成前禁止下载和截屏。",
@@ -146,9 +158,9 @@
     "checkoutError": "无法启动支付"
   },
   "packages": {
-    "digital": { "name": "数字版下载", "description": "高分辨率 JPEG + 可打印的 4×6 纸张" },
-    "prints4": { "name": "4 张实体打印", "description": "4 张符合 ICAO 的照片送到你家门口" },
-    "prints8": { "name": "8 张实体打印", "description": "8 张符合 ICAO 的照片,优先派送" }
+    "digital": { "name": "数字版下载", "description": "高分辨率 JPEG · 可直接在线提交" },
+    "printSheet": { "name": "4×6\" 打印纸", "description": "多图打印纸 · 在家或照片店打印" },
+    "bundle": { "name": "组合套餐", "description": "数字版下载 + 4×6\" 打印纸 · 最优惠" }
   },
   "success": {
     "title": "订单已收到",

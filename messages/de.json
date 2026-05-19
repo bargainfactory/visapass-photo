@@ -166,9 +166,21 @@
     "compliant": "Konform",
     "specsLine": "{w}×{h} mm · {dpi} DPI · ICAO-ausgerichtet",
     "tabs": {
-      "digital": "Digitales JPEG",
+      "digital": "Digital",
       "print": "Druckbar 4×6"
     },
+    "front": "Vorderseite",
+    "format": "Format",
+    "preview": "Vorschau",
+    "previewCaptionDigital": "{w}×{h} mm · Einzelfoto · {dpi} DPI · {format}",
+    "previewCaptionPrint": "4×6\"-Bogen · {count} Fotos · {dpi} DPI · {format}",
+    "chooseYourPackage": "Paket wählen",
+    "oneTimePayment": "Einmalzahlung. Kein Abo.",
+    "saveAmount": "SPARE {amount}",
+    "secureCheckoutLine": "USD · Sicher mit Stripe bezahlen",
+    "payAndDownload": "{price} zahlen & herunterladen",
+    "downloadCta": "{name} herunterladen",
+    "secure": "Sicher",
     "downloadPhoto": "Foto-JPEG",
     "downloadSheet": "4×6-Bogen",
     "locked": "Downloads und Screenshots sind bis zum Zahlungsabschluss gesperrt.",
@@ -183,15 +195,15 @@
   "packages": {
     "digital": {
       "name": "Digitaler Download",
-      "description": "Hochauflösendes JPEG + druckfertiger 4×6-Bogen"
+      "description": "Hochauflösendes JPEG · bereit für Online-Antrag"
     },
-    "prints4": {
-      "name": "4 physische Drucke",
-      "description": "4 ICAO-konforme Fotos direkt nach Hause"
+    "printSheet": {
+      "name": "4×6\"-Bogen",
+      "description": "Multi-Foto-Bogen · Druck zu Hause oder im Labor"
     },
-    "prints8": {
-      "name": "8 physische Drucke",
-      "description": "8 ICAO-konforme Fotos mit Express-Versand"
+    "bundle": {
+      "name": "Bundle",
+      "description": "Digitaler Download + 4×6\"-Bogen · bestes Preis-Leistungs-Verhältnis"
     }
   },
   "success": {

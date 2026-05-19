@@ -131,9 +131,21 @@
     "compliant": "متوافقة",
     "specsLine": "{w}×{h} مم · {dpi} DPI · متوافقة مع ICAO",
     "tabs": {
-      "digital": "JPEG رقمي",
+      "digital": "رقمي",
       "print": "قابل للطباعة 4×6"
     },
+    "front": "أمامي",
+    "format": "الصيغة",
+    "preview": "معاينة",
+    "previewCaptionDigital": "{w}×{h} مم · صورة واحدة · {dpi} DPI · {format}",
+    "previewCaptionPrint": "ورقة 4×6\" · {count} صورة · {dpi} DPI · {format}",
+    "chooseYourPackage": "اختر باقتك",
+    "oneTimePayment": "دفعة واحدة. بدون اشتراك.",
+    "saveAmount": "وفّر {amount}",
+    "secureCheckoutLine": "USD · دفع آمن عبر Stripe",
+    "payAndDownload": "ادفع {price} ونزّل",
+    "downloadCta": "تنزيل {name}",
+    "secure": "آمن",
     "downloadPhoto": "JPEG للصورة",
     "downloadSheet": "ورقة 4×6",
     "locked": "التنزيلات ولقطات الشاشة معطّلة حتى إتمام الدفع.",
@@ -146,9 +158,9 @@
     "checkoutError": "تعذر بدء عملية الدفع"
   },
   "packages": {
-    "digital": { "name": "تنزيل رقمي", "description": "JPEG عالية الدقة + ورقة 4×6 جاهزة للطباعة" },
-    "prints4": { "name": "4 نسخ مطبوعة", "description": "4 صور متوافقة مع ICAO تُشحن إلى بابك" },
-    "prints8": { "name": "8 نسخ مطبوعة", "description": "8 صور متوافقة مع ICAO بشحن سريع" }
+    "digital": { "name": "تنزيل رقمي", "description": "JPEG عالية الدقة · جاهزة للتقديم الإلكتروني" },
+    "printSheet": { "name": "ورقة 4×6\"", "description": "ورقة متعددة الصور · للطباعة في المنزل أو المحل" },
+    "bundle": { "name": "الباقة المجمّعة", "description": "تنزيل رقمي + ورقة 4×6\" · أفضل قيمة" }
   },
   "success": {
     "title": "تم استلام الطلب",

@@ -33,3 +33,26 @@ export function downloadDataUrl(dataUrl: string, filename: string) {
   a.click();
   a.remove();
 }
+
+/**
+ * Convert any image data URL (commonly JPEG) into a PNG data URL by
+ * round-tripping through a canvas. The composeFinal output is JPEG for
+ * file-size reasons; this lets the user export the same render as a PNG
+ * on demand without re-running the whole pipeline.
+ */
+export async function jpegDataUrlToPng(jpegDataUrl: string): Promise<string> {
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  await new Promise<void>((resolve, reject) => {
+    img.onload = () => resolve();
+    img.onerror = () => reject(new Error('Could not decode image for PNG export'));
+    img.src = jpegDataUrl;
+  });
+  const c = document.createElement('canvas');
+  c.width = img.naturalWidth;
+  c.height = img.naturalHeight;
+  const ctx = c.getContext('2d');
+  if (!ctx) throw new Error('Canvas 2D context unavailable');
+  ctx.drawImage(img, 0, 0);
+  return c.toDataURL('image/png');
+}

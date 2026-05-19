@@ -131,9 +131,21 @@
     "compliant": "준수",
     "specsLine": "{w}×{h} mm · {dpi} DPI · ICAO 정렬",
     "tabs": {
-      "digital": "디지털 JPEG",
+      "digital": "디지털",
       "print": "인쇄용 4×6"
     },
+    "front": "정면",
+    "format": "형식",
+    "preview": "미리보기",
+    "previewCaptionDigital": "{w}×{h} mm · 단일 사진 · {dpi} DPI · {format}",
+    "previewCaptionPrint": "4×6\" 시트 · 사진 {count}장 · {dpi} DPI · {format}",
+    "chooseYourPackage": "패키지 선택",
+    "oneTimePayment": "1회 결제. 구독 없음.",
+    "saveAmount": "{amount} 절약",
+    "secureCheckoutLine": "USD · Stripe로 안전하게 결제",
+    "payAndDownload": "{price} 결제하고 다운로드",
+    "downloadCta": "{name} 다운로드",
+    "secure": "안전",
     "downloadPhoto": "사진 JPEG",
     "downloadSheet": "4×6 시트",
     "locked": "결제가 완료될 때까지 다운로드와 스크린샷이 차단됩니다.",
@@ -146,9 +158,9 @@
     "checkoutError": "결제를 시작할 수 없습니다"
   },
   "packages": {
-    "digital": { "name": "디지털 다운로드", "description": "고해상도 JPEG + 인쇄용 4×6 시트" },
-    "prints4": { "name": "실물 인쇄 4매", "description": "ICAO 규격 사진 4매를 자택으로 배송" },
-    "prints8": { "name": "실물 인쇄 8매", "description": "ICAO 규격 사진 8매를 우선 배송" }
+    "digital": { "name": "디지털 다운로드", "description": "고해상도 JPEG · 온라인 제출 가능" },
+    "printSheet": { "name": "4×6\" 시트", "description": "여러 장 인쇄 시트 · 가정 또는 사진관 인쇄" },
+    "bundle": { "name": "번들 패키지", "description": "디지털 + 4×6\" 시트 · 가장 좋은 가격" }
   },
   "success": {
     "title": "주문이 접수되었습니다",

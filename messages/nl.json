@@ -131,9 +131,21 @@
     "compliant": "Conform",
     "specsLine": "{w}×{h} mm · {dpi} DPI · ICAO-uitgelijnd",
     "tabs": {
-      "digital": "Digitale JPEG",
+      "digital": "Digitaal",
       "print": "Afdrukbaar 4×6"
     },
+    "front": "Voorzijde",
+    "format": "Formaat",
+    "preview": "Voorbeeld",
+    "previewCaptionDigital": "{w}×{h} mm · enkele foto · {dpi} DPI · {format}",
+    "previewCaptionPrint": "4×6\" vel · {count} foto's · {dpi} DPI · {format}",
+    "chooseYourPackage": "Kies je pakket",
+    "oneTimePayment": "Eenmalige betaling. Geen abonnement.",
+    "saveAmount": "BESPAAR {amount}",
+    "secureCheckoutLine": "USD · Veilig afrekenen via Stripe",
+    "payAndDownload": "Betaal {price} en download",
+    "downloadCta": "{name} downloaden",
+    "secure": "Veilig",
     "downloadPhoto": "Foto-JPEG",
     "downloadSheet": "4×6 vel",
     "locked": "Downloads en schermafbeeldingen zijn geblokkeerd tot de betaling is voltooid.",
@@ -146,9 +158,9 @@
     "checkoutError": "Kan checkout niet starten"
   },
   "packages": {
-    "digital": { "name": "Digitale download", "description": "JPEG in hoge resolutie + 4×6 vel klaar voor de printer" },
-    "prints4": { "name": "4 fysieke afdrukken", "description": "4 ICAO-conforme foto's bij je thuisbezorgd" },
-    "prints8": { "name": "8 fysieke afdrukken", "description": "8 ICAO-conforme foto's met prioriteitsverzending" }
+    "digital": { "name": "Digitale download", "description": "JPEG in hoge resolutie · klaar voor online indiening" },
+    "printSheet": { "name": "4×6\" vel", "description": "Multi-foto-vel · thuis of in een fotolab printen" },
+    "bundle": { "name": "Bundelpakket", "description": "Digitale download + 4×6\" vel · beste prijs" }
   },
   "success": {
     "title": "Bestelling ontvangen",

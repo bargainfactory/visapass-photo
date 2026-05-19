@@ -131,9 +131,21 @@
     "compliant": "Соответствует",
     "specsLine": "{w}×{h} мм · {dpi} DPI · соответствует ICAO",
     "tabs": {
-      "digital": "Цифровой JPEG",
+      "digital": "Цифровой",
       "print": "Печатный 4×6"
     },
+    "front": "Лицевая",
+    "format": "Формат",
+    "preview": "Предпросмотр",
+    "previewCaptionDigital": "{w}×{h} мм · одно фото · {dpi} DPI · {format}",
+    "previewCaptionPrint": "Лист 4×6\" · фото: {count} · {dpi} DPI · {format}",
+    "chooseYourPackage": "Выберите пакет",
+    "oneTimePayment": "Разовый платёж. Без подписки.",
+    "saveAmount": "ЭКОНОМИЯ {amount}",
+    "secureCheckoutLine": "USD · Безопасная оплата через Stripe",
+    "payAndDownload": "Оплатить {price} и скачать",
+    "downloadCta": "Скачать {name}",
+    "secure": "Безопасно",
     "downloadPhoto": "JPEG фото",
     "downloadSheet": "Лист 4×6",
     "locked": "Скачивание и снимки экрана отключены до завершения оплаты.",
@@ -146,9 +158,9 @@
     "checkoutError": "Не удалось начать оплату"
   },
   "packages": {
-    "digital": { "name": "Цифровая загрузка", "description": "JPEG высокого разрешения + готовый к печати лист 4×6" },
-    "prints4": { "name": "4 физические распечатки", "description": "4 фото, соответствующие ICAO, с доставкой на дом" },
-    "prints8": { "name": "8 физических распечаток", "description": "8 фото, соответствующих ICAO, с приоритетной доставкой" }
+    "digital": { "name": "Цифровая загрузка", "description": "JPEG высокого разрешения · готов к онлайн-подаче" },
+    "printSheet": { "name": "Лист 4×6\"", "description": "Многофотный лист · печать дома или в фотолабе" },
+    "bundle": { "name": "Комплект", "description": "Цифровая загрузка + лист 4×6\" · лучшая цена" }
   },
   "success": {
     "title": "Заказ получен",

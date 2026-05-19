@@ -166,9 +166,21 @@
     "compliant": "Conforme",
     "specsLine": "{w}×{h} mm · {dpi} DPI · aligné ICAO",
     "tabs": {
-      "digital": "JPEG numérique",
+      "digital": "Numérique",
       "print": "Imprimable 4×6"
     },
+    "front": "Face",
+    "format": "Format",
+    "preview": "Aperçu",
+    "previewCaptionDigital": "{w}×{h} mm · photo unique · {dpi} DPI · {format}",
+    "previewCaptionPrint": "Planche 4×6\" · {count} photos · {dpi} DPI · {format}",
+    "chooseYourPackage": "Choisissez votre formule",
+    "oneTimePayment": "Paiement unique. Aucun abonnement.",
+    "saveAmount": "ÉCONOMISEZ {amount}",
+    "secureCheckoutLine": "USD · Paiement sécurisé via Stripe",
+    "payAndDownload": "Payer {price} et télécharger",
+    "downloadCta": "Télécharger {name}",
+    "secure": "Sécurisé",
     "downloadPhoto": "JPEG de la photo",
     "downloadSheet": "Planche 4×6",
     "locked": "Les téléchargements et captures sont bloqués jusqu'au paiement.",
@@ -183,15 +195,15 @@
   "packages": {
     "digital": {
       "name": "Téléchargement numérique",
-      "description": "JPEG haute résolution + planche 4×6 prête à imprimer"
+      "description": "JPEG haute résolution · prêt pour soumission en ligne"
     },
-    "prints4": {
-      "name": "4 tirages physiques",
-      "description": "4 photos conformes ICAO livrées à votre porte"
+    "printSheet": {
+      "name": "Planche 4×6\"",
+      "description": "Planche multi-photos · impression maison ou labo"
     },
-    "prints8": {
-      "name": "8 tirages physiques",
-      "description": "8 photos conformes ICAO en livraison prioritaire"
+    "bundle": {
+      "name": "Offre groupée",
+      "description": "Téléchargement numérique + planche 4×6\" · meilleur prix"
     }
   },
   "success": {

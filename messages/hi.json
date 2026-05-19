@@ -131,9 +131,21 @@
     "compliant": "अनुपालक",
     "specsLine": "{w}×{h} मिमी · {dpi} DPI · ICAO-संरेखित",
     "tabs": {
-      "digital": "डिजिटल JPEG",
+      "digital": "डिजिटल",
       "print": "प्रिंट योग्य 4×6"
     },
+    "front": "सामने",
+    "format": "फ़ॉर्मैट",
+    "preview": "प्रीव्यू",
+    "previewCaptionDigital": "{w}×{h} मिमी · एक फ़ोटो · {dpi} DPI · {format}",
+    "previewCaptionPrint": "4×6\" शीट · {count} फ़ोटो · {dpi} DPI · {format}",
+    "chooseYourPackage": "अपना पैकेज चुनें",
+    "oneTimePayment": "एक बार भुगतान। कोई सब्सक्रिप्शन नहीं।",
+    "saveAmount": "{amount} बचाएँ",
+    "secureCheckoutLine": "USD · Stripe से सुरक्षित भुगतान",
+    "payAndDownload": "{price} भुगतान करें और डाउनलोड करें",
+    "downloadCta": "{name} डाउनलोड करें",
+    "secure": "सुरक्षित",
     "downloadPhoto": "फ़ोटो JPEG",
     "downloadSheet": "4×6 शीट",
     "locked": "भुगतान पूरा होने तक डाउनलोड और स्क्रीनशॉट अक्षम हैं.",
@@ -146,9 +158,9 @@
     "checkoutError": "चेकआउट शुरू नहीं हो सका"
   },
   "packages": {
-    "digital": { "name": "डिजिटल डाउनलोड", "description": "हाई-रिज़ॉल्यूशन JPEG + प्रिंट-तैयार 4×6 शीट" },
-    "prints4": { "name": "4 फ़िज़िकल प्रिंट", "description": "4 ICAO-अनुपालक फ़ोटो आपके घर तक पहुँचाई जाएँगी" },
-    "prints8": { "name": "8 फ़िज़िकल प्रिंट", "description": "8 ICAO-अनुपालक फ़ोटो प्राथमिकता डिलीवरी के साथ" }
+    "digital": { "name": "डिजिटल डाउनलोड", "description": "हाई-रिज़ॉल्यूशन JPEG · ऑनलाइन सबमिशन-रेडी" },
+    "printSheet": { "name": "4×6\" शीट", "description": "मल्टी-फ़ोटो शीट · घर या लैब में प्रिंट करें" },
+    "bundle": { "name": "बंडल पैक", "description": "डिजिटल डाउनलोड + 4×6\" शीट · सबसे अच्छा मूल्य" }
   },
   "success": {
     "title": "ऑर्डर प्राप्त हुआ",

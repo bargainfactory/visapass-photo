@@ -3,13 +3,23 @@
 import * as React from 'react';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, Loader2, Lock, Mail, ShieldCheck, Truck } from 'lucide-react';
+import {
+  CreditCard,
+  FileImage,
+  ImageIcon,
+  Loader2,
+  Lock,
+  Printer,
+  Shield,
+  Sparkles,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { cn, downloadDataUrl } from '@/lib/utils';
+import { cn, downloadDataUrl, jpegDataUrlToPng } from '@/lib/utils';
 import { findDocument } from '@/lib/countries';
-import { PRINT_PACKAGES } from '@/lib/stripe';
+import { PRINT_PACKAGES, bundleSavingsCents, type PackageId } from '@/lib/stripe';
+import { pickSheetLayout } from '@/lib/compositor';
 import { usePhotoStore } from '@/lib/store';
 
 interface ResultsPanelProps {
@@ -18,23 +28,23 @@ interface ResultsPanelProps {
   documentId: string;
 }
 
-type DeliverableTab = 'digital' | 'print';
+type PreviewTab = 'digital' | 'print';
+type FormatTab = 'jpeg' | 'png';
 
 export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: ResultsPanelProps) {
   const t = useTranslations('results');
   const tPackages = useTranslations('packages');
   const docPair = findDocument(documentId);
+
   const [pendingPkg, setPendingPkg] = React.useState<string | null>(null);
-  const [tab, setTab] = React.useState<DeliverableTab>('digital');
+  const [previewTab, setPreviewTab] = React.useState<PreviewTab>('print');
+  const [format, setFormat] = React.useState<FormatTab>('jpeg');
+  const [selectedPkg, setSelectedPkg] = React.useState<PackageId>('print-sheet');
+
   const addOrder = usePhotoStore((s) => s.addOrder);
   const orders = usePhotoStore((s) => s.orders);
   const currentRenderToken = usePhotoStore((s) => s.currentRenderToken);
 
-  // An order only unlocks downloads for THIS render — i.e. when the order
-  // was created from the same upload session as the photo currently in
-  // view. Without the render-token scope, a previous purchase of any
-  // US-passport photo would auto-unlock every future US-passport upload,
-  // letting users download new photos for free.
   const isPaid = React.useMemo(() => {
     if (!currentRenderToken) return false;
     return orders.some(
@@ -60,20 +70,15 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
         amountCents: data.amountCents,
         status: 'pending',
         createdAt: Date.now(),
-        // Tag the order with the per-upload token so isPaid can verify
-        // payment is for THIS specific render, not just this document type.
         renderToken: currentRenderToken ?? undefined,
       });
-      // Stash the rendered result in sessionStorage so /success can offer the
-      // download after Stripe redirects back. sessionStorage survives the same-tab
-      // redirect-and-return while Zustand's in-memory state does not.
       try {
         sessionStorage.setItem('vp-pending-session', data.sessionId);
         sessionStorage.setItem('vp-pending-doc', documentId);
         sessionStorage.setItem('vp-pending-result', resultDataUrl);
         if (printSheetDataUrl) sessionStorage.setItem('vp-pending-print', printSheetDataUrl);
       } catch {
-        /* quota exceeded — non-critical, user can come back via /editor */
+        /* quota — non-critical */
       }
       window.location.href = data.url;
     } catch (err: any) {
@@ -86,46 +91,84 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
   if (!docPair) return null;
   const { country, doc } = docPair;
 
-  const handleAction = (which: DeliverableTab) => {
-    setTab(which);
-    if (isPaid) {
-      // Already paid — download immediately.
-      if (which === 'digital') {
+  // Print-sheet metadata — how many photos fit, in which orientation.
+  const sheetLayout = pickSheetLayout(doc.widthMm, doc.heightMm, doc.dpi);
+  const photosPerSheet = sheetLayout.cols * sheetLayout.rows;
+
+  const selectedPkgData = PRINT_PACKAGES.find((p) => p.id === selectedPkg)!;
+  const priceLabel = `$${(selectedPkgData.priceCents / 100).toFixed(2)}`;
+  const savingsLabel = `$${(bundleSavingsCents() / 100).toFixed(2)}`;
+
+  const pkgKey = (id: string) =>
+    id === 'digital' ? 'digital' : id === 'print-sheet' ? 'printSheet' : 'bundle';
+  const pkgIcon = (id: string) =>
+    id === 'digital' ? ImageIcon : id === 'print-sheet' ? Printer : Sparkles;
+
+  // Trigger the download(s) the active package entitles after payment.
+  const handleDownload = async () => {
+    const exportDigital = async () => {
+      if (format === 'jpeg') {
         downloadDataUrl(resultDataUrl, `${doc.id}.jpg`);
-      } else if (printSheetDataUrl) {
-        downloadDataUrl(printSheetDataUrl, `${doc.id}-print-sheet.jpg`);
+      } else {
+        const png = await jpegDataUrlToPng(resultDataUrl);
+        downloadDataUrl(png, `${doc.id}.png`);
       }
+    };
+    const exportPrint = async () => {
+      if (!printSheetDataUrl) return;
+      if (format === 'jpeg') {
+        downloadDataUrl(printSheetDataUrl, `${doc.id}-print-sheet.jpg`);
+      } else {
+        const png = await jpegDataUrlToPng(printSheetDataUrl);
+        downloadDataUrl(png, `${doc.id}-print-sheet.png`);
+      }
+    };
+    if (selectedPkg === 'digital') return exportDigital();
+    if (selectedPkg === 'print-sheet') return exportPrint();
+    // Bundle — both files, sequentially.
+    await exportDigital();
+    await exportPrint();
+  };
+
+  const onCtaClick = () => {
+    if (isPaid) {
+      handleDownload();
     } else {
-      // Unlock both deliverables with a single $5.99 digital package — the
-      // physical-print upsells in the right column are separate.
-      startCheckout('digital');
+      startCheckout(selectedPkg);
     }
   };
 
-  const pkgKey = (id: string) => (id === 'prints-4' ? 'prints4' : id === 'prints-8' ? 'prints8' : 'digital');
-
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
+    <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+      {/* ─────────────── LEFT: country badge + preview + selectors ─────────── */}
       <div className="space-y-4">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-        >
+        <Badge variant="brand" className="gap-2 px-3 py-1.5 text-sm font-semibold">
+          <span className="text-xs uppercase opacity-70">{country.code}</span>
+          <span>
+            {country.name} — <span className="capitalize">{doc.type.replace('_', ' ')}</span>
+          </span>
+        </Badge>
+
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
           <Card className="overflow-hidden">
-            {/* ── PREVIEW (anti-save + watermark while unpaid) ─────────────── */}
-            <div
-              className="relative"
-              onContextMenu={(e) => e.preventDefault()}
-            >
+            {/* PREVIEW HEADER */}
+            <div className="px-5 pb-1 pt-4 text-center">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                {t('front')}
+              </p>
+            </div>
+
+            {/* PREVIEW IMAGE */}
+            <div className="relative px-6 pb-3" onContextMenu={(e) => e.preventDefault()}>
               <AnimatePresence mode="wait">
-                {tab === 'digital' ? (
+                {previewTab === 'digital' ? (
                   <motion.div
-                    key="digital-preview"
+                    key="dig"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="grid place-items-center select-none p-8"
+                    className="grid place-items-center select-none rounded-xl p-4"
                     style={{
                       background: `linear-gradient(135deg, ${doc.background}, ${doc.background}cc)`,
                     }}
@@ -134,11 +177,12 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
                   </motion.div>
                 ) : (
                   <motion.div
-                    key="print-preview"
+                    key="prn"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="grid place-items-center select-none bg-[linear-gradient(135deg,#f4f4f5,#e7e7e8)] p-8 dark:bg-[linear-gradient(135deg,#1f2937,#111827)]"
+                    className="grid place-items-center select-none rounded-xl bg-[linear-gradient(135deg,#f4f4f5,#e7e7e8)] p-4 dark:bg-[linear-gradient(135deg,#1f2937,#111827)]"
                   >
                     {printSheetDataUrl ? (
                       <PreviewImage src={printSheetDataUrl} />
@@ -154,120 +198,144 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
               {!isPaid && <PreviewWatermark />}
             </div>
 
-            {/* ── Country + Compliance row ───────────────────────────────── */}
-            <CardContent className="flex items-center justify-between gap-3 border-t border-b py-3">
-              <div className="min-w-0">
-                <p className="truncate text-sm font-semibold">
-                  {country.flag} {doc.label}
-                </p>
-                <p className="truncate text-xs text-muted-foreground">
-                  {t('specsLine', { w: doc.widthMm, h: doc.heightMm, dpi: doc.dpi })}
-                </p>
-              </div>
-              <Badge variant="success" className="shrink-0 gap-1">
-                <ShieldCheck className="size-3" /> {t('compliant')}
-              </Badge>
-            </CardContent>
+            {/* PREVIEW CAPTION */}
+            <div className="px-5 pb-4 text-center">
+              <p className="text-xs text-muted-foreground">
+                {previewTab === 'digital'
+                  ? t('previewCaptionDigital', {
+                      w: doc.widthMm,
+                      h: doc.heightMm,
+                      dpi: doc.dpi,
+                      format: format.toUpperCase(),
+                    })
+                  : t('previewCaptionPrint', {
+                      count: photosPerSheet,
+                      dpi: doc.dpi,
+                      format: format.toUpperCase(),
+                    })}
+              </p>
+            </div>
 
-            {/* ── Deliverable tabs at the bottom (replace the old Download CTA).
-                Blue when active. Click → download (paid) or checkout (unpaid). */}
-            <div className="grid grid-cols-2 gap-px bg-border">
-              <DeliverableTabButton
-                active={tab === 'digital'}
-                paid={isPaid}
-                loading={!isPaid && pendingPkg === 'digital'}
-                onClick={() => handleAction('digital')}
-              >
-                {t('tabs.digital')}
-              </DeliverableTabButton>
-              <DeliverableTabButton
-                active={tab === 'print'}
-                paid={isPaid}
-                loading={!isPaid && pendingPkg === 'digital'}
-                disabled={!printSheetDataUrl}
-                onClick={() => handleAction('print')}
-              >
-                {t('tabs.print')}
-              </DeliverableTabButton>
+            {/* FORMAT + PREVIEW PILL SELECTORS */}
+            <div className="grid grid-cols-2 gap-4 border-t bg-muted/30 p-4">
+              <div>
+                <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                  {t('format')}
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  <PillButton active={format === 'jpeg'} onClick={() => setFormat('jpeg')}>
+                    <FileImage className="size-4" /> JPEG
+                  </PillButton>
+                  <PillButton active={format === 'png'} onClick={() => setFormat('png')}>
+                    <FileImage className="size-4" /> PNG
+                  </PillButton>
+                </div>
+              </div>
+              <div>
+                <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                  {t('preview')}
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  <PillButton active={previewTab === 'digital'} onClick={() => setPreviewTab('digital')}>
+                    <ImageIcon className="size-4" /> {t('tabs.digital')}
+                  </PillButton>
+                  <PillButton
+                    active={previewTab === 'print'}
+                    onClick={() => setPreviewTab('print')}
+                    disabled={!printSheetDataUrl}
+                  >
+                    <Printer className="size-4" /> 4×6"
+                  </PillButton>
+                </div>
+              </div>
             </div>
           </Card>
         </motion.div>
+      </div>
 
+      {/* ─────────────── RIGHT: package picker + big price + CTA ─────────── */}
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.05 }}>
         <Card>
-          <CardContent className="space-y-2 p-5 text-xs text-muted-foreground">
+          <CardContent className="space-y-5 p-6">
+            <div className="text-center">
+              <h2 className="font-display text-2xl font-semibold tracking-tight">
+                {t('chooseYourPackage')}
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">{t('oneTimePayment')}</p>
+            </div>
+
+            <div className="space-y-3">
+              {PRINT_PACKAGES.map((pkg) => {
+                const Icon = pkgIcon(pkg.id);
+                const isSelected = selectedPkg === pkg.id;
+                return (
+                  <PackageCard
+                    key={pkg.id}
+                    icon={<Icon className="size-4" />}
+                    name={tPackages(`${pkgKey(pkg.id)}.name`)}
+                    description={tPackages(`${pkgKey(pkg.id)}.description`)}
+                    priceLabel={`$${(pkg.priceCents / 100).toFixed(2)}`}
+                    selected={isSelected}
+                    badge={pkg.id === 'bundle' ? t('saveAmount', { amount: savingsLabel }) : undefined}
+                    onSelect={() => setSelectedPkg(pkg.id as PackageId)}
+                  />
+                );
+              })}
+            </div>
+
+            {/* BIG PRICE */}
+            <div className="pt-1 text-center">
+              <p className="font-display text-5xl font-bold text-brand-500 dark:text-brand-400">
+                {priceLabel}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">{t('secureCheckoutLine')}</p>
+            </div>
+
+            {/* BIG CTA */}
+            <Button
+              size="lg"
+              variant="brand"
+              className="h-14 w-full text-base"
+              disabled={pendingPkg !== null}
+              onClick={onCtaClick}
+            >
+              {pendingPkg === selectedPkg ? (
+                <Loader2 className="size-5 animate-spin" />
+              ) : (
+                <>
+                  <CreditCard className="size-5" />
+                  {isPaid
+                    ? t('downloadCta', { name: tPackages(`${pkgKey(selectedPkg)}.name`) })
+                    : t('payAndDownload', { price: priceLabel })}
+                </>
+              )}
+            </Button>
+
+            {/* TRUST FOOTER */}
+            <div className="flex items-center justify-center gap-3 text-xs text-muted-foreground">
+              <span className="inline-flex items-center gap-1">
+                <Shield className="size-3" /> {t('secure')}
+              </span>
+              <span aria-hidden>·</span>
+              <span>Stripe</span>
+            </div>
+
             {!isPaid && (
-              <p className="flex items-center gap-1.5 font-medium text-amber-600">
-                <Lock className="size-3.5" /> {t('locked')}
+              <p className="flex items-start justify-center gap-1.5 text-center text-[11px] text-amber-600">
+                <Lock className="mt-0.5 size-3 shrink-0" /> {t('locked')}
               </p>
             )}
-            <p className="flex items-center gap-1.5">
-              <Mail className="size-3.5" /> {t('noEmail')}
-            </p>
-            <p className="flex items-center gap-1.5">
-              <Truck className="size-3.5" /> {t('shipping')}
-            </p>
           </CardContent>
         </Card>
-      </div>
-
-      <div className="space-y-3" id="pricing">
-        <div>
-          <h2 className="font-display text-2xl font-semibold tracking-tight">{t('shopHeading')}</h2>
-          <p className="text-sm text-muted-foreground">{t('shopSubtitle')}</p>
-        </div>
-        {PRINT_PACKAGES.map((pkg, idx) => (
-          <motion.div
-            key={pkg.id}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.05 }}
-          >
-            <Card
-              className={
-                pkg.id === 'prints-4'
-                  ? 'bg-gradient-to-tr from-card via-card to-brand-500/[0.05] ring-1 ring-brand-500/40'
-                  : ''
-              }
-            >
-              <CardContent className="flex items-center justify-between gap-4 p-5">
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm font-semibold">{tPackages(`${pkgKey(pkg.id)}.name`)}</p>
-                    {pkg.id === 'prints-4' && <Badge variant="brand">{t('mostPopular')}</Badge>}
-                  </div>
-                  <p className="truncate text-xs text-muted-foreground">
-                    {tPackages(`${pkgKey(pkg.id)}.description`)}
-                  </p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="font-display text-xl font-semibold">
-                    ${(pkg.priceCents / 100).toFixed(2)}
-                  </span>
-                  <Button
-                    size="sm"
-                    variant={pkg.id === 'prints-4' ? 'brand' : 'default'}
-                    disabled={pendingPkg !== null}
-                    onClick={() => startCheckout(pkg.id)}
-                  >
-                    {pendingPkg === pkg.id ? <Loader2 className="size-4 animate-spin" /> : t('buy')}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
-      </div>
+      </motion.div>
     </div>
   );
 }
 
-/**
- * Wraps the preview image with the strongest set of casual-screenshot
- * deterrents we can apply in-browser: drag/select disabled, right-click
- * suppressed, native callouts blocked. The actual high-resolution file is
- * still gated behind payment so even a determined screenshot only yields
- * the watermarked, on-screen-size render.
- */
+/* -------------------------------------------------------------------------- */
+/*  Sub-components                                                            */
+/* -------------------------------------------------------------------------- */
+
 function PreviewImage({ src }: { src: string }) {
   return (
     <img
@@ -282,14 +350,9 @@ function PreviewImage({ src }: { src: string }) {
   );
 }
 
-/**
- * Tiled diagonal "PREVIEW" watermark — purely a visible deterrent painted
- * over the preview area while the order is unpaid. The downloaded JPEG never
- * carries this overlay because we gate the download itself.
- */
 function PreviewWatermark() {
   return (
-    <div className="pointer-events-none absolute inset-0">
+    <div className="pointer-events-none absolute inset-x-6 inset-y-0">
       <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden>
         <defs>
           <pattern
@@ -320,46 +383,83 @@ function PreviewWatermark() {
   );
 }
 
-interface DeliverableTabButtonProps {
+interface PackageCardProps {
+  icon: React.ReactNode;
+  name: string;
+  description: string;
+  priceLabel: string;
+  selected: boolean;
+  badge?: string;
+  onSelect: () => void;
+}
+
+function PackageCard({ icon, name, description, priceLabel, selected, badge, onSelect }: PackageCardProps) {
+  return (
+    <button
+      type="button"
+      role="radio"
+      aria-checked={selected}
+      onClick={onSelect}
+      className={cn(
+        'relative w-full rounded-xl border bg-card p-4 text-start transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500',
+        selected
+          ? 'border-brand-500 ring-2 ring-brand-500/40 shadow-md shadow-brand-500/15'
+          : 'border-border hover:border-brand-500/40 hover:bg-accent/40'
+      )}
+    >
+      {badge && (
+        <span className="absolute -top-2.5 right-3 rounded-full bg-gradient-to-tr from-brand-600 to-brand-400 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow">
+          {badge}
+        </span>
+      )}
+      <div className="flex items-start gap-3">
+        <span
+          className={cn(
+            'grid size-5 shrink-0 place-items-center rounded-full border-2 transition-colors',
+            selected ? 'border-brand-500' : 'border-muted-foreground/30'
+          )}
+          aria-hidden
+        >
+          {selected && <span className="block size-2.5 rounded-full bg-brand-500" />}
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center justify-between gap-3">
+            <p className="flex items-center gap-1.5 text-sm font-semibold">
+              <span className="text-brand-500 dark:text-brand-400">{icon}</span>
+              {name}
+            </p>
+            <p className="text-sm font-semibold tabular-nums">{priceLabel}</p>
+          </div>
+          <p className="mt-0.5 truncate text-xs text-muted-foreground">{description}</p>
+        </div>
+      </div>
+    </button>
+  );
+}
+
+interface PillButtonProps {
   active: boolean;
-  paid: boolean;
-  loading?: boolean;
   disabled?: boolean;
   onClick: () => void;
   children: React.ReactNode;
 }
 
-function DeliverableTabButton({
-  active,
-  paid,
-  loading,
-  disabled,
-  onClick,
-  children,
-}: DeliverableTabButtonProps) {
+function PillButton({ active, disabled, onClick, children }: PillButtonProps) {
   return (
     <button
       type="button"
       onClick={onClick}
-      disabled={disabled || loading}
+      disabled={disabled}
       aria-pressed={active}
       className={cn(
-        'relative flex h-14 items-center justify-center gap-2 px-4 text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-inset',
+        'inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500',
         active
-          ? // Brand-blue highlight when chosen by the user.
-            'bg-gradient-to-br from-brand-600 to-brand-500 text-white shadow-inner shadow-brand-700/40'
-          : 'bg-card text-foreground hover:bg-accent',
-        (disabled || loading) && 'cursor-not-allowed opacity-60'
+          ? 'border-brand-500 bg-brand-500/15 text-brand-600 dark:text-brand-300'
+          : 'border-border bg-card text-foreground hover:border-brand-500/40',
+        disabled && 'cursor-not-allowed opacity-50'
       )}
     >
-      {loading ? (
-        <Loader2 className="size-4 animate-spin" />
-      ) : !paid ? (
-        <Lock className={cn('size-4', active ? 'text-white' : 'text-amber-600')} />
-      ) : (
-        <Download className={cn('size-4', active ? 'text-white' : 'text-muted-foreground')} />
-      )}
-      <span>{children}</span>
+      {children}
     </button>
   );
 }

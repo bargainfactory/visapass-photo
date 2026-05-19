@@ -6,6 +6,7 @@ import { Link } from '@/i18n/navigation';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { Badge } from '@/components/ui/badge';
+import { COUNTRIES } from '@/lib/countries';
 
 export function SiteHeader() {
   const t = useTranslations();
@@ -43,6 +44,32 @@ export function SiteHeader() {
           <LanguageSwitcher />
           <ThemeToggle />
         </nav>
+      </div>
+
+      {/* International flag band — quick visual cue that the site supports
+          22+ country specs. The flag row is rendered twice end-to-end and
+          the wrapper translates by -50% across one animation cycle, so the
+          marquee loops seamlessly without a visible "snap" reset. Mask
+          fades the edges into the header background. Respects users with
+          prefers-reduced-motion via `motion-reduce:animate-none`. */}
+      <div
+        aria-label="Supported countries"
+        className="relative border-t border-border/40 bg-background/40 [mask-image:linear-gradient(to_right,transparent,#000_10%,#000_90%,transparent)]"
+      >
+        <div className="flex h-7 items-center overflow-hidden">
+          <div className="flex shrink-0 animate-marquee items-center gap-3 whitespace-nowrap px-4 motion-reduce:animate-none">
+            {[...COUNTRIES, ...COUNTRIES].map((c, i) => (
+              <span
+                key={`${c.code}-${i}`}
+                title={c.name}
+                aria-hidden={i >= COUNTRIES.length}
+                className="text-base leading-none opacity-80"
+              >
+                {c.flag}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </header>
   );

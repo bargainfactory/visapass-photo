@@ -78,12 +78,17 @@ const config: Config = {
         'accordion-up': { from: { height: 'var(--radix-accordion-content-height)' }, to: { height: '0' } },
         shimmer: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
         'pulse-soft': { '0%, 100%': { opacity: '1' }, '50%': { opacity: '0.6' } },
+        // Used by the international flag band in the site header. The flag
+        // row is rendered twice end-to-end and slid −50% so the marquee
+        // loops seamlessly.
+        marquee: { from: { transform: 'translateX(0)' }, to: { transform: 'translateX(-50%)' } },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         shimmer: 'shimmer 2.4s linear infinite',
         'pulse-soft': 'pulse-soft 2s ease-in-out infinite',
+        marquee: 'marquee 60s linear infinite',
       },
       backgroundImage: {
         'mesh-light':

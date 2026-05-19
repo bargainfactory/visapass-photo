@@ -162,6 +162,21 @@
     "printSheet": { "name": "4×6\" シート", "description": "複数枚シート · 自宅またはラボで印刷" },
     "bundle": { "name": "セット割引", "description": "デジタル + 4×6\" シート · 一番お得" }
   },
+  "checkout": {
+    "title": "お支払いを完了する",
+    "subtitle": "クレジットカードまたはデビットカードで支払えます — Apple Pay、Google Pay、Link は対応デバイスで自動的に表示されます。",
+    "back": "結果に戻る",
+    "secureNote": "安全 · Stripe 提供",
+    "verifying": "安全な接続を確認中",
+    "poweredBy": "Powered by Stripe",
+    "noSession": "有効な決済セッションがありません。エディターからやり直してください。",
+    "returnToEditor": "エディターに戻る",
+    "missingKey": "この環境では Stripe 公開キーが設定されていません。",
+    "demoTitle": "デモモード",
+    "demoBody": "この環境では Stripe が設定されていません。下のボタンで決済をシミュレートし、ダウンロードに進めます。",
+    "demoSimulate": "決済をシミュレートして続行",
+    "demoFootnote": "実際の埋め込みチェックアウトを表示するには、.env.local に STRIPE_SECRET_KEY と NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY を設定してください。"
+  },
   "success": {
     "title": "注文を受け付けました",
     "subtitle": "Stripe で支払いが確認されました。下記はライブの履行状況 — 本ページは数秒ごとに Webhook をポーリングします。",

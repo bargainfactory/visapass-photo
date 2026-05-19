@@ -162,6 +162,21 @@
     "printSheet": { "name": "Foglio 4×6\"", "description": "Foglio multi-foto · stampa a casa o in laboratorio" },
     "bundle": { "name": "Pacchetto combinato", "description": "Download digitale + foglio 4×6\" · miglior valore" }
   },
+  "checkout": {
+    "title": "Completa il tuo acquisto",
+    "subtitle": "Paga con carta di credito o debito — Apple Pay, Google Pay e Link compaiono automaticamente sui dispositivi compatibili.",
+    "back": "Torna ai risultati",
+    "secureNote": "Sicuro · powered by Stripe",
+    "verifying": "Verifica della connessione sicura",
+    "poweredBy": "Powered by Stripe",
+    "noSession": "Nessuna sessione di pagamento attiva. Ricomincia dall'editor.",
+    "returnToEditor": "Torna all'editor",
+    "missingKey": "La chiave pubblica Stripe non è configurata per questo ambiente.",
+    "demoTitle": "Modalità demo",
+    "demoBody": "Stripe non è configurato per questo ambiente. Clicca qui sotto per simulare un pagamento riuscito e continuare con il download.",
+    "demoSimulate": "Simula pagamento e continua",
+    "demoFootnote": "Imposta STRIPE_SECRET_KEY e NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY in .env.local per vedere il checkout reale."
+  },
   "success": {
     "title": "Ordine ricevuto",
     "subtitle": "Stripe ha confermato il pagamento. Di seguito lo stato in tempo reale — questa pagina interroga il webhook ogni pochi secondi.",

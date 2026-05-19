@@ -206,6 +206,21 @@
       "description": "Téléchargement numérique + planche 4×6\" · meilleur prix"
     }
   },
+  "checkout": {
+    "title": "Finalisez votre achat",
+    "subtitle": "Payez par carte de crédit ou de débit — Apple Pay, Google Pay et Link apparaissent automatiquement sur les appareils compatibles.",
+    "back": "Retour aux résultats",
+    "secureNote": "Sécurisé · propulsé par Stripe",
+    "verifying": "Vérification de la connexion sécurisée",
+    "poweredBy": "Propulsé par Stripe",
+    "noSession": "Aucune session de paiement active. Recommencez depuis l'éditeur.",
+    "returnToEditor": "Retour à l'éditeur",
+    "missingKey": "La clé publique Stripe n'est pas configurée pour cet environnement.",
+    "demoTitle": "Mode démo",
+    "demoBody": "Stripe n'est pas configuré pour cet environnement. Cliquez ci-dessous pour simuler un paiement réussi et continuer vers votre téléchargement.",
+    "demoSimulate": "Simuler le paiement et continuer",
+    "demoFootnote": "Définissez STRIPE_SECRET_KEY et NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY dans .env.local pour voir le vrai checkout."
+  },
   "success": {
     "title": "Commande reçue",
     "subtitle": "Stripe a confirmé votre paiement. Voici le statut de traitement en direct — cette page interroge le webhook toutes les quelques secondes.",

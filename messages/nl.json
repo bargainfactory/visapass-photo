@@ -162,6 +162,21 @@
     "printSheet": { "name": "4×6\" vel", "description": "Multi-foto-vel · thuis of in een fotolab printen" },
     "bundle": { "name": "Bundelpakket", "description": "Digitale download + 4×6\" vel · beste prijs" }
   },
+  "checkout": {
+    "title": "Rond je aankoop af",
+    "subtitle": "Betaal met een creditcard of debitcard — Apple Pay, Google Pay en Link verschijnen automatisch op ondersteunde apparaten.",
+    "back": "Terug naar resultaten",
+    "secureNote": "Veilig · mogelijk gemaakt door Stripe",
+    "verifying": "Veilige verbinding wordt geverifieerd",
+    "poweredBy": "Mogelijk gemaakt door Stripe",
+    "noSession": "Geen actieve betalingssessie. Begin opnieuw vanuit de editor.",
+    "returnToEditor": "Terug naar editor",
+    "missingKey": "Stripe publishable key is niet geconfigureerd voor deze omgeving.",
+    "demoTitle": "Demomodus",
+    "demoBody": "Stripe is niet geconfigureerd voor deze omgeving. Klik hieronder om een succesvolle betaling te simuleren en door te gaan naar je download.",
+    "demoSimulate": "Betaling simuleren en doorgaan",
+    "demoFootnote": "Stel STRIPE_SECRET_KEY en NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY in in .env.local om de echte checkout te zien."
+  },
   "success": {
     "title": "Bestelling ontvangen",
     "subtitle": "Stripe bevestigde je betaling. Hieronder de live verwerkingsstatus — deze pagina pollt de webhook elke paar seconden.",

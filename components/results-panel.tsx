@@ -13,6 +13,7 @@ import {
   Shield,
   Sparkles,
 } from 'lucide-react';
+import { useRouter } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -34,6 +35,7 @@ type FormatTab = 'jpeg' | 'png';
 export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: ResultsPanelProps) {
   const t = useTranslations('results');
   const tPackages = useTranslations('packages');
+  const router = useRouter();
   const docPair = findDocument(documentId);
 
   const [pendingPkg, setPendingPkg] = React.useState<string | null>(null);
@@ -72,15 +74,22 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
         createdAt: Date.now(),
         renderToken: currentRenderToken ?? undefined,
       });
+      // Stash everything the next two pages need:
+      //   · /checkout reads vp-checkout-secret to mount <EmbeddedCheckout/>
+      //   · /success reads vp-pending-{session,doc,result,print} to surface
+      //     download buttons once the webhook confirms payment.
       try {
         sessionStorage.setItem('vp-pending-session', data.sessionId);
         sessionStorage.setItem('vp-pending-doc', documentId);
         sessionStorage.setItem('vp-pending-result', resultDataUrl);
         if (printSheetDataUrl) sessionStorage.setItem('vp-pending-print', printSheetDataUrl);
+        sessionStorage.setItem('vp-checkout-secret', data.clientSecret);
       } catch {
         /* quota — non-critical */
       }
-      window.location.href = data.url;
+      // Locale-aware push to the embedded-checkout page on our own domain
+      // (replaces the previous redirect to Stripe's hosted page).
+      router.push('/checkout');
     } catch (err: any) {
       alert(err?.message ?? t('checkoutError'));
     } finally {

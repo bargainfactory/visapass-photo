@@ -162,6 +162,21 @@
     "printSheet": { "name": "4×6\" 시트", "description": "여러 장 인쇄 시트 · 가정 또는 사진관 인쇄" },
     "bundle": { "name": "번들 패키지", "description": "디지털 + 4×6\" 시트 · 가장 좋은 가격" }
   },
+  "checkout": {
+    "title": "결제를 완료하세요",
+    "subtitle": "신용카드 또는 직불카드로 결제하세요 — Apple Pay, Google Pay, Link는 지원되는 기기에서 자동으로 표시됩니다.",
+    "back": "결과로 돌아가기",
+    "secureNote": "안전 · Stripe 제공",
+    "verifying": "보안 연결 확인 중",
+    "poweredBy": "Powered by Stripe",
+    "noSession": "활성 결제 세션이 없습니다. 에디터에서 다시 시작하세요.",
+    "returnToEditor": "에디터로 돌아가기",
+    "missingKey": "이 환경에는 Stripe 공개 키가 구성되어 있지 않습니다.",
+    "demoTitle": "데모 모드",
+    "demoBody": "이 환경에는 Stripe가 구성되지 않았습니다. 아래를 클릭하여 결제를 시뮬레이션하고 다운로드를 계속하세요.",
+    "demoSimulate": "결제 시뮬레이션 및 계속",
+    "demoFootnote": "실제 임베디드 결제 화면을 보려면 .env.local에 STRIPE_SECRET_KEY와 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY를 설정하세요."
+  },
   "success": {
     "title": "주문이 접수되었습니다",
     "subtitle": "Stripe에서 결제가 확인되었습니다. 아래는 실시간 처리 상태이며, 본 페이지는 몇 초마다 Webhook을 폴링합니다.",

@@ -1,11 +1,16 @@
 /**
- * Stripe Checkout session creation.
+ * Stripe Checkout session creation — EMBEDDED mode.
  *
- * POST { packageId, documentId } -> { url, sessionId, amountCents }
+ * POST { packageId, documentId } -> { clientSecret, sessionId, amountCents }
  *
- * The price for each package is created on-the-fly via `price_data` so the demo
- * runs without pre-configured Stripe products. In production, swap to env-var
- * `STRIPE_PRICE_*` and pass `line_items: [{ price: ..., quantity: 1 }]`.
+ * The `/checkout` page mounts <EmbeddedCheckoutProvider> with this
+ * clientSecret. Stripe renders the secure card-entry form inline on our
+ * domain and automatically surfaces Apple Pay / Google Pay / Link based on
+ * the visitor's device + the merchant's dashboard configuration — no extra
+ * payment_method_types config required.
+ *
+ * Inline `price_data` is used so the demo flow works without pre-configured
+ * Stripe products. Swap to env-var `STRIPE_PRICE_*` in production.
  */
 import { NextResponse, type NextRequest } from 'next/server';
 import { getStripeServer, findPackage } from '@/lib/stripe';
@@ -22,10 +27,13 @@ export async function POST(req: NextRequest) {
     if (!docPair) return NextResponse.json({ error: 'Unknown document' }, { status: 400 });
 
     if (!process.env.STRIPE_SECRET_KEY) {
-      // Friendly dev-mode fallback so the UI still works locally without secrets.
+      // Dev fallback — returns a fake clientSecret that /checkout recognises
+      // by the `_secret_demo` suffix and renders a "demo payment" UI instead
+      // of trying to mount EmbeddedCheckout with an invalid Stripe key.
+      const fakeId = `cs_demo_${Date.now()}`;
       return NextResponse.json({
-        url: `/success?session_id=cs_demo_${Date.now()}`,
-        sessionId: `cs_demo_${Date.now()}`,
+        clientSecret: `${fakeId}_secret_demo`,
+        sessionId: fakeId,
         amountCents: pkg.priceCents,
       });
     }
@@ -37,6 +45,7 @@ export async function POST(req: NextRequest) {
       `https://${req.headers.get('host')}`;
 
     const session = await stripe.checkout.sessions.create({
+      ui_mode: 'embedded',
       mode: 'payment',
       line_items: [
         {
@@ -51,19 +60,20 @@ export async function POST(req: NextRequest) {
           },
         },
       ],
-      shipping_address_collection: pkg.id !== 'digital' ? { allowed_countries: ['US', 'CA', 'GB', 'AU'] } : undefined,
       automatic_tax: { enabled: false },
       metadata: {
         packageId: pkg.id,
         documentId: docPair.doc.id,
         country: docPair.country.code,
       },
-      success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/editor`,
+      // Embedded sessions use `return_url` — Stripe navigates the host page
+      // to this URL once the payment completes. The session_id placeholder
+      // is replaced server-side before redirect.
+      return_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
     });
 
     return NextResponse.json({
-      url: session.url!,
+      clientSecret: session.client_secret,
       sessionId: session.id,
       amountCents: pkg.priceCents,
     });

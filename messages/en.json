@@ -206,6 +206,21 @@
       "description": "Digital download + 4×6\" print sheet · best value"
     }
   },
+  "checkout": {
+    "title": "Complete your purchase",
+    "subtitle": "Pay with a credit or debit card — Apple Pay, Google Pay, and Link appear automatically on supported devices.",
+    "back": "Back to results",
+    "secureNote": "Secure · powered by Stripe",
+    "verifying": "Verifying secure connection",
+    "poweredBy": "Powered by Stripe",
+    "noSession": "No active payment session. Start over from the editor.",
+    "returnToEditor": "Return to editor",
+    "missingKey": "Stripe publishable key is not configured for this environment.",
+    "demoTitle": "Demo mode",
+    "demoBody": "Stripe is not configured for this environment. Click below to simulate a successful payment and continue to your download.",
+    "demoSimulate": "Simulate payment & continue",
+    "demoFootnote": "Set STRIPE_SECRET_KEY and NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY in .env.local to see the real embedded checkout."
+  },
   "success": {
     "title": "Order received",
     "subtitle": "Stripe confirmed your payment. Below is the live fulfillment status — this page polls the webhook handler every few seconds.",

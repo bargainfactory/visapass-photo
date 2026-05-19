@@ -162,6 +162,21 @@
     "printSheet": { "name": "4×6\" sayfa", "description": "Çoklu fotoğraf sayfası · evde veya laboratuvarda baskı" },
     "bundle": { "name": "Paket indirim", "description": "Dijital indirme + 4×6\" sayfa · en iyi değer" }
   },
+  "checkout": {
+    "title": "Satın alma işlemini tamamla",
+    "subtitle": "Kredi veya banka kartıyla ödeme yapın — Apple Pay, Google Pay ve Link, desteklenen cihazlarda otomatik olarak görünür.",
+    "back": "Sonuçlara dön",
+    "secureNote": "Güvenli · Stripe altyapısıyla",
+    "verifying": "Güvenli bağlantı doğrulanıyor",
+    "poweredBy": "Stripe altyapısıyla",
+    "noSession": "Etkin ödeme oturumu yok. Editörden yeniden başlayın.",
+    "returnToEditor": "Editöre dön",
+    "missingKey": "Bu ortam için Stripe yayınlanabilir anahtarı yapılandırılmamış.",
+    "demoTitle": "Demo modu",
+    "demoBody": "Bu ortam için Stripe yapılandırılmamış. Aşağıdaki düğmeyle başarılı bir ödemeyi simüle edip indirmeye devam edebilirsiniz.",
+    "demoSimulate": "Ödemeyi simüle et ve devam et",
+    "demoFootnote": "Gerçek gömülü ödeme ekranını görmek için .env.local içine STRIPE_SECRET_KEY ve NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ekleyin."
+  },
   "success": {
     "title": "Sipariş alındı",
     "subtitle": "Stripe ödemenizi onayladı. Aşağıda canlı işlem durumu — bu sayfa webhook'u birkaç saniyede bir sorgular.",

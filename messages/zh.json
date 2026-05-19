@@ -162,6 +162,21 @@
     "printSheet": { "name": "4×6\" 打印纸", "description": "多图打印纸 · 在家或照片店打印" },
     "bundle": { "name": "组合套餐", "description": "数字版下载 + 4×6\" 打印纸 · 最优惠" }
   },
+  "checkout": {
+    "title": "完成你的购买",
+    "subtitle": "使用信用卡或借记卡支付 — Apple Pay、Google Pay 与 Link 将在受支持的设备上自动显示。",
+    "back": "返回结果",
+    "secureNote": "安全 · 由 Stripe 提供支持",
+    "verifying": "正在验证安全连接",
+    "poweredBy": "由 Stripe 提供支持",
+    "noSession": "没有有效的付款会话。请从编辑器重新开始。",
+    "returnToEditor": "返回编辑器",
+    "missingKey": "此环境未配置 Stripe 公钥。",
+    "demoTitle": "演示模式",
+    "demoBody": "此环境未配置 Stripe。点击下方可模拟一次成功付款并继续下载。",
+    "demoSimulate": "模拟付款并继续",
+    "demoFootnote": "在 .env.local 中设置 STRIPE_SECRET_KEY 和 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY 以查看真实的嵌入式结账。"
+  },
   "success": {
     "title": "订单已收到",
     "subtitle": "Stripe 已确认你的付款。下方为实时履约状态 — 本页每隔几秒轮询 Webhook。",

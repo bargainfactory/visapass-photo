@@ -206,6 +206,21 @@
       "description": "Download digital + folha 4×6\" · melhor valor"
     }
   },
+  "checkout": {
+    "title": "Finalize sua compra",
+    "subtitle": "Pague com cartão de crédito ou débito — Apple Pay, Google Pay e Link aparecem automaticamente em dispositivos compatíveis.",
+    "back": "Voltar aos resultados",
+    "secureNote": "Seguro · com tecnologia Stripe",
+    "verifying": "Verificando conexão segura",
+    "poweredBy": "Com tecnologia Stripe",
+    "noSession": "Sem sessão de pagamento ativa. Recomece pelo editor.",
+    "returnToEditor": "Voltar ao editor",
+    "missingKey": "A chave pública do Stripe não está configurada neste ambiente.",
+    "demoTitle": "Modo demo",
+    "demoBody": "O Stripe não está configurado neste ambiente. Clique abaixo para simular um pagamento bem-sucedido e continuar para o download.",
+    "demoSimulate": "Simular pagamento e continuar",
+    "demoFootnote": "Defina STRIPE_SECRET_KEY e NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY em .env.local para ver o checkout real."
+  },
   "success": {
     "title": "Pedido recebido",
     "subtitle": "O Stripe confirmou o pagamento. Abaixo, o status de envio ao vivo — esta página consulta o webhook a cada poucos segundos.",

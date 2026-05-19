@@ -206,6 +206,21 @@
       "description": "Digitaler Download + 4×6\"-Bogen · bestes Preis-Leistungs-Verhältnis"
     }
   },
+  "checkout": {
+    "title": "Schließe deinen Kauf ab",
+    "subtitle": "Zahle mit Kredit- oder Debitkarte — Apple Pay, Google Pay und Link erscheinen automatisch auf unterstützten Geräten.",
+    "back": "Zurück zu den Ergebnissen",
+    "secureNote": "Sicher · powered by Stripe",
+    "verifying": "Sichere Verbindung wird geprüft",
+    "poweredBy": "Powered by Stripe",
+    "noSession": "Keine aktive Zahlungssitzung. Starte erneut im Editor.",
+    "returnToEditor": "Zurück zum Editor",
+    "missingKey": "Stripe Publishable Key ist für diese Umgebung nicht konfiguriert.",
+    "demoTitle": "Demo-Modus",
+    "demoBody": "Stripe ist in dieser Umgebung nicht konfiguriert. Klicke unten, um eine erfolgreiche Zahlung zu simulieren und zum Download fortzufahren.",
+    "demoSimulate": "Zahlung simulieren und fortfahren",
+    "demoFootnote": "Setze STRIPE_SECRET_KEY und NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY in .env.local, um den echten Checkout zu sehen."
+  },
   "success": {
     "title": "Bestellung erhalten",
     "subtitle": "Stripe hat deine Zahlung bestätigt. Unten siehst du den Live-Bearbeitungsstatus — diese Seite fragt den Webhook alle paar Sekunden ab.",

@@ -162,6 +162,21 @@
     "printSheet": { "name": "ورقة 4×6\"", "description": "ورقة متعددة الصور · للطباعة في المنزل أو المحل" },
     "bundle": { "name": "الباقة المجمّعة", "description": "تنزيل رقمي + ورقة 4×6\" · أفضل قيمة" }
   },
+  "checkout": {
+    "title": "أكمل عملية الشراء",
+    "subtitle": "ادفع ببطاقة ائتمان أو خصم — تظهر Apple Pay وGoogle Pay وLink تلقائيًا على الأجهزة المدعومة.",
+    "back": "العودة إلى النتائج",
+    "secureNote": "آمن · مدعوم من Stripe",
+    "verifying": "جارٍ التحقق من اتصال آمن",
+    "poweredBy": "مدعوم من Stripe",
+    "noSession": "لا توجد جلسة دفع نشطة. ابدأ من جديد من المحرر.",
+    "returnToEditor": "العودة إلى المحرر",
+    "missingKey": "مفتاح Stripe العام غير مهيّأ في هذه البيئة.",
+    "demoTitle": "وضع تجريبي",
+    "demoBody": "Stripe غير مهيّأ في هذه البيئة. انقر أدناه لمحاكاة عملية دفع ناجحة ومتابعة التنزيل.",
+    "demoSimulate": "محاكاة الدفع والمتابعة",
+    "demoFootnote": "اضبط STRIPE_SECRET_KEY وNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY في .env.local لرؤية الدفع المضمّن الحقيقي."
+  },
   "success": {
     "title": "تم استلام الطلب",
     "subtitle": "أكد Stripe دفعتك. أدناه حالة التنفيذ المباشرة — تستعلم هذه الصفحة عن Webhook كل بضع ثوانٍ.",

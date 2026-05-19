@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Brain, Cpu, Globe2, Lock, Sparkles, Zap } from 'lucide-react';
@@ -32,27 +31,11 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden">
-      {/* Background art: the "girl taking a selfie" panel from the journey
-          infographic, cropped to a 640×1280 portrait. Full opacity so she is
-          actually visible behind the hero — the overlay below handles text
-          contrast instead of dimming the photo. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-30">
-        <Image
-          src="/showcase/selfie.webp"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-[center_top]"
-        />
-      </div>
-      {/* Left-to-right gradient: solid background under the headline so the
-          text always reads, fading to mostly transparent on the right where
-          the upload card sits and the photo can show through clearly. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-20 bg-gradient-to-r from-background via-background/85 to-background/30 dark:from-background dark:via-background/85 dark:to-background/35"
-      />
+      {/* Mesh-gradient background — reverts to the clean look while we wait
+          for the real "girl taking a selfie" infographic to be saved into
+          public/showcase/. Once that file exists, re-enable the <Image fill>
+          block here (with object-cover + the left→right contrast overlay). */}
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-mesh-light opacity-90 dark:bg-mesh-dark" />
       {/* Brand-blue radial glow on top — same premium feel as before. */}
       <div className="pointer-events-none absolute inset-x-0 -top-40 -z-10 h-[40rem] bg-[radial-gradient(circle_at_50%_30%,hsl(220_100%_70%/0.2),transparent_60%)] dark:opacity-30" />
 

@@ -127,6 +127,7 @@
     },
     "downloadPhoto": "照片 JPEG",
     "downloadSheet": "4×6 打印纸",
+    "locked": "付款完成前禁止下载和截屏。",
     "noEmail": "我们绝不通过邮件发送你的照片 — 下载完全在浏览器内进行。",
     "shipping": "实体照片将在 1 个工作日内发货。",
     "shopHeading": "带回家或直接打印",

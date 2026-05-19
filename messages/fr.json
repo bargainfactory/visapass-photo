@@ -162,6 +162,7 @@
     },
     "downloadPhoto": "JPEG de la photo",
     "downloadSheet": "Planche 4×6",
+    "locked": "Les téléchargements et captures sont bloqués jusqu'au paiement.",
     "noEmail": "Nous n'envoyons jamais votre photo par e-mail — les téléchargements se font dans le navigateur.",
     "shipping": "Les tirages physiques sont expédiés sous 1 jour ouvré.",
     "shopHeading": "Ramenez-la à la maison ou imprimez-la",

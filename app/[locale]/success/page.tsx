@@ -5,10 +5,12 @@ import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Loader2, Mail, Truck } from 'lucide-react';
+import { CheckCircle2, Download, Loader2, Mail, Truck } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { downloadDataUrl } from '@/lib/utils';
+import { usePhotoStore } from '@/lib/store';
 
 interface OrderStatus {
   status: 'pending' | 'paid' | 'fulfilled' | 'shipped' | 'unknown';
@@ -17,12 +19,45 @@ interface OrderStatus {
   email: string | null;
 }
 
+interface StashedResult {
+  digital: string;
+  print: string | null;
+  doc: string;
+}
+
 export default function SuccessPage() {
   const t = useTranslations('success');
+  const tResults = useTranslations('results');
   const params = useSearchParams();
   const sessionId = params.get('session_id');
   const [status, setStatus] = React.useState<OrderStatus | null>(null);
   const [polls, setPolls] = React.useState(0);
+  const [stashed, setStashed] = React.useState<StashedResult | null>(null);
+  const updateOrderStatus = usePhotoStore((s) => s.updateOrderStatus);
+
+  // After payment is confirmed by the webhook, pull the rendered photo +
+  // print sheet out of sessionStorage (cached on the /editor side just
+  // before the Stripe redirect) and expose download buttons. Reading is
+  // gated on `paid` status so a stranger landing on /success with a bogus
+  // session_id can't pull stashed data.
+  const paid =
+    status?.status === 'paid' ||
+    status?.status === 'fulfilled' ||
+    status?.status === 'shipped';
+
+  React.useEffect(() => {
+    if (!paid || stashed) return;
+    try {
+      const expectedSession = sessionStorage.getItem('vp-pending-session');
+      if (!expectedSession || expectedSession !== sessionId) return;
+      const digital = sessionStorage.getItem('vp-pending-result');
+      const print = sessionStorage.getItem('vp-pending-print');
+      const doc = sessionStorage.getItem('vp-pending-doc');
+      if (digital && doc) setStashed({ digital, print, doc });
+    } catch {
+      /* ignore */
+    }
+  }, [paid, sessionId, stashed]);
 
   React.useEffect(() => {
     if (!sessionId) return;
@@ -32,7 +67,18 @@ export default function SuccessPage() {
         const r = await fetch(`/api/order-status?session_id=${encodeURIComponent(sessionId)}`);
         if (!r.ok) return;
         const data: OrderStatus = await r.json();
-        if (!cancelled) setStatus(data);
+        if (cancelled) return;
+        setStatus(data);
+        // Propagate the confirmed payment back into the Zustand store so the
+        // results page in /editor knows this session is paid and unlocks the
+        // downloads (state is persisted to localStorage, survives reload).
+        if (
+          data.status === 'paid' ||
+          data.status === 'fulfilled' ||
+          data.status === 'shipped'
+        ) {
+          updateOrderStatus(sessionId, data.status);
+        }
       } catch {
         /* ignore */
       }
@@ -46,7 +92,7 @@ export default function SuccessPage() {
       cancelled = true;
       clearInterval(i);
     };
-  }, [sessionId]);
+  }, [sessionId, updateOrderStatus]);
 
   const isFulfilled = status?.status === 'fulfilled' || status?.status === 'shipped';
 
@@ -94,7 +140,32 @@ export default function SuccessPage() {
             <p className="text-xs text-muted-foreground">
               {t('pollLine', { count: polls + 1, session: sessionId?.slice(0, 14) ?? '' })}
             </p>
-            <Button asChild variant="brand" size="lg" className="w-full">
+
+            {/* Download buttons unlock the moment the webhook confirms payment.
+                Same blue/white treatment as the /editor tabs for visual continuity. */}
+            {paid && stashed && (
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  variant="brand"
+                  size="lg"
+                  onClick={() => downloadDataUrl(stashed.digital, `${stashed.doc}.jpg`)}
+                >
+                  <Download className="size-4" /> {tResults('tabs.digital')}
+                </Button>
+                <Button
+                  variant="brand"
+                  size="lg"
+                  disabled={!stashed.print}
+                  onClick={() =>
+                    stashed.print && downloadDataUrl(stashed.print, `${stashed.doc}-print-sheet.jpg`)
+                  }
+                >
+                  <Download className="size-4" /> {tResults('tabs.print')}
+                </Button>
+              </div>
+            )}
+
+            <Button asChild variant={paid && stashed ? 'outline' : 'brand'} size="lg" className="w-full">
               <Link href="/editor">{t('another')}</Link>
             </Button>
           </CardContent>

@@ -162,6 +162,7 @@
     },
     "downloadPhoto": "Photo JPEG",
     "downloadSheet": "4×6 Sheet",
+    "locked": "Downloads and screenshots are disabled until payment is complete.",
     "noEmail": "We never email your photo — downloads happen entirely in your browser.",
     "shipping": "Physical prints ship within 1 business day.",
     "shopHeading": "Send it home or print it",

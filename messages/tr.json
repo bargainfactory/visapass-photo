@@ -127,6 +127,7 @@
     },
     "downloadPhoto": "Fotoğraf JPEG",
     "downloadSheet": "4×6 sayfa",
+    "locked": "Ödeme tamamlanana kadar indirme ve ekran görüntüsü devre dışıdır.",
     "noEmail": "Fotoğrafınızı asla e-posta ile göndermiyoruz — indirmeler tamamen tarayıcınızda gerçekleşir.",
     "shipping": "Fiziksel baskılar 1 iş gününde gönderilir.",
     "shopHeading": "Eve götürün veya bastırın",

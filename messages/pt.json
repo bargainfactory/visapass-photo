@@ -162,6 +162,7 @@
     },
     "downloadPhoto": "JPEG da foto",
     "downloadSheet": "Folha 4×6",
+    "locked": "Downloads e capturas estão bloqueados até a conclusão do pagamento.",
     "noEmail": "Nunca enviamos sua foto por e-mail — os downloads ocorrem só no navegador.",
     "shipping": "As impressões físicas são enviadas em 1 dia útil.",
     "shopHeading": "Leve para casa ou imprima",

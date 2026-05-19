@@ -32,27 +32,28 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden">
-      {/* Background art: the three-panel journey infographic sits behind the
-          hero. next/image serves an auto-WebP/AVIF, responsively-sized variant
-          via /_next/image. `priority` because it's part of the LCP frame. */}
+      {/* Background art: the "girl taking a selfie" panel from the journey
+          infographic, cropped to a 640×1280 portrait. Full opacity so she is
+          actually visible behind the hero — the overlay below handles text
+          contrast instead of dimming the photo. */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-30">
         <Image
-          src="/showcase/journey.webp"
+          src="/showcase/selfie.webp"
           alt=""
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center opacity-35 dark:opacity-25"
+          className="object-cover object-[center_top]"
         />
       </div>
-      {/* Gradient overlay — keeps the headline and chips perfectly legible on
-          top of the photo while letting the image breathe through at the edges. */}
+      {/* Left-to-right gradient: solid background under the headline so the
+          text always reads, fading to mostly transparent on the right where
+          the upload card sits and the photo can show through clearly. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-20 bg-gradient-to-br from-background via-background/80 to-background/40 dark:from-background dark:via-background/85 dark:to-background/35"
+        className="pointer-events-none absolute inset-0 -z-20 bg-gradient-to-r from-background via-background/85 to-background/30 dark:from-background dark:via-background/85 dark:to-background/35"
       />
-      {/* Brand-blue radial glow on top of everything for the same premium feel
-          the previous mesh background had. */}
+      {/* Brand-blue radial glow on top — same premium feel as before. */}
       <div className="pointer-events-none absolute inset-x-0 -top-40 -z-10 h-[40rem] bg-[radial-gradient(circle_at_50%_30%,hsl(220_100%_70%/0.2),transparent_60%)] dark:opacity-30" />
 
       <div className="container py-12 md:py-20">

@@ -156,6 +156,10 @@
   "results": {
     "compliant": "Konform",
     "specsLine": "{w}×{h} mm · {dpi} DPI · ICAO-ausgerichtet",
+    "tabs": {
+      "digital": "Digitales JPEG",
+      "print": "Druckbar 4×6"
+    },
     "downloadPhoto": "Foto-JPEG",
     "downloadSheet": "4×6-Bogen",
     "noEmail": "Wir senden dein Foto nie per E-Mail — Downloads bleiben im Browser.",

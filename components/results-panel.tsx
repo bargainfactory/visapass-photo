@@ -2,11 +2,12 @@
 
 import * as React from 'react';
 import { useTranslations } from 'next-intl';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Download, Loader2, Mail, ShieldCheck, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { downloadDataUrl } from '@/lib/utils';
 import { findDocument } from '@/lib/countries';
 import { PRINT_PACKAGES } from '@/lib/stripe';
@@ -18,11 +19,15 @@ interface ResultsPanelProps {
   documentId: string;
 }
 
+type DeliverableTab = 'digital' | 'print';
+
 export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: ResultsPanelProps) {
   const t = useTranslations('results');
+  const tCommon = useTranslations('common');
   const tPackages = useTranslations('packages');
   const docPair = findDocument(documentId);
   const [pendingPkg, setPendingPkg] = React.useState<string | null>(null);
+  const [tab, setTab] = React.useState<DeliverableTab>('digital');
   const addOrder = usePhotoStore((s) => s.addOrder);
 
   const startCheckout = async (packageId: string) => {
@@ -60,44 +65,86 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
       <div className="space-y-4">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
           <Card className="overflow-hidden">
-            <div
-              className="grid place-items-center p-8"
-              style={{ background: `linear-gradient(135deg, ${doc.background}, ${doc.background}cc)` }}
-            >
-              <img
-                src={resultDataUrl}
-                alt=""
-                className="max-h-80 rounded-lg border bg-white shadow-2xl"
-              />
-            </div>
-            <CardContent className="space-y-3 p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-semibold">{country.flag} {doc.label}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {t('specsLine', { w: doc.widthMm, h: doc.heightMm, dpi: doc.dpi })}
-                  </p>
+            <Tabs value={tab} onValueChange={(v) => setTab(v as DeliverableTab)} className="w-full">
+              <TabsList className="grid h-11 w-full grid-cols-2 rounded-none border-b bg-muted/40 p-1">
+                <TabsTrigger value="digital" className="text-sm">
+                  {t('tabs.digital')}
+                </TabsTrigger>
+                <TabsTrigger value="print" className="text-sm" disabled={!printSheetDataUrl}>
+                  {t('tabs.print')}
+                </TabsTrigger>
+              </TabsList>
+
+              <AnimatePresence mode="wait">
+                <TabsContent value="digital" key="digital" forceMount={tab === 'digital' ? true : undefined} hidden={tab !== 'digital'} className="m-0">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.2 }}
+                    className="grid place-items-center p-8"
+                    style={{
+                      background: `linear-gradient(135deg, ${doc.background}, ${doc.background}cc)`,
+                    }}
+                  >
+                    <img
+                      src={resultDataUrl}
+                      alt=""
+                      className="max-h-80 rounded-lg border bg-white shadow-2xl"
+                    />
+                  </motion.div>
+                </TabsContent>
+                <TabsContent value="print" key="print" forceMount={tab === 'print' ? true : undefined} hidden={tab !== 'print'} className="m-0">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.2 }}
+                    className="grid place-items-center bg-[linear-gradient(135deg,#f4f4f5,#e7e7e8)] p-8"
+                  >
+                    {printSheetDataUrl ? (
+                      <img
+                        src={printSheetDataUrl}
+                        alt=""
+                        className="max-h-80 rounded-lg border bg-white shadow-2xl"
+                      />
+                    ) : (
+                      <div className="grid place-items-center gap-2 py-12 text-sm text-muted-foreground">
+                        <Loader2 className="size-5 animate-spin" />
+                      </div>
+                    )}
+                  </motion.div>
+                </TabsContent>
+              </AnimatePresence>
+
+              <CardContent className="space-y-3 p-5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold">{country.flag} {doc.label}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {t('specsLine', { w: doc.widthMm, h: doc.heightMm, dpi: doc.dpi })}
+                    </p>
+                  </div>
+                  <Badge variant="success" className="gap-1">
+                    <ShieldCheck className="size-3" /> {t('compliant')}
+                  </Badge>
                 </div>
-                <Badge variant="success" className="gap-1">
-                  <ShieldCheck className="size-3" /> {t('compliant')}
-                </Badge>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <Button size="sm" variant="outline" onClick={() => downloadDataUrl(resultDataUrl, `${doc.id}.jpg`)}>
-                  <Download className="size-4" /> {t('downloadPhoto')}
-                </Button>
                 <Button
-                  size="sm"
-                  variant="outline"
-                  disabled={!printSheetDataUrl}
-                  onClick={() =>
-                    printSheetDataUrl && downloadDataUrl(printSheetDataUrl, `${doc.id}-print-sheet.jpg`)
-                  }
+                  size="lg"
+                  variant="brand"
+                  className="w-full"
+                  disabled={tab === 'print' && !printSheetDataUrl}
+                  onClick={() => {
+                    if (tab === 'digital') {
+                      downloadDataUrl(resultDataUrl, `${doc.id}.jpg`);
+                    } else if (printSheetDataUrl) {
+                      downloadDataUrl(printSheetDataUrl, `${doc.id}-print-sheet.jpg`);
+                    }
+                  }}
                 >
-                  <Download className="size-4" /> {t('downloadSheet')}
+                  <Download className="size-4" /> {tCommon('download')}{' '}
+                  {tab === 'digital' ? t('tabs.digital') : t('tabs.print')}
                 </Button>
-              </div>
-            </CardContent>
+              </CardContent>
+            </Tabs>
           </Card>
         </motion.div>
 

@@ -121,6 +121,10 @@
   "results": {
     "compliant": "合规",
     "specsLine": "{w}×{h} 毫米 · {dpi} DPI · 符合 ICAO",
+    "tabs": {
+      "digital": "数字 JPEG",
+      "print": "可打印 4×6"
+    },
     "downloadPhoto": "照片 JPEG",
     "downloadSheet": "4×6 打印纸",
     "noEmail": "我们绝不通过邮件发送你的照片 — 下载完全在浏览器内进行。",

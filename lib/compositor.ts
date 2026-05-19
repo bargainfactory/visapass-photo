@@ -114,37 +114,148 @@ export async function composeFinal({
   octx.drawImage(work, 0, 0, outW, outH);
   const dataUrl = out.toDataURL('image/jpeg', 0.95);
 
-  // Step 3: build a 4×6 print sheet at 300 DPI with multiple copies arranged in a grid.
-  const sheetW = mmToPx(152.4, doc.dpi); // 6 inch
-  const sheetH = mmToPx(101.6, doc.dpi); // 4 inch
-  const sheet = document.createElement('canvas');
-  sheet.width = sheetW;
-  sheet.height = sheetH;
-  const sctx = sheet.getContext('2d')!;
-  sctx.fillStyle = '#FFFFFF';
-  sctx.fillRect(0, 0, sheetW, sheetH);
-  // Center photos with 4mm bleed/margins.
-  const margin = mmToPx(4, doc.dpi);
-  const cols = Math.max(1, Math.floor((sheetW - margin) / (outW + margin)));
-  const rows = Math.max(1, Math.floor((sheetH - margin) / (outH + margin)));
-  const totalW = cols * outW + (cols - 1) * margin;
-  const totalH = rows * outH + (rows - 1) * margin;
-  const startX = Math.round((sheetW - totalW) / 2);
-  const startY = Math.round((sheetH - totalH) / 2);
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      sctx.drawImage(out, startX + c * (outW + margin), startY + r * (outH + margin));
-    }
-  }
-  // Faint crop guides for cutting.
-  sctx.strokeStyle = 'rgba(150,150,150,0.35)';
-  sctx.lineWidth = 1;
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      sctx.strokeRect(startX + c * (outW + margin), startY + r * (outH + margin), outW, outH);
-    }
-  }
-  const printSheetDataUrl = sheet.toDataURL('image/jpeg', 0.95);
+  // Step 3: build the 4×6 print sheet using the best gang-up for this photo size.
+  const printSheetDataUrl = renderPrintSheet(out, doc.widthMm, doc.heightMm, doc.dpi);
 
   return { dataUrl, printSheetDataUrl, pixelWidth: outW, pixelHeight: outH };
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Print sheet — 4×6 inch gang-up with adaptive orientation & layout.        */
+/* -------------------------------------------------------------------------- */
+
+const SHEET_LONG_MM = 152.4; // 6 inch
+const SHEET_SHORT_MM = 101.6; // 4 inch
+// 1 mm safe-cut margin around the photo grid — most consumer print kiosks
+// have a 1-2 mm bleed area at the paper edge, so we keep just enough breathing
+// room to avoid hairline clipping while letting 51 mm × 51 mm (US 2×2") fit
+// 6-up in landscape (which needs every micron of width).
+const SHEET_OUTER_MARGIN_MM = 1;
+
+interface SheetLayout {
+  orientation: 'landscape' | 'portrait';
+  cols: number;
+  rows: number;
+  /** Per-photo pixel size on the sheet — may be a touch smaller than spec
+   *  if the gang-up needed a 0-2% downscale to fit the sheet exactly. */
+  photoWPx: number;
+  photoHPx: number;
+  sheetWPx: number;
+  sheetHPx: number;
+}
+
+/**
+ * Pick the best layout for a given photo size:
+ *   1. Try 6 photos in landscape (3 cols × 2 rows).
+ *   2. Then 6 in portrait (2 × 3).
+ *   3. Fall back to 4 in portrait (2 × 2).
+ *   4. Last resort: 4 in landscape (2 × 2).
+ *   5. Worst case: 1 photo on a portrait sheet.
+ *
+ * Each candidate is accepted if the photos fit inside the sheet's
+ * inner-margin area allowing up to 2% downscale (absorbs tiny mm-rounding
+ * overflows like the US 2×2" / 51 mm spec on a 152.4 mm sheet).
+ */
+export function pickSheetLayout(photoWmm: number, photoHmm: number, dpi: number): SheetLayout {
+  const candidates: Array<{ orient: 'landscape' | 'portrait'; cols: number; rows: number }> = [
+    { orient: 'landscape', cols: 3, rows: 2 }, // 6 across
+    { orient: 'portrait', cols: 2, rows: 3 }, // 6 down
+    { orient: 'portrait', cols: 2, rows: 2 }, // 4 portrait (Canada etc.)
+    { orient: 'landscape', cols: 2, rows: 2 }, // 4 landscape
+  ];
+
+  for (const cand of candidates) {
+    const sheetW = cand.orient === 'landscape' ? SHEET_LONG_MM : SHEET_SHORT_MM;
+    const sheetH = cand.orient === 'landscape' ? SHEET_SHORT_MM : SHEET_LONG_MM;
+    const availW = sheetW - 2 * SHEET_OUTER_MARGIN_MM;
+    const availH = sheetH - 2 * SHEET_OUTER_MARGIN_MM;
+    const reqW = cand.cols * photoWmm;
+    const reqH = cand.rows * photoHmm;
+    // Accept with up to 3% downscale — covers cases like US 2×2" (which is
+    // technically 50.8 mm but we store as 51 mm) so 3-up fits within the 6"
+    // sheet dimension after a sub-millimetre shave.
+    if (reqW <= availW * 1.03 && reqH <= availH * 1.03) {
+      const scale = Math.min(1, Math.min(availW / reqW, availH / reqH));
+      return {
+        orientation: cand.orient,
+        cols: cand.cols,
+        rows: cand.rows,
+        photoWPx: Math.round(mmToPx(photoWmm * scale, dpi)),
+        photoHPx: Math.round(mmToPx(photoHmm * scale, dpi)),
+        sheetWPx: mmToPx(sheetW, dpi),
+        sheetHPx: mmToPx(sheetH, dpi),
+      };
+    }
+  }
+
+  // Single photo fallback.
+  return {
+    orientation: 'portrait',
+    cols: 1,
+    rows: 1,
+    photoWPx: mmToPx(photoWmm, dpi),
+    photoHPx: mmToPx(photoHmm, dpi),
+    sheetWPx: mmToPx(SHEET_SHORT_MM, dpi),
+    sheetHPx: mmToPx(SHEET_LONG_MM, dpi),
+  };
+}
+
+function renderPrintSheet(
+  photoCanvas: HTMLCanvasElement,
+  photoWmm: number,
+  photoHmm: number,
+  dpi: number
+): string {
+  const layout = pickSheetLayout(photoWmm, photoHmm, dpi);
+
+  const sheet = document.createElement('canvas');
+  sheet.width = layout.sheetWPx;
+  sheet.height = layout.sheetHPx;
+  const sctx = sheet.getContext('2d')!;
+
+  // Pure white background — what every print kiosk expects.
+  sctx.fillStyle = '#FFFFFF';
+  sctx.fillRect(0, 0, sheet.width, sheet.height);
+
+  // Centre the photo grid on the sheet.
+  const gridW = layout.cols * layout.photoWPx;
+  const gridH = layout.rows * layout.photoHPx;
+  const startX = Math.round((sheet.width - gridW) / 2);
+  const startY = Math.round((sheet.height - gridH) / 2);
+
+  sctx.imageSmoothingEnabled = true;
+  sctx.imageSmoothingQuality = 'high';
+  for (let r = 0; r < layout.rows; r++) {
+    for (let c = 0; c < layout.cols; c++) {
+      sctx.drawImage(
+        photoCanvas,
+        startX + c * layout.photoWPx,
+        startY + r * layout.photoHPx,
+        layout.photoWPx,
+        layout.photoHPx
+      );
+    }
+  }
+
+  // Light-grey separator lines between photos (and around the grid) — easy
+  // visual cut guide for the print kiosk without intruding on the photos.
+  sctx.strokeStyle = '#D4D4D4';
+  // Scale stroke proportional to sheet width so the line is visible at print size
+  // (~1.5 px at 300 DPI) without dominating the photo edges.
+  sctx.lineWidth = Math.max(1, Math.round(layout.sheetWPx / 1200));
+  sctx.beginPath();
+  for (let c = 1; c < layout.cols; c++) {
+    const x = startX + c * layout.photoWPx + 0.5;
+    sctx.moveTo(x, startY);
+    sctx.lineTo(x, startY + gridH);
+  }
+  for (let r = 1; r < layout.rows; r++) {
+    const y = startY + r * layout.photoHPx + 0.5;
+    sctx.moveTo(startX, y);
+    sctx.lineTo(startX + gridW, y);
+  }
+  sctx.rect(startX + 0.5, startY + 0.5, gridW, gridH);
+  sctx.stroke();
+
+  return sheet.toDataURL('image/jpeg', 0.95);
 }

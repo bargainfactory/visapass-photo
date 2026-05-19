@@ -121,6 +121,10 @@
   "results": {
     "compliant": "Conform",
     "specsLine": "{w}×{h} mm · {dpi} DPI · ICAO-uitgelijnd",
+    "tabs": {
+      "digital": "Digitale JPEG",
+      "print": "Afdrukbaar 4×6"
+    },
     "downloadPhoto": "Foto-JPEG",
     "downloadSheet": "4×6 vel",
     "noEmail": "We mailen je foto nooit — downloads gebeuren in je browser.",

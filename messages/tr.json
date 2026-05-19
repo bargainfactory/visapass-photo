@@ -121,6 +121,10 @@
   "results": {
     "compliant": "Uyumlu",
     "specsLine": "{w}×{h} mm · {dpi} DPI · ICAO uyumlu",
+    "tabs": {
+      "digital": "Dijital JPEG",
+      "print": "Yazdırılabilir 4×6"
+    },
     "downloadPhoto": "Fotoğraf JPEG",
     "downloadSheet": "4×6 sayfa",
     "noEmail": "Fotoğrafınızı asla e-posta ile göndermiyoruz — indirmeler tamamen tarayıcınızda gerçekleşir.",

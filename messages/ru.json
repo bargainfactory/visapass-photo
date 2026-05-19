@@ -121,6 +121,10 @@
   "results": {
     "compliant": "Соответствует",
     "specsLine": "{w}×{h} мм · {dpi} DPI · соответствует ICAO",
+    "tabs": {
+      "digital": "Цифровой JPEG",
+      "print": "Печатный 4×6"
+    },
     "downloadPhoto": "JPEG фото",
     "downloadSheet": "Лист 4×6",
     "noEmail": "Мы никогда не отправляем ваше фото по почте — скачивание полностью в браузере.",

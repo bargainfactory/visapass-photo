@@ -121,6 +121,10 @@
   "results": {
     "compliant": "متوافقة",
     "specsLine": "{w}×{h} مم · {dpi} DPI · متوافقة مع ICAO",
+    "tabs": {
+      "digital": "JPEG رقمي",
+      "print": "قابل للطباعة 4×6"
+    },
     "downloadPhoto": "JPEG للصورة",
     "downloadSheet": "ورقة 4×6",
     "noEmail": "لا نرسل صورتك بالبريد — التنزيل يتم بالكامل داخل المتصفح.",

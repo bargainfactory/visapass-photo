@@ -121,6 +121,10 @@
   "results": {
     "compliant": "準拠",
     "specsLine": "{w}×{h} mm · {dpi} DPI · ICAO 準拠",
+    "tabs": {
+      "digital": "デジタル JPEG",
+      "print": "印刷可能 4×6"
+    },
     "downloadPhoto": "写真 JPEG",
     "downloadSheet": "4×6 シート",
     "noEmail": "写真をメールで送ることはありません — ダウンロードはブラウザ内で完結します。",

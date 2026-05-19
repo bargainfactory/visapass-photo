@@ -121,6 +121,10 @@
   "results": {
     "compliant": "अनुपालक",
     "specsLine": "{w}×{h} मिमी · {dpi} DPI · ICAO-संरेखित",
+    "tabs": {
+      "digital": "डिजिटल JPEG",
+      "print": "प्रिंट योग्य 4×6"
+    },
     "downloadPhoto": "फ़ोटो JPEG",
     "downloadSheet": "4×6 शीट",
     "noEmail": "हम कभी आपकी फ़ोटो ईमेल नहीं करते — डाउनलोड पूरी तरह ब्राउज़र में होते हैं।",

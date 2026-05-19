@@ -173,8 +173,14 @@ export const COUNTRIES: CountrySpec[] = [
         label: 'Australia Passport (35×45 mm)',
         widthMm: 35,
         heightMm: 45,
-        headHeightRatio: [0.7, 0.8],
+        // Match the UK passport's cropping configuration: 32 mm head height
+        // crown-to-chin, anchored 3 mm below the top of the photo, with the
+        // 0.65-0.75 head-height ratio range. Background stays white per the
+        // Australian DFAT spec — only the geometric values are unified.
+        headHeightRatio: [0.65, 0.75],
         eyeLineFromBottom: [0.55, 0.7],
+        headHeightMm: 32,
+        crownFromTopMm: 3,
         background: '#FFFFFF',
         glasses: 'forbidden',
         expression: 'neutral',

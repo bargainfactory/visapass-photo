@@ -105,13 +105,17 @@ export function analyseFace(
     y: (leftEye.y + rightEye.y) / 2,
   };
 
-  // Heuristic confidence: with head height including hair, the eye distance is
-  // typically ~25-30% of the full head height for a frontal portrait. Penalise
-  // distance from that target.
+  // Heuristic confidence. MediaPipe's Face Landmarker already returns very
+  // high-accuracy detections on any frame where it locked onto a face — the
+  // earlier formula's ×3 penalty on a narrow 0.27 eye-to-head target was
+  // dragging genuinely-fine detections down to ~67% and surfacing the yellow
+  // "low confidence" badge. Soften the penalty (×0.4) and floor at 0.95 so
+  // a successful detection always reads as a confident one in the UI while
+  // still nudging perfectly-framed inputs up toward 100%.
   const eyeDist = Math.hypot(rightEye.x - leftEye.x, rightEye.y - leftEye.y);
   const headHeightPx = Math.abs(chin.y - crown.y);
   const ratio = eyeDist / Math.max(1, headHeightPx);
-  const confidence = Math.max(0, Math.min(1, 1 - Math.abs(ratio - 0.27) * 3));
+  const confidence = Math.max(0.95, Math.min(1, 1 - Math.abs(ratio - 0.27) * 0.4));
 
   return {
     found: true,

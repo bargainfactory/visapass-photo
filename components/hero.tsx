@@ -38,7 +38,7 @@ export function Hero() {
           paint. */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-30">
         <Image
-          src="/showcase/selfie.webp"
+          src="/showcase/hero-journey.webp"
           alt=""
           fill
           priority

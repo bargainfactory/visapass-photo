@@ -12,7 +12,7 @@ import { CameraCapture } from '@/components/camera-capture';
 import { CountrySelector } from '@/components/country-selector';
 import { EditorStudio } from '@/components/editor-studio';
 import { ResultsPanel } from '@/components/results-panel';
-import { usePhotoStore } from '@/lib/store';
+import { newRenderToken, usePhotoStore } from '@/lib/store';
 import { findDocument } from '@/lib/countries';
 
 export default function EditorPage() {
@@ -27,6 +27,7 @@ export default function EditorPage() {
   const setStep = usePhotoStore((s) => s.setStep);
   const setSource = usePhotoStore((s) => s.setSource);
   const setDocument = usePhotoStore((s) => s.setDocument);
+  const setRenderToken = usePhotoStore((s) => s.setRenderToken);
   const [cameraOpen, setCameraOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -36,6 +37,9 @@ export default function EditorPage() {
   const handleFile = (file: File) => {
     const url = URL.createObjectURL(file);
     setSource(url, file.type);
+    // Fresh upload → fresh render token so any earlier paid order does
+    // NOT carry over to this new photo. See lib/store.ts comments.
+    setRenderToken(newRenderToken());
     setStep('select');
   };
 

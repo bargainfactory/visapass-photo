@@ -9,18 +9,22 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { UploadDropzone } from '@/components/upload-dropzone';
 import { CameraCapture } from '@/components/camera-capture';
-import { usePhotoStore } from '@/lib/store';
+import { newRenderToken, usePhotoStore } from '@/lib/store';
 
 export function Hero() {
   const t = useTranslations();
   const router = useRouter();
   const setSource = usePhotoStore((s) => s.setSource);
   const setStep = usePhotoStore((s) => s.setStep);
+  const setRenderToken = usePhotoStore((s) => s.setRenderToken);
   const [cameraOpen, setCameraOpen] = React.useState(false);
 
   const handleFile = (file: File) => {
     const url = URL.createObjectURL(file);
     setSource(url, file.type);
+    // Fresh upload → fresh render token so any earlier paid order does
+    // NOT carry over to this new photo. See lib/store.ts comments.
+    setRenderToken(newRenderToken());
     setStep('select');
     router.push('/editor');
   };

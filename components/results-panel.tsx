@@ -28,20 +28,21 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
   const [tab, setTab] = React.useState<DeliverableTab>('digital');
   const addOrder = usePhotoStore((s) => s.addOrder);
   const orders = usePhotoStore((s) => s.orders);
+  const currentRenderToken = usePhotoStore((s) => s.currentRenderToken);
 
-  // A user has "paid" for this document once any order tied to it has
-  // reached paid/fulfilled/shipped. The /success page calls updateOrderStatus
-  // when the Stripe webhook confirms, so this flips automatically after the
-  // round-trip and persists across reloads via Zustand's localStorage middleware.
-  const isPaid = React.useMemo(
-    () =>
-      orders.some(
-        (o) =>
-          o.documentId === documentId &&
-          (o.status === 'paid' || o.status === 'fulfilled' || o.status === 'shipped')
-      ),
-    [orders, documentId]
-  );
+  // An order only unlocks downloads for THIS render — i.e. when the order
+  // was created from the same upload session as the photo currently in
+  // view. Without the render-token scope, a previous purchase of any
+  // US-passport photo would auto-unlock every future US-passport upload,
+  // letting users download new photos for free.
+  const isPaid = React.useMemo(() => {
+    if (!currentRenderToken) return false;
+    return orders.some(
+      (o) =>
+        o.renderToken === currentRenderToken &&
+        (o.status === 'paid' || o.status === 'fulfilled' || o.status === 'shipped')
+    );
+  }, [orders, currentRenderToken]);
 
   const startCheckout = async (packageId: string) => {
     setPendingPkg(packageId);
@@ -59,6 +60,9 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
         amountCents: data.amountCents,
         status: 'pending',
         createdAt: Date.now(),
+        // Tag the order with the per-upload token so isPaid can verify
+        // payment is for THIS specific render, not just this document type.
+        renderToken: currentRenderToken ?? undefined,
       });
       // Stash the rendered result in sessionStorage so /success can offer the
       // download after Stripe redirects back. sessionStorage survives the same-tab

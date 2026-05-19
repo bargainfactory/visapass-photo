@@ -79,6 +79,15 @@
       "body": "Lade ein ICAO-konformes JPEG sowie einen 4×6\"-Druckbogen mit 300 DPI für jede Drogerie herunter."
     }
   },
+  "journey": {
+    "badge": "So funktioniert's",
+    "heading": "Vom Selfie zum konformen Foto in Sekunden",
+    "subtitle": "Aufnehmen, hochladen, herunterladen — ohne Studio, ohne Termin, ohne Nachreichungen.",
+    "stepLabel": "Schritt {n}",
+    "step1": "Selfie aufnehmen",
+    "step2": "Hochladen & verarbeiten",
+    "step3": "Konformes Foto erhalten"
+  },
   "countryShowcase": {
     "badge": "Über 20 Spezifikationen",
     "heading": "Länderperfekt, jedes Mal",

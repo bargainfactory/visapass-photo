@@ -49,6 +49,15 @@
     "privacy": { "title": "Resta sul tuo dispositivo", "body": "Nessun upload sul server di default — la foto lascia il browser solo se ordini stampe fisiche." },
     "print": { "title": "Pronta per la stampa", "body": "Scarica un JPEG conforme ICAO e un foglio 4×6\" a 300 DPI da stampare in qualsiasi farmacia." }
   },
+  "journey": {
+    "badge": "Come funziona",
+    "heading": "Dal selfie alla foto conforme in pochi secondi",
+    "subtitle": "Scatta, carica, scarica — niente studio, niente appuntamenti, niente reinvii.",
+    "stepLabel": "Passaggio {n}",
+    "step1": "Fai un selfie",
+    "step2": "Carica ed elabora",
+    "step3": "Ottieni una foto conforme"
+  },
   "countryShowcase": {
     "badge": "Oltre 20 specifiche",
     "heading": "Perfetto per ogni Paese, ogni volta",

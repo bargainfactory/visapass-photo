@@ -79,6 +79,15 @@
       "body": "Téléchargez un JPEG conforme ICAO et une planche 4×6 pouces à 300 DPI pour imprimer en pharmacie."
     }
   },
+  "journey": {
+    "badge": "Comment ça marche",
+    "heading": "Du selfie à la photo conforme en quelques secondes",
+    "subtitle": "Prenez, téléversez, téléchargez — sans studio, sans rendez-vous, sans deuxième envoi.",
+    "stepLabel": "Étape {n}",
+    "step1": "Prenez un selfie",
+    "step2": "Téléversez et traitez",
+    "step3": "Obtenez une photo conforme"
+  },
   "countryShowcase": {
     "badge": "Plus de 20 spécifications",
     "heading": "Parfait pour chaque pays, à chaque fois",

@@ -49,6 +49,15 @@
     "privacy": { "title": "Cihazınızda kalır", "body": "Varsayılan olarak sunucuya yükleme yok — fotoğraf yalnızca fiziksel baskı sipariş ederseniz çıkar." },
     "print": { "title": "Baskıya hazır çıktı", "body": "ICAO uyumlu JPEG ve 300 DPI 4×6 inç sayfayı indirip her eczanede bastırabilirsiniz." }
   },
+  "journey": {
+    "badge": "Nasıl çalışır",
+    "heading": "Selfie'den uyumlu fotoğrafa saniyeler içinde",
+    "subtitle": "Çek, yükle, indir — stüdyo yok, randevu yok, ikinci gönderim yok.",
+    "stepLabel": "Adım {n}",
+    "step1": "Selfie çek",
+    "step2": "Yükle ve işle",
+    "step3": "Uyumlu fotoğrafı al"
+  },
   "countryShowcase": {
     "badge": "20+ özellik",
     "heading": "Her ülke için her zaman mükemmel",

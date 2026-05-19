@@ -79,6 +79,15 @@
       "body": "Download an ICAO-compliant JPEG and a 4×6” glossy-printer sheet at 300 DPI to print at any pharmacy."
     }
   },
+  "journey": {
+    "badge": "How it works",
+    "heading": "From selfie to compliant photo in seconds",
+    "subtitle": "Snap, upload, download — no studio, no appointments, no second submissions.",
+    "stepLabel": "Step {n}",
+    "step1": "Take a selfie",
+    "step2": "Upload & process",
+    "step3": "Get a compliant photo"
+  },
   "countryShowcase": {
     "badge": "20+ specifications",
     "heading": "Country-perfect, every time",

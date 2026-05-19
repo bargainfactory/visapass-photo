@@ -49,6 +49,15 @@
     "privacy": { "title": "Blijft op je apparaat", "body": "Standaard geen serveronload — de foto verlaat de browser alleen bij fysieke afdrukken." },
     "print": { "title": "Klaar voor de printer", "body": "Download een ICAO-conforme JPEG en een 4×6\" vel op 300 DPI om bij elke drogist af te drukken." }
   },
+  "journey": {
+    "badge": "Hoe het werkt",
+    "heading": "Van selfie tot conforme foto in seconden",
+    "subtitle": "Maken, uploaden, downloaden — geen studio, geen afspraak, geen tweede pogingen.",
+    "stepLabel": "Stap {n}",
+    "step1": "Maak een selfie",
+    "step2": "Upload & verwerk",
+    "step3": "Ontvang een conforme foto"
+  },
   "countryShowcase": {
     "badge": "20+ specificaties",
     "heading": "Voor elk land perfect",

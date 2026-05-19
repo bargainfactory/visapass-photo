@@ -79,6 +79,15 @@
       "body": "Descarga un JPEG conforme a ICAO y una hoja 4×6” a 300 DPI para imprimir en cualquier farmacia."
     }
   },
+  "journey": {
+    "badge": "Cómo funciona",
+    "heading": "De selfie a foto conforme en segundos",
+    "subtitle": "Hazte una foto, súbela y descárgala — sin estudio, sin cita, sin segundos intentos.",
+    "stepLabel": "Paso {n}",
+    "step1": "Hazte un selfie",
+    "step2": "Sube y procesa",
+    "step3": "Obtén una foto conforme"
+  },
   "countryShowcase": {
     "badge": "Más de 20 especificaciones",
     "heading": "Perfecto para cada país, siempre",

@@ -39,9 +39,13 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
   const docPair = findDocument(documentId);
 
   const [pendingPkg, setPendingPkg] = React.useState<string | null>(null);
-  const [previewTab, setPreviewTab] = React.useState<PreviewTab>('print');
+  // Digital JPEG is the default selection across the whole results card:
+  //   · Preview pill defaults to "Digital" (the single compliant photo)
+  //   · Format pill defaults to "JPEG"
+  //   · Package radio defaults to "Digital Download"
+  const [previewTab, setPreviewTab] = React.useState<PreviewTab>('digital');
   const [format, setFormat] = React.useState<FormatTab>('jpeg');
-  const [selectedPkg, setSelectedPkg] = React.useState<PackageId>('print-sheet');
+  const [selectedPkg, setSelectedPkg] = React.useState<PackageId>('digital');
 
   const addOrder = usePhotoStore((s) => s.addOrder);
   const orders = usePhotoStore((s) => s.orders);

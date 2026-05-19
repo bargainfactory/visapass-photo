@@ -104,6 +104,7 @@
     "colorTuning": "रंग समायोजन",
     "brightness": "चमक",
     "contrast": "कंट्रास्ट",
+    "shadow": "छायाएँ",
     "specsLine": "{w}×{h} मिमी · {dpi} DPI · {glasses}",
     "glassesForbidden": "चश्मा नहीं",
     "glassesAllowedNoGlare": "चश्मा अनुमत (कोई चमक नहीं)",

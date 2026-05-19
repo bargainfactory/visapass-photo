@@ -139,6 +139,7 @@
     "colorTuning": "Ajuste de cor",
     "brightness": "Brilho",
     "contrast": "Contraste",
+    "shadow": "Sombras",
     "specsLine": "{w}×{h} mm · {dpi} DPI · {glasses}",
     "glassesForbidden": "sem óculos",
     "glassesAllowedNoGlare": "óculos permitidos (sem brilho)",

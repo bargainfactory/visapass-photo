@@ -104,6 +104,7 @@
     "colorTuning": "色彩微调",
     "brightness": "亮度",
     "contrast": "对比度",
+    "shadow": "阴影",
     "specsLine": "{w}×{h} 毫米 · {dpi} DPI · {glasses}",
     "glassesForbidden": "不可戴眼镜",
     "glassesAllowedNoGlare": "可戴眼镜(无反光)",

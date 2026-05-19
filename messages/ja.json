@@ -104,6 +104,7 @@
     "colorTuning": "色調整",
     "brightness": "明るさ",
     "contrast": "コントラスト",
+    "shadow": "シャドウ",
     "specsLine": "{w}×{h} mm · {dpi} DPI · {glasses}",
     "glassesForbidden": "眼鏡不可",
     "glassesAllowedNoGlare": "眼鏡可(反射なし)",

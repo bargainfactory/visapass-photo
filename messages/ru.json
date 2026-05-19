@@ -104,6 +104,7 @@
     "colorTuning": "Настройка цвета",
     "brightness": "Яркость",
     "contrast": "Контраст",
+    "shadow": "Тени",
     "specsLine": "{w}×{h} мм · {dpi} DPI · {glasses}",
     "glassesForbidden": "без очков",
     "glassesAllowedNoGlare": "очки разрешены (без бликов)",

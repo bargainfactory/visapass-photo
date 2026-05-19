@@ -65,6 +65,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
   const setResult = usePhotoStore((s) => s.setResult);
   const brightness = usePhotoStore((s) => s.brightness);
   const contrast = usePhotoStore((s) => s.contrast);
+  const shadow = usePhotoStore((s) => s.shadow);
   const setAdjustments = usePhotoStore((s) => s.setAdjustments);
   const setFaceConfidence = usePhotoStore((s) => s.setFaceConfidence);
 
@@ -143,6 +144,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
         crop,
         brightness,
         contrast,
+        shadow,
       });
       setResult(out.dataUrl, out.printSheetDataUrl);
       setPreviewUrl(out.dataUrl);
@@ -172,13 +174,14 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
       crop: state.crop,
       brightness,
       contrast,
+      shadow,
     });
     // Drop the result if a newer recompose has started — avoids flicker when
     // multiple slider ticks are in flight at once.
     if (seq !== recomposeSeqRef.current) return;
     setResult(out.dataUrl, out.printSheetDataUrl);
     setPreviewUrl(out.dataUrl);
-  }, [docPair, state.imageEl, state.crop, state.cutoutBlob, brightness, contrast, setResult]);
+  }, [docPair, state.imageEl, state.crop, state.cutoutBlob, brightness, contrast, shadow, setResult]);
 
   // Debounce slider-driven recomposes so dragging at full speed doesn't queue
   // a recompose per tick. ~110 ms is below the perceptual delay threshold but
@@ -193,7 +196,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [brightness, contrast]);
+  }, [brightness, contrast, shadow]);
 
   if (!docPair) return null;
   const { doc, country } = docPair;
@@ -351,8 +354,8 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setAdjustments(0, 0)}
-                disabled={brightness === 0 && contrast === 0}
+                onClick={() => setAdjustments(0, 0, 0)}
+                disabled={brightness === 0 && contrast === 0 && shadow === 0}
               >
                 <RefreshCw className="size-3" /> {tCommon('reset')}
               </Button>
@@ -364,7 +367,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
               </div>
               <Slider
                 value={[brightness]}
-                onValueChange={([v]) => setAdjustments(v, contrast)}
+                onValueChange={([v]) => setAdjustments(v, contrast, shadow)}
                 min={-50}
                 max={50}
                 step={1}
@@ -377,7 +380,22 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
               </div>
               <Slider
                 value={[contrast]}
-                onValueChange={([v]) => setAdjustments(brightness, v)}
+                onValueChange={([v]) => setAdjustments(brightness, v, shadow)}
+                min={-50}
+                max={50}
+                step={1}
+              />
+            </div>
+            {/* Photoshop-inspired Shadow level — positive crushes blacks
+                (raises the input black point), negative lifts dark areas. */}
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs">
+                <Label>{t('shadow')}</Label>
+                <span className="tabular-nums text-muted-foreground">{shadow}</span>
+              </div>
+              <Slider
+                value={[shadow]}
+                onValueChange={([v]) => setAdjustments(brightness, contrast, v)}
                 min={-50}
                 max={50}
                 step={1}

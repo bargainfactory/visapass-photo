@@ -33,6 +33,14 @@ interface PhotoState {
   printSheetDataUrl: string | null;
   brightness: number;
   contrast: number;
+  /**
+   * Photoshop-style "Shadow" tone adjustment in the range -50..50.
+   *   · positive = crush shadows (raise the black point)
+   *   · negative = lift shadows (push dark values upward)
+   * Applied as a per-pixel tone curve in the compositor *after* the
+   * CSS-filter brightness/contrast pass.
+   */
+  shadow: number;
   /** Recently completed Stripe orders for the current user (kept lightweight). */
   orders: OrderRecord[];
   /** Last face detection confidence (0–1). */
@@ -47,7 +55,7 @@ interface PhotoState {
   setSource: (url: string | null, mime: string | null) => void;
   setDocument: (id: string | null) => void;
   setResult: (dataUrl: string | null, sheetUrl?: string | null) => void;
-  setAdjustments: (b: number, c: number) => void;
+  setAdjustments: (b: number, c: number, s: number) => void;
   setFaceConfidence: (c: number | null) => void;
   setRenderToken: (token: string | null) => void;
   addOrder: (o: OrderRecord) => void;
@@ -66,6 +74,7 @@ export const usePhotoStore = create<PhotoState>()(
       printSheetDataUrl: null,
       brightness: 0,
       contrast: 0,
+      shadow: 0,
       orders: [],
       faceConfidence: null,
       currentRenderToken: null,
@@ -74,7 +83,7 @@ export const usePhotoStore = create<PhotoState>()(
       setDocument: (documentId) => set({ documentId }),
       setResult: (resultDataUrl, sheetUrl) =>
         set({ resultDataUrl, printSheetDataUrl: sheetUrl ?? null }),
-      setAdjustments: (brightness, contrast) => set({ brightness, contrast }),
+      setAdjustments: (brightness, contrast, shadow) => set({ brightness, contrast, shadow }),
       setFaceConfidence: (faceConfidence) => set({ faceConfidence }),
       setRenderToken: (currentRenderToken) => set({ currentRenderToken }),
       addOrder: (o) => set((s) => ({ orders: [o, ...s.orders].slice(0, 20) })),
@@ -90,6 +99,7 @@ export const usePhotoStore = create<PhotoState>()(
           printSheetDataUrl: null,
           brightness: 0,
           contrast: 0,
+          shadow: 0,
           faceConfidence: null,
           currentRenderToken: null,
         }),

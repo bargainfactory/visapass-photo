@@ -104,6 +104,7 @@
     "colorTuning": "Renk ayarı",
     "brightness": "Parlaklık",
     "contrast": "Kontrast",
+    "shadow": "Gölgeler",
     "specsLine": "{w}×{h} mm · {dpi} DPI · {glasses}",
     "glassesForbidden": "gözlük yok",
     "glassesAllowedNoGlare": "gözlük serbest (parlama yok)",

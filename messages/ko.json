@@ -104,6 +104,7 @@
     "colorTuning": "색상 조정",
     "brightness": "밝기",
     "contrast": "대비",
+    "shadow": "어두운 영역",
     "specsLine": "{w}×{h} mm · {dpi} DPI · {glasses}",
     "glassesForbidden": "안경 불가",
     "glassesAllowedNoGlare": "안경 허용 (반사 없음)",

@@ -104,6 +104,7 @@
     "colorTuning": "Kleurregeling",
     "brightness": "Helderheid",
     "contrast": "Contrast",
+    "shadow": "Schaduwen",
     "specsLine": "{w}×{h} mm · {dpi} DPI · {glasses}",
     "glassesForbidden": "geen bril",
     "glassesAllowedNoGlare": "bril toegestaan (zonder reflectie)",

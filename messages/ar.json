@@ -104,6 +104,7 @@
     "colorTuning": "ضبط اللون",
     "brightness": "السطوع",
     "contrast": "التباين",
+    "shadow": "الظلال",
     "specsLine": "{w}×{h} مم · {dpi} DPI · {glasses}",
     "glassesForbidden": "بدون نظارات",
     "glassesAllowedNoGlare": "النظارات مسموحة (بدون انعكاس)",

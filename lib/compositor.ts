@@ -32,6 +32,17 @@ export interface CompositeOptions {
   brightness?: number;
   /** -50..50 — maps linearly to a contrast multiplier of 0.5×..1.5×. */
   contrast?: number;
+  /**
+   * -50..50 — Photoshop-inspired "Shadow" tone slider.
+   *   · positive = crush shadows (raise the black point — dark areas
+   *                become darker, similar to PS Levels' left-input arrow)
+   *   · negative = lift shadows  (push the floor up — dark areas become
+   *                brighter, similar to PS Curves dragging the bottom-left
+   *                anchor upward)
+   * Applied per-pixel after the brightness/contrast filter so the curve
+   * acts on the already-tone-adjusted image.
+   */
+  shadow?: number;
   /** Force background hex (overrides doc.background). */
   backgroundHex?: string;
 }
@@ -60,6 +71,55 @@ function applyFilters(ctx: CanvasRenderingContext2D, brightness = 0, contrast = 
   ctx.filter = `brightness(${b}) contrast(${c})`;
 }
 
+/**
+ * Photoshop-style "Shadow" tone adjustment, run as a per-pixel pass on the
+ * already-rendered output canvas. Slider range −50..+50.
+ *
+ *   · positive (crush)  raises the black point. Values below `bp` clip to 0,
+ *                       the rest is remapped linearly to [0, 255]. Mirrors
+ *                       what the left-input arrow in Photoshop Levels does.
+ *   · negative (lift)   pushes the dark floor upward while leaving highlights
+ *                       untouched: `out = in + lift * (1 - in/255)`. Closely
+ *                       matches dragging the bottom-left anchor of the
+ *                       Curves tool up.
+ *   · zero              no-op (and we early-return without touching ImageData
+ *                       for performance).
+ *
+ * The RGBA loop is the right tool here — there's no canvas `filter` value
+ * for a clip/lift curve, and the same effect via SVG `feComponentTransfer`
+ * would need a hidden filter element and a `filter: url()` reference. A
+ * straight ImageData pass at 600×600 is < 5 ms on any modern laptop.
+ */
+function applyShadow(canvas: HTMLCanvasElement, shadow = 0) {
+  if (!shadow) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const d = img.data;
+
+  if (shadow > 0) {
+    // Crush shadows: raise the black point to `bp` and remap [bp..255] to [0..255].
+    const bp = (shadow / 100) * 255 * 0.6; // slider 50 → bp ≈ 76 (≈30% black point)
+    const range = 255 - bp;
+    for (let i = 0; i < d.length; i += 4) {
+      d[i] = Math.max(0, ((d[i] - bp) / range) * 255);
+      d[i + 1] = Math.max(0, ((d[i + 1] - bp) / range) * 255);
+      d[i + 2] = Math.max(0, ((d[i + 2] - bp) / range) * 255);
+    }
+  } else {
+    // Lift shadows: out = in + lift * (1 - in/255). Brightens darks, leaves
+    // pure white alone (lift factor goes to 0 as input approaches 255).
+    const lift = (-shadow / 50) * 60; // slider −50 → lift ≈ 60 grey-levels at v=0
+    for (let i = 0; i < d.length; i += 4) {
+      d[i] = d[i] + lift * (1 - d[i] / 255);
+      d[i + 1] = d[i + 1] + lift * (1 - d[i + 1] / 255);
+      d[i + 2] = d[i + 2] + lift * (1 - d[i + 2] / 255);
+    }
+  }
+
+  ctx.putImageData(img, 0, 0);
+}
+
 export async function composeFinal({
   source,
   cutoutBlob,
@@ -68,6 +128,7 @@ export async function composeFinal({
   crop,
   brightness = 0,
   contrast = 0,
+  shadow = 0,
   backgroundHex,
 }: CompositeOptions): Promise<CompositeResult> {
   const bg = backgroundHex ?? doc.background;
@@ -112,6 +173,11 @@ export async function composeFinal({
   octx.imageSmoothingEnabled = true;
   octx.imageSmoothingQuality = 'high';
   octx.drawImage(work, 0, 0, outW, outH);
+  // Photoshop-inspired shadow tone curve, run on the downscaled output so
+  // the per-pixel cost is bounded (≈ 360k pixels at 51×51 mm @ 300 DPI).
+  // Cascades into the print sheet automatically because renderPrintSheet
+  // copies from this same canvas.
+  applyShadow(out, shadow);
   const dataUrl = out.toDataURL('image/jpeg', 0.95);
 
   // Step 3: build the 4×6 print sheet using the best gang-up for this photo size.

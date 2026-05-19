@@ -7,11 +7,14 @@ import { Camera, ImageUp, ShieldCheck } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 /**
- * Three-panel journey: selfie → upload portal → compliant passport photo.
- * Sits directly under the hero so the visitor sees the entire experience
- * before they read about the engineering. The .png lives in `public/showcase/`
- * and is served through next/image so it's auto-converted to WebP/AVIF and
- * responsively sized.
+ * Full-bleed, three-panel journey: selfie → upload portal → compliant
+ * passport photo. Sits between the hero and the feature grid as a wide,
+ * visually distinct band so it's the first thing a scrolling visitor
+ * lands on after the pitch.
+ *
+ * The infographic lives at `public/showcase/journey.webp` and is served
+ * through next/image with its own srcset so devices request only the
+ * width they need (smallest at 640px wide, largest 2048px).
  */
 export function JourneyShowcase() {
   const t = useTranslations('journey');
@@ -23,62 +26,63 @@ export function JourneyShowcase() {
   ] as const;
 
   return (
-    <section className="container py-16 md:py-24">
-      <div className="mx-auto mb-10 max-w-2xl text-center">
-        <Badge variant="brand">{t('badge')}</Badge>
-        <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight md:text-4xl">
-          {t('heading')}
-        </h2>
-        <p className="mt-3 text-muted-foreground">{t('subtitle')}</p>
+    <section className="relative overflow-hidden border-y bg-gradient-to-b from-background via-brand-500/[0.04] to-background py-20 md:py-28">
+      {/* Decorative mesh glow behind the band. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[60%] max-w-5xl bg-[radial-gradient(circle_at_50%_0%,hsl(var(--primary)/0.16),transparent_70%)] blur-3xl"
+      />
+
+      <div className="container">
+        <div className="mx-auto mb-12 max-w-2xl text-center">
+          <Badge variant="brand" className="px-3 py-1 text-xs uppercase tracking-wider">
+            {t('badge')}
+          </Badge>
+          <h2 className="mt-4 font-display text-4xl font-semibold tracking-tight md:text-5xl">
+            {t('heading')}
+          </h2>
+          <p className="mt-4 text-base text-muted-foreground md:text-lg">{t('subtitle')}</p>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
+          className="relative mx-auto max-w-6xl"
+        >
+          <div className="overflow-hidden rounded-3xl border bg-card shadow-[0_30px_80px_-30px_rgba(15,23,42,0.5)] ring-1 ring-black/[0.05] dark:ring-white/[0.06]">
+            <Image
+              src="/showcase/journey.webp"
+              alt=""
+              width={1920}
+              height={1280}
+              sizes="(min-width: 1280px) 1152px, (min-width: 768px) 90vw, 100vw"
+              className="h-auto w-full select-none"
+              priority={false}
+            />
+          </div>
+
+          <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            {steps.map((s, i) => (
+              <div
+                key={s.key}
+                className="flex items-center gap-3 rounded-2xl border bg-card/80 p-4 backdrop-blur transition-colors hover:bg-card"
+              >
+                <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-brand-500/15 text-brand-600 dark:text-brand-300">
+                  <s.icon className="size-5" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                    {t('stepLabel', { n: i + 1 })}
+                  </p>
+                  <p className="text-sm font-semibold">{t(s.key)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="relative mx-auto max-w-5xl"
-      >
-        {/* Soft radial glow behind the image — picks up the brand-blue from the
-            theme on both light and dark backgrounds. */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -inset-10 -z-10 rounded-[3rem] bg-[radial-gradient(circle_at_50%_55%,hsl(var(--primary)/0.22),transparent_70%)] blur-3xl"
-        />
-
-        <div className="overflow-hidden rounded-3xl border bg-card shadow-2xl ring-1 ring-black/[0.04] dark:ring-white/[0.04]">
-          <Image
-            src="/showcase/journey.png"
-            alt=""
-            width={3000}
-            height={2000}
-            sizes="(min-width: 1024px) 960px, 100vw"
-            className="h-auto w-full select-none"
-            priority={false}
-          />
-        </div>
-
-        {/* Step pills under the image — match each panel of the infographic
-            and give the user a textual anchor for what they're seeing. */}
-        <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          {steps.map((s, i) => (
-            <div
-              key={s.key}
-              className="flex items-center gap-3 rounded-2xl border bg-card/70 p-4 backdrop-blur"
-            >
-              <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-brand-500/15 text-brand-600 dark:text-brand-300">
-                <s.icon className="size-5" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  {t('stepLabel', { n: i + 1 })}
-                </p>
-                <p className="truncate text-sm font-semibold">{t(s.key)}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </motion.div>
     </section>
   );
 }

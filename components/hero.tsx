@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Brain, Cpu, Globe2, Lock, Sparkles, Zap } from 'lucide-react';
@@ -31,7 +32,27 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-mesh-light opacity-90 dark:bg-mesh-dark" />
+      {/* Background art: the three-panel journey infographic sits behind the
+          hero. next/image serves an auto-WebP/AVIF, responsively-sized variant
+          via /_next/image. `priority` because it's part of the LCP frame. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-30">
+        <Image
+          src="/showcase/journey.webp"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center opacity-35 dark:opacity-25"
+        />
+      </div>
+      {/* Gradient overlay — keeps the headline and chips perfectly legible on
+          top of the photo while letting the image breathe through at the edges. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-20 bg-gradient-to-br from-background via-background/80 to-background/40 dark:from-background dark:via-background/85 dark:to-background/35"
+      />
+      {/* Brand-blue radial glow on top of everything for the same premium feel
+          the previous mesh background had. */}
       <div className="pointer-events-none absolute inset-x-0 -top-40 -z-10 h-[40rem] bg-[radial-gradient(circle_at_50%_30%,hsl(220_100%_70%/0.2),transparent_60%)] dark:opacity-30" />
 
       <div className="container py-12 md:py-20">

@@ -205,6 +205,20 @@
     "wcag": "Accessibile WCAG 2.2 AA",
     "encrypted": "Pagamenti cifrati end-to-end",
     "noUpload": "Nessuna immagine sui nostri server",
-    "description": "Genera foto passaporto e visto conformi ICAO in pochi secondi, con IA sul dispositivo. La tua foto resta nel browser, a meno che tu non ordini stampe fisiche."
+    "description": "Genera foto passaporto e visto conformi ICAO in pochi secondi, con IA sul dispositivo. La tua foto resta nel browser, a meno che tu non ordini stampe fisiche.",
+    "legalHeading": "Legale",
+    "terms": "Termini di servizio",
+    "privacy": "Informativa sulla privacy",
+    "refunds": "Politica di rimborso"
+  },
+  "legal": {
+    "backToHome": "Torna alla home",
+    "englishOnlyNotice": "I nostri documenti legali sono disponibili solo in inglese. La versione inglese è quella vincolante.",
+    "nav": {
+      "heading": "Documenti legali",
+      "terms": "Termini di servizio",
+      "privacy": "Informativa sulla privacy",
+      "refunds": "Politica di rimborso"
+    }
   }
 }

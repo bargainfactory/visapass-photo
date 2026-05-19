@@ -205,6 +205,20 @@
     "wcag": "Toegankelijk WCAG 2.2 AA",
     "encrypted": "End-to-end versleutelde betalingen",
     "noUpload": "Geen afbeelding naar onze servers",
-    "description": "Genereer ICAO-conforme paspoort- en visumfoto's in seconden, met AI op je apparaat. Je foto verlaat je browser nooit, tenzij je fysieke afdrukken bestelt."
+    "description": "Genereer ICAO-conforme paspoort- en visumfoto's in seconden, met AI op je apparaat. Je foto verlaat je browser nooit, tenzij je fysieke afdrukken bestelt.",
+    "legalHeading": "Juridisch",
+    "terms": "Servicevoorwaarden",
+    "privacy": "Privacybeleid",
+    "refunds": "Restitutiebeleid"
+  },
+  "legal": {
+    "backToHome": "Terug naar home",
+    "englishOnlyNotice": "Onze juridische documenten zijn alleen in het Engels beschikbaar. De Engelse versie is de bindende versie.",
+    "nav": {
+      "heading": "Juridische documenten",
+      "terms": "Servicevoorwaarden",
+      "privacy": "Privacybeleid",
+      "refunds": "Restitutiebeleid"
+    }
   }
 }

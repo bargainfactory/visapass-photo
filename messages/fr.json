@@ -249,6 +249,20 @@
     "wcag": "Accessible WCAG 2.2 AA",
     "encrypted": "Paiements chiffrés de bout en bout",
     "noUpload": "Aucune image envoyée à nos serveurs",
-    "description": "Générez des photos de passeport et visa conformes ICAO en quelques secondes, avec une IA sur appareil. Votre photo ne quitte jamais votre navigateur, sauf si vous commandez des tirages."
+    "description": "Générez des photos de passeport et visa conformes ICAO en quelques secondes, avec une IA sur appareil. Votre photo ne quitte jamais votre navigateur, sauf si vous commandez des tirages.",
+    "legalHeading": "Légal",
+    "terms": "Conditions d'utilisation",
+    "privacy": "Politique de confidentialité",
+    "refunds": "Politique de remboursement"
+  },
+  "legal": {
+    "backToHome": "Retour à l'accueil",
+    "englishOnlyNotice": "Nos documents juridiques sont disponibles en anglais uniquement. La version anglaise fait foi.",
+    "nav": {
+      "heading": "Documents juridiques",
+      "terms": "Conditions d'utilisation",
+      "privacy": "Politique de confidentialité",
+      "refunds": "Politique de remboursement"
+    }
   }
 }

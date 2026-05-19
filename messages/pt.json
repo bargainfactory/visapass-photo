@@ -249,6 +249,20 @@
     "wcag": "Acessível WCAG 2.2 AA",
     "encrypted": "Pagamentos criptografados de ponta a ponta",
     "noUpload": "Nenhuma imagem enviada para nossos servidores",
-    "description": "Gere fotos de passaporte e visto conformes ao ICAO em segundos, com IA no dispositivo. Sua foto nunca sai do navegador, a menos que peça impressões físicas."
+    "description": "Gere fotos de passaporte e visto conformes ao ICAO em segundos, com IA no dispositivo. Sua foto nunca sai do navegador, a menos que peça impressões físicas.",
+    "legalHeading": "Legal",
+    "terms": "Termos de Serviço",
+    "privacy": "Política de Privacidade",
+    "refunds": "Política de Reembolso"
+  },
+  "legal": {
+    "backToHome": "Voltar ao início",
+    "englishOnlyNotice": "Nossos documentos jurídicos estão disponíveis apenas em inglês. A versão em inglês é a versão vinculante destas políticas.",
+    "nav": {
+      "heading": "Documentos legais",
+      "terms": "Termos de Serviço",
+      "privacy": "Política de Privacidade",
+      "refunds": "Política de Reembolso"
+    }
   }
 }

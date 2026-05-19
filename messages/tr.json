@@ -205,6 +205,20 @@
     "wcag": "WCAG 2.2 AA erişilebilir",
     "encrypted": "Uçtan uca şifreli ödemeler",
     "noUpload": "Sunucularımıza görsel yüklenmez",
-    "description": "ICAO uyumlu pasaport ve vize fotoğraflarını saniyeler içinde, cihaz üzerinde AI ile üretin. Fiziksel baskı sipariş etmediğiniz sürece fotoğrafınız tarayıcınızdan çıkmaz."
+    "description": "ICAO uyumlu pasaport ve vize fotoğraflarını saniyeler içinde, cihaz üzerinde AI ile üretin. Fiziksel baskı sipariş etmediğiniz sürece fotoğrafınız tarayıcınızdan çıkmaz.",
+    "legalHeading": "Hukuki",
+    "terms": "Hizmet Şartları",
+    "privacy": "Gizlilik Politikası",
+    "refunds": "İade Politikası"
+  },
+  "legal": {
+    "backToHome": "Ana sayfaya dön",
+    "englishOnlyNotice": "Hukuki belgelerimiz yalnızca İngilizce olarak sunulmaktadır. Bu politikaların bağlayıcı sürümü İngilizce sürümdür.",
+    "nav": {
+      "heading": "Hukuki belgeler",
+      "terms": "Hizmet Şartları",
+      "privacy": "Gizlilik Politikası",
+      "refunds": "İade Politikası"
+    }
   }
 }

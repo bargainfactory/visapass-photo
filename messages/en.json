@@ -249,6 +249,20 @@
     "wcag": "WCAG 2.2 AA accessible",
     "encrypted": "End-to-end encrypted payments",
     "noUpload": "No image uploaded to our servers",
-    "description": "Generate ICAO-compliant passport and visa photos in seconds, with on-device AI. Your photo never leaves your browser unless you order physical prints."
+    "description": "Generate ICAO-compliant passport and visa photos in seconds, with on-device AI. Your photo never leaves your browser unless you order physical prints.",
+    "legalHeading": "Legal",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "refunds": "Refund Policy"
+  },
+  "legal": {
+    "backToHome": "Back to home",
+    "englishOnlyNotice": "Our legal documents are available in English only. The English version is the controlling version of these policies.",
+    "nav": {
+      "heading": "Legal documents",
+      "terms": "Terms of Service",
+      "privacy": "Privacy Policy",
+      "refunds": "Refund Policy"
+    }
   }
 }

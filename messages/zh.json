@@ -205,6 +205,20 @@
     "wcag": "符合 WCAG 2.2 AA",
     "encrypted": "端到端加密支付",
     "noUpload": "不会向服务器上传任何图像",
-    "description": "在几秒内生成符合 ICAO 的护照和签证照片,使用本地 AI。除非你订购实体照片,否则你的照片不会离开浏览器。"
+    "description": "在几秒内生成符合 ICAO 的护照和签证照片,使用本地 AI。除非你订购实体照片,否则你的照片不会离开浏览器。",
+    "legalHeading": "法律",
+    "terms": "服务条款",
+    "privacy": "隐私政策",
+    "refunds": "退款政策"
+  },
+  "legal": {
+    "backToHome": "返回首页",
+    "englishOnlyNotice": "我们的法律文件仅以英文提供。英文版本为本条款的具有约束力的版本。",
+    "nav": {
+      "heading": "法律文件",
+      "terms": "服务条款",
+      "privacy": "隐私政策",
+      "refunds": "退款政策"
+    }
   }
 }

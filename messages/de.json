@@ -249,6 +249,20 @@
     "wcag": "WCAG 2.2 AA zugänglich",
     "encrypted": "Ende-zu-Ende-verschlüsselte Zahlungen",
     "noUpload": "Kein Bild wird auf unsere Server hochgeladen",
-    "description": "Erzeuge ICAO-konforme Pass- und Visafotos in Sekunden, mit KI auf deinem Gerät. Dein Foto verlässt den Browser nur, wenn du Drucke bestellst."
+    "description": "Erzeuge ICAO-konforme Pass- und Visafotos in Sekunden, mit KI auf deinem Gerät. Dein Foto verlässt den Browser nur, wenn du Drucke bestellst.",
+    "legalHeading": "Rechtliches",
+    "terms": "Nutzungsbedingungen",
+    "privacy": "Datenschutzerklärung",
+    "refunds": "Rückerstattungs­richtlinie"
+  },
+  "legal": {
+    "backToHome": "Zurück zur Startseite",
+    "englishOnlyNotice": "Unsere Rechtstexte sind ausschließlich in englischer Sprache verfügbar. Die englische Fassung ist die verbindliche Version.",
+    "nav": {
+      "heading": "Rechtliche Dokumente",
+      "terms": "Nutzungsbedingungen",
+      "privacy": "Datenschutzerklärung",
+      "refunds": "Rückerstattungs­richtlinie"
+    }
   }
 }

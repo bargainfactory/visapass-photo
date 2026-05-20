@@ -144,6 +144,7 @@
     "oneTimePayment": "Разовый платёж. Без подписки.",
     "saveAmount": "ЭКОНОМИЯ {amount}",
     "secureCheckoutLine": "USD · Безопасная оплата через Stripe",
+    "consentLine": "Продолжая, вы принимаете наши <terms>Условия использования</terms>, <privacy>Политику конфиденциальности</privacy> и <refunds>Политику возврата</refunds>.",
     "payAndDownload": "Оплатить {price} и скачать",
     "downloadCta": "Скачать {name}",
     "secure": "Безопасно",

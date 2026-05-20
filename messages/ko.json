@@ -144,6 +144,7 @@
     "oneTimePayment": "1회 결제. 구독 없음.",
     "saveAmount": "{amount} 절약",
     "secureCheckoutLine": "USD · Stripe로 안전하게 결제",
+    "consentLine": "계속 진행하면 <terms>서비스 이용약관</terms>, <privacy>개인정보 처리방침</privacy>, <refunds>환불 정책</refunds>에 동의하는 것으로 간주됩니다.",
     "payAndDownload": "{price} 결제하고 다운로드",
     "downloadCta": "{name} 다운로드",
     "secure": "안전",

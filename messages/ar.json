@@ -144,6 +144,7 @@
     "oneTimePayment": "دفعة واحدة. بدون اشتراك.",
     "saveAmount": "وفّر {amount}",
     "secureCheckoutLine": "USD · دفع آمن عبر Stripe",
+    "consentLine": "بمتابعتك، فإنك تقبل <terms>شروط الخدمة</terms> و<privacy>سياسة الخصوصية</privacy> و<refunds>سياسة الاسترداد</refunds> الخاصة بنا.",
     "payAndDownload": "ادفع {price} ونزّل",
     "downloadCta": "تنزيل {name}",
     "secure": "آمن",

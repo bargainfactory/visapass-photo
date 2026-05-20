@@ -144,6 +144,7 @@
     "oneTimePayment": "一次性付款,无订阅。",
     "saveAmount": "节省 {amount}",
     "secureCheckoutLine": "USD · 由 Stripe 安全结账",
+    "consentLine": "继续即表示您接受我们的<terms>服务条款</terms>、<privacy>隐私政策</privacy>和<refunds>退款政策</refunds>。",
     "payAndDownload": "支付 {price} 并下载",
     "downloadCta": "下载 {name}",
     "secure": "安全",

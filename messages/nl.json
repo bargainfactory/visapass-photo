@@ -144,6 +144,7 @@
     "oneTimePayment": "Eenmalige betaling. Geen abonnement.",
     "saveAmount": "BESPAAR {amount}",
     "secureCheckoutLine": "USD · Veilig afrekenen via Stripe",
+    "consentLine": "Door verder te gaan, accepteer je onze <terms>Servicevoorwaarden</terms>, <privacy>Privacybeleid</privacy> en <refunds>Restitutiebeleid</refunds>.",
     "payAndDownload": "Betaal {price} en download",
     "downloadCta": "{name} downloaden",
     "secure": "Veilig",

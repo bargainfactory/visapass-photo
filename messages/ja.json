@@ -144,6 +144,7 @@
     "oneTimePayment": "1回払い。サブスクなし。",
     "saveAmount": "{amount} お得",
     "secureCheckoutLine": "USD · Stripe で安全に決済",
+    "consentLine": "続行することで、<terms>利用規約</terms>、<privacy>プライバシー ポリシー</privacy>、<refunds>返金ポリシー</refunds>に同意したものとみなされます。",
     "payAndDownload": "{price} を支払ってダウンロード",
     "downloadCta": "{name} をダウンロード",
     "secure": "安全",

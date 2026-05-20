@@ -13,7 +13,7 @@ import {
   Shield,
   Sparkles,
 } from 'lucide-react';
-import { useRouter } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -323,6 +323,40 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
                 </>
               )}
             </Button>
+
+            {/* CONSENT LINE — by clicking the Pay button above the user is
+                bound to our Terms and Privacy Policy, so we surface that
+                contract right at the moment of consent (not buried in the
+                footer). Rendered with t.rich so both policy names are
+                proper locale-aware <Link>s inline. */}
+            <p className="text-center text-[11px] leading-relaxed text-muted-foreground">
+              {t.rich('consentLine', {
+                terms: (chunks) => (
+                  <Link
+                    href="/legal/terms"
+                    className="underline underline-offset-2 hover:text-foreground"
+                  >
+                    {chunks}
+                  </Link>
+                ),
+                privacy: (chunks) => (
+                  <Link
+                    href="/legal/privacy"
+                    className="underline underline-offset-2 hover:text-foreground"
+                  >
+                    {chunks}
+                  </Link>
+                ),
+                refunds: (chunks) => (
+                  <Link
+                    href="/legal/refunds"
+                    className="underline underline-offset-2 hover:text-foreground"
+                  >
+                    {chunks}
+                  </Link>
+                ),
+              })}
+            </p>
 
             {/* TRUST FOOTER */}
             <div className="flex items-center justify-center gap-3 text-xs text-muted-foreground">

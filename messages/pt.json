@@ -179,6 +179,7 @@
     "oneTimePayment": "Pagamento único. Sem assinatura.",
     "saveAmount": "ECONOMIZE {amount}",
     "secureCheckoutLine": "USD · Checkout seguro com Stripe",
+    "consentLine": "Ao prosseguir, você aceita nossos <terms>Termos de Serviço</terms>, <privacy>Política de Privacidade</privacy> e <refunds>Política de Reembolso</refunds>.",
     "payAndDownload": "Pague {price} e baixe",
     "downloadCta": "Baixar {name}",
     "secure": "Seguro",

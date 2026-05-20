@@ -144,6 +144,7 @@
     "oneTimePayment": "एक बार भुगतान। कोई सब्सक्रिप्शन नहीं।",
     "saveAmount": "{amount} बचाएँ",
     "secureCheckoutLine": "USD · Stripe से सुरक्षित भुगतान",
+    "consentLine": "जारी रखने पर, आप हमारी <terms>सेवा की शर्तें</terms>, <privacy>गोपनीयता नीति</privacy> और <refunds>रिफंड नीति</refunds> स्वीकार करते हैं।",
     "payAndDownload": "{price} भुगतान करें और डाउनलोड करें",
     "downloadCta": "{name} डाउनलोड करें",
     "secure": "सुरक्षित",

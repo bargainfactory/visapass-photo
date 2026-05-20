@@ -144,6 +144,7 @@
     "oneTimePayment": "Tek seferlik ödeme. Abonelik yok.",
     "saveAmount": "{amount} TASARRUF",
     "secureCheckoutLine": "USD · Stripe ile güvenli ödeme",
+    "consentLine": "Devam ederek <terms>Hizmet Şartları</terms>'mızı, <privacy>Gizlilik Politikası</privacy>'mızı ve <refunds>İade Politikası</refunds>'mızı kabul etmiş olursunuz.",
     "payAndDownload": "{price} öde ve indir",
     "downloadCta": "{name} indir",
     "secure": "Güvenli",

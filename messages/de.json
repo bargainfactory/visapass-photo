@@ -179,6 +179,7 @@
     "oneTimePayment": "Einmalzahlung. Kein Abo.",
     "saveAmount": "SPARE {amount}",
     "secureCheckoutLine": "USD · Sicher mit Stripe bezahlen",
+    "consentLine": "Mit dem Fortfahren akzeptierst du unsere <terms>Nutzungsbedingungen</terms>, <privacy>Datenschutzerklärung</privacy> und <refunds>Rückerstattungs­richtlinie</refunds>.",
     "payAndDownload": "{price} zahlen & herunterladen",
     "downloadCta": "{name} herunterladen",
     "secure": "Sicher",

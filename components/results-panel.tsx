@@ -26,13 +26,20 @@ import { usePhotoStore } from '@/lib/store';
 interface ResultsPanelProps {
   resultDataUrl: string;
   printSheetDataUrl: string | null;
+  /** Back-of-sheet certification (Canada). null when the spec doesn't need it. */
+  printSheetBackDataUrl?: string | null;
   documentId: string;
 }
 
 type PreviewTab = 'digital' | 'print';
 type FormatTab = 'jpeg' | 'png';
 
-export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: ResultsPanelProps) {
+export function ResultsPanel({
+  resultDataUrl,
+  printSheetDataUrl,
+  printSheetBackDataUrl,
+  documentId,
+}: ResultsPanelProps) {
   const t = useTranslations('results');
   const tPackages = useTranslations('packages');
   const router = useRouter();
@@ -107,6 +114,9 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
   // Print-sheet metadata — how many photos fit, in which orientation.
   const sheetLayout = pickSheetLayout(doc.widthMm, doc.heightMm, doc.dpi);
   const photosPerSheet = sheetLayout.cols * sheetLayout.rows;
+  // Only Canada currently emits a back-of-sheet certification; the pill +
+  // bundled download paths only appear when the doc spec requested one.
+  const hasBackTemplate = !!doc.requiresBackTemplate && !!printSheetBackDataUrl;
 
   const selectedPkgData = PRINT_PACKAGES.find((p) => p.id === selectedPkg)!;
   const priceLabel = `$${(selectedPkgData.priceCents / 100).toFixed(2)}`;
@@ -130,10 +140,21 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
     const exportPrint = async () => {
       if (!printSheetDataUrl) return;
       if (format === 'jpeg') {
-        downloadDataUrl(printSheetDataUrl, `${doc.id}-print-sheet.jpg`);
+        downloadDataUrl(printSheetDataUrl, `${doc.id}-print-sheet-front.jpg`);
       } else {
         const png = await jpegDataUrlToPng(printSheetDataUrl);
-        downloadDataUrl(png, `${doc.id}-print-sheet.png`);
+        downloadDataUrl(png, `${doc.id}-print-sheet-front.png`);
+      }
+      // Canada (or any doc that flips a guarantor certification onto the
+      // back of the 4×6 sheet): emit the back canvas as a second file so
+      // the user can print front + back duplex on one 4×6 piece of paper.
+      if (hasBackTemplate && printSheetBackDataUrl) {
+        if (format === 'jpeg') {
+          downloadDataUrl(printSheetBackDataUrl, `${doc.id}-print-sheet-back.jpg`);
+        } else {
+          const png = await jpegDataUrlToPng(printSheetBackDataUrl);
+          downloadDataUrl(png, `${doc.id}-print-sheet-back.png`);
+        }
       }
     };
     if (selectedPkg === 'digital') return exportDigital();
@@ -174,7 +195,7 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
             {/* PREVIEW IMAGE */}
             <div className="relative px-6 pb-3" onContextMenu={(e) => e.preventDefault()}>
               <AnimatePresence mode="wait">
-                {previewTab === 'digital' ? (
+                {previewTab === 'digital' && (
                   <motion.div
                     key="dig"
                     initial={{ opacity: 0 }}
@@ -188,17 +209,48 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
                   >
                     <PreviewImage src={resultDataUrl} />
                   </motion.div>
-                ) : (
+                )}
+                {previewTab === 'print' && (
                   <motion.div
                     key="prn"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="grid place-items-center select-none rounded-xl bg-[linear-gradient(135deg,#f4f4f5,#e7e7e8)] p-4 dark:bg-[linear-gradient(135deg,#1f2937,#111827)]"
+                    className="select-none rounded-xl bg-[linear-gradient(135deg,#f4f4f5,#e7e7e8)] p-4 dark:bg-[linear-gradient(135deg,#1f2937,#111827)]"
                   >
                     {printSheetDataUrl ? (
-                      <PreviewImage src={printSheetDataUrl} />
+                      hasBackTemplate ? (
+                        // Documents with a guarantor back (Canada): show the
+                        // front sheet on the left and the back template on the
+                        // right so the user sees both sides at a glance. The
+                        // canvas text on the back stays in English regardless
+                        // of the active locale — guarantor wording must match
+                        // what IRCC publishes on the official back-of-photo
+                        // certification format.
+                        <div className="grid grid-cols-2 items-center gap-4">
+                          <div className="grid place-items-center">
+                            <PreviewImage src={printSheetDataUrl} />
+                            <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                              {t('frontLabel')}
+                            </p>
+                          </div>
+                          <div className="grid place-items-center">
+                            {printSheetBackDataUrl ? (
+                              <PreviewImage src={printSheetBackDataUrl} />
+                            ) : (
+                              <Loader2 className="size-5 animate-spin text-muted-foreground" />
+                            )}
+                            <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                              {t('backLabel')}
+                            </p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="grid place-items-center">
+                          <PreviewImage src={printSheetDataUrl} />
+                        </div>
+                      )
                     ) : (
                       <div className="grid place-items-center gap-2 py-12 text-sm text-muted-foreground">
                         <Loader2 className="size-5 animate-spin" />
@@ -214,18 +266,25 @@ export function ResultsPanel({ resultDataUrl, printSheetDataUrl, documentId }: R
             {/* PREVIEW CAPTION */}
             <div className="px-5 pb-4 text-center">
               <p className="text-xs text-muted-foreground">
-                {previewTab === 'digital'
-                  ? t('previewCaptionDigital', {
-                      w: doc.widthMm,
-                      h: doc.heightMm,
-                      dpi: doc.dpi,
-                      format: format.toUpperCase(),
-                    })
-                  : t('previewCaptionPrint', {
-                      count: photosPerSheet,
-                      dpi: doc.dpi,
-                      format: format.toUpperCase(),
-                    })}
+                {previewTab === 'digital' &&
+                  t('previewCaptionDigital', {
+                    w: doc.widthMm,
+                    h: doc.heightMm,
+                    dpi: doc.dpi,
+                    format: format.toUpperCase(),
+                  })}
+                {previewTab === 'print' &&
+                  (hasBackTemplate
+                    ? t('previewCaptionPrintWithBack', {
+                        count: photosPerSheet,
+                        dpi: doc.dpi,
+                        format: format.toUpperCase(),
+                      })
+                    : t('previewCaptionPrint', {
+                        count: photosPerSheet,
+                        dpi: doc.dpi,
+                        format: format.toUpperCase(),
+                      }))}
               </p>
             </div>
 

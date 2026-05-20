@@ -52,6 +52,13 @@ export interface CompositeResult {
   dataUrl: string;
   /** Print-sheet (4-up) as a JPEG data URL — 4×6 inch @ 300DPI. */
   printSheetDataUrl: string;
+  /**
+   * Back of the print-sheet as a JPEG data URL — only produced when the
+   * document spec sets `requiresBackTemplate` (currently Canada). Contains
+   * the guarantor certification layout: brand header + live date + signature
+   * lines. Same physical size & orientation as the front sheet.
+   */
+  printSheetBackDataUrl: string | null;
   /** Pixel dimensions of the final compliant photo. */
   pixelWidth: number;
   pixelHeight: number;
@@ -183,7 +190,13 @@ export async function composeFinal({
   // Step 3: build the 4×6 print sheet using the best gang-up for this photo size.
   const printSheetDataUrl = renderPrintSheet(out, doc.widthMm, doc.heightMm, doc.dpi);
 
-  return { dataUrl, printSheetDataUrl, pixelWidth: outW, pixelHeight: outH };
+  // Step 4: if this document requires a guarantor back-of-sheet (Canada),
+  // also produce a matching 4×6 back canvas with the certification layout.
+  const printSheetBackDataUrl = doc.requiresBackTemplate
+    ? renderBackSheet(doc.widthMm, doc.heightMm, doc.dpi)
+    : null;
+
+  return { dataUrl, printSheetDataUrl, printSheetBackDataUrl, pixelWidth: outW, pixelHeight: outH };
 }
 
 /* -------------------------------------------------------------------------- */
@@ -324,4 +337,210 @@ function renderPrintSheet(
   sctx.stroke();
 
   return sheet.toDataURL('image/jpeg', 0.95);
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Back-of-sheet certification template (Canada).                            */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Produce a 4×6 print-sheet back side that mirrors the FRONT gang-up layout —
+ * one mini-certification per photo cell. Each cell on the back lines up with
+ * its photo on the front, so cutting along the same grid lines produces N
+ * standalone passport photos with their own guarantor certification on the
+ * reverse side.
+ *
+ * Per-cell layout:
+ *
+ *     VisaPass Photo
+ *     Digital Passport Photos
+ *     visapassphoto.com
+ *
+ *     Photo taken  __________  DD/MM/YYYY
+ *                              Date (DD/MM/YYYY)
+ *
+ *          I certify this to be a
+ *             true likeness of
+ *
+ *     ___________________________________
+ *              (applicant's name)
+ *
+ * The date is computed at render time so every cell reflects the day the
+ * photo was generated.
+ */
+function renderBackSheet(photoWmm: number, photoHmm: number, dpi: number): string {
+  const layout = pickSheetLayout(photoWmm, photoHmm, dpi);
+  const sheet = document.createElement('canvas');
+  sheet.width = layout.sheetWPx;
+  sheet.height = layout.sheetHPx;
+  const ctx = sheet.getContext('2d')!;
+
+  // White paper background.
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, sheet.width, sheet.height);
+
+  // Centre the grid on the sheet using the same offsets as the front.
+  const gridW = layout.cols * layout.photoWPx;
+  const gridH = layout.rows * layout.photoHPx;
+  const startX = Math.round((sheet.width - gridW) / 2);
+  const startY = Math.round((sheet.height - gridH) / 2);
+
+  // Today's date (DD/MM/YYYY) — same value on every cell since the entire
+  // sheet was rendered in one pass.
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const yyyy = String(today.getFullYear());
+  const dateStr = `${dd}/${mm}/${yyyy}`;
+
+  for (let r = 0; r < layout.rows; r++) {
+    for (let c = 0; c < layout.cols; c++) {
+      drawBackCell(
+        ctx,
+        startX + c * layout.photoWPx,
+        startY + r * layout.photoHPx,
+        layout.photoWPx,
+        layout.photoHPx,
+        dateStr
+      );
+    }
+  }
+
+  // Cut-guide separators — same light grey lines as the front sheet so the
+  // front and back align cut-for-cut when the print is duplexed.
+  ctx.strokeStyle = '#D4D4D4';
+  ctx.lineWidth = Math.max(1, Math.round(layout.sheetWPx / 1200));
+  ctx.beginPath();
+  for (let c = 1; c < layout.cols; c++) {
+    const x = startX + c * layout.photoWPx + 0.5;
+    ctx.moveTo(x, startY);
+    ctx.lineTo(x, startY + gridH);
+  }
+  for (let r = 1; r < layout.rows; r++) {
+    const y = startY + r * layout.photoHPx + 0.5;
+    ctx.moveTo(startX, y);
+    ctx.lineTo(startX + gridW, y);
+  }
+  ctx.rect(startX + 0.5, startY + 0.5, gridW, gridH);
+  ctx.stroke();
+
+  return sheet.toDataURL('image/jpeg', 0.95);
+}
+
+/**
+ * Render a single guarantor-certification block sized to fill `[x,y,w,h]`
+ * exactly. All vertical positions are expressed as fractions of `h` so the
+ * layout scales gracefully across photo-size variants (Canada 50×70 mm fits
+ * 4 cells; an EU 35×45 mm sheet would fit 6 cells with the same template).
+ */
+function drawBackCell(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  dateStr: string
+) {
+  const innerPadX = w * 0.07;
+  const innerPadY = h * 0.06;
+  const innerLeft = x + innerPadX;
+  const innerRight = x + w - innerPadX;
+  const innerWidth = innerRight - innerLeft;
+  const centerX = x + w / 2;
+
+  // Type scale tied to the SHORTER side of the cell so portrait/landscape
+  // both read comfortably. ~3.3% of the short edge ≈ ~7 pt for a 50 mm cell
+  // at 300 DPI, which is the rough size of the original IRCC template.
+  const baseFontPx = Math.max(8, Math.round(Math.min(w, h) * 0.033));
+  const sans =
+    '"Inter", "Helvetica Neue", Helvetica, Arial, "Segoe UI", system-ui, sans-serif';
+  const serif = '"Georgia", "Times New Roman", Times, serif';
+
+  ctx.save();
+  ctx.fillStyle = '#0F172A';
+  ctx.textBaseline = 'alphabetic';
+
+  /* ─── Brand header ─────────────────────────────────────────────────────── */
+  ctx.textAlign = 'center';
+  let cursorY = y + innerPadY + baseFontPx * 1.4;
+
+  ctx.font = `700 ${baseFontPx * 1.55}px ${sans}`;
+  ctx.fillText('VisaPass Photo', centerX, cursorY);
+
+  cursorY += baseFontPx * 1.25;
+  ctx.font = `500 ${baseFontPx * 0.85}px ${sans}`;
+  ctx.fillStyle = '#475569';
+  ctx.fillText('Digital Passport Photos', centerX, cursorY);
+
+  cursorY += baseFontPx * 1.05;
+  ctx.font = `400 ${baseFontPx * 0.78}px ${sans}`;
+  ctx.fillStyle = '#64748B';
+  ctx.fillText('visapassphoto.com', centerX, cursorY);
+
+  // Thin divider rule under the brand block.
+  cursorY += baseFontPx * 0.9;
+  ctx.strokeStyle = '#CBD5E1';
+  ctx.lineWidth = Math.max(0.6, Math.round(w / 800));
+  ctx.beginPath();
+  ctx.moveTo(innerLeft + innerWidth * 0.2, cursorY);
+  ctx.lineTo(innerRight - innerWidth * 0.2, cursorY);
+  ctx.stroke();
+
+  /* ─── Photo-taken + live date ──────────────────────────────────────────── */
+  cursorY += baseFontPx * 2.3;
+  ctx.textAlign = 'start';
+  ctx.fillStyle = '#0F172A';
+  ctx.font = `500 ${baseFontPx * 0.9}px ${sans}`;
+  const photoTakenLabel = 'Photo taken';
+  ctx.fillText(photoTakenLabel, innerLeft, cursorY);
+  const labelWidth = ctx.measureText(photoTakenLabel).width;
+
+  ctx.font = `600 ${baseFontPx * 0.95}px ${sans}`;
+  const dateWidth = ctx.measureText(dateStr).width;
+
+  // Underline from after the label to just before the date.
+  const lineStart = innerLeft + labelWidth + baseFontPx * 0.5;
+  const lineEnd = innerRight - dateWidth - baseFontPx * 0.4;
+  if (lineEnd > lineStart) {
+    ctx.strokeStyle = '#1F2937';
+    ctx.lineWidth = Math.max(0.8, Math.round(w / 600));
+    ctx.beginPath();
+    ctx.moveTo(lineStart, cursorY + baseFontPx * 0.1);
+    ctx.lineTo(lineEnd, cursorY + baseFontPx * 0.1);
+    ctx.stroke();
+  }
+
+  ctx.textAlign = 'end';
+  ctx.fillText(dateStr, innerRight, cursorY);
+
+  // Tiny caption under the date.
+  ctx.font = `400 ${baseFontPx * 0.6}px ${sans}`;
+  ctx.fillStyle = '#94A3B8';
+  ctx.fillText('Date (DD/MM/YYYY)', innerRight, cursorY + baseFontPx * 0.85);
+
+  /* ─── Certification block ──────────────────────────────────────────────── */
+  cursorY += baseFontPx * 3.3;
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#0F172A';
+  ctx.font = `italic 400 ${baseFontPx * 0.95}px ${serif}`;
+  ctx.fillText('I certify this to be a', centerX, cursorY);
+  cursorY += baseFontPx * 1.25;
+  ctx.fillText('true likeness of', centerX, cursorY);
+
+  /* ─── Signature line + caption ─────────────────────────────────────────── */
+  cursorY += baseFontPx * 2.6;
+  ctx.strokeStyle = '#1F2937';
+  ctx.lineWidth = Math.max(0.8, Math.round(w / 600));
+  ctx.beginPath();
+  ctx.moveTo(innerLeft + innerWidth * 0.05, cursorY);
+  ctx.lineTo(innerRight - innerWidth * 0.05, cursorY);
+  ctx.stroke();
+
+  cursorY += baseFontPx * 0.9;
+  ctx.textAlign = 'center';
+  ctx.font = `400 ${baseFontPx * 0.65}px ${sans}`;
+  ctx.fillStyle = '#94A3B8';
+  ctx.fillText("(applicant's name)", centerX, cursorY);
+
+  ctx.restore();
 }

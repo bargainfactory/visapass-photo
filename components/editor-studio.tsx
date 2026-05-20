@@ -146,7 +146,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
         contrast,
         shadow,
       });
-      setResult(out.dataUrl, out.printSheetDataUrl);
+      setResult(out.dataUrl, out.printSheetDataUrl, out.printSheetBackDataUrl);
       setPreviewUrl(out.dataUrl);
       setState((s) => ({ ...s, stage: 'done', messageKey: 'messages.readyToDownload', progress: 100 }));
     } catch (e: any) {
@@ -179,7 +179,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
     // Drop the result if a newer recompose has started — avoids flicker when
     // multiple slider ticks are in flight at once.
     if (seq !== recomposeSeqRef.current) return;
-    setResult(out.dataUrl, out.printSheetDataUrl);
+    setResult(out.dataUrl, out.printSheetDataUrl, out.printSheetBackDataUrl);
     setPreviewUrl(out.dataUrl);
   }, [docPair, state.imageEl, state.crop, state.cutoutBlob, brightness, contrast, shadow, setResult]);
 

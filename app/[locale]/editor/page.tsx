@@ -24,6 +24,7 @@ export default function EditorPage() {
   const documentId = usePhotoStore((s) => s.documentId);
   const resultDataUrl = usePhotoStore((s) => s.resultDataUrl);
   const printSheetDataUrl = usePhotoStore((s) => s.printSheetDataUrl);
+  const printSheetBackDataUrl = usePhotoStore((s) => s.printSheetBackDataUrl);
   const setStep = usePhotoStore((s) => s.setStep);
   const setSource = usePhotoStore((s) => s.setSource);
   const setDocument = usePhotoStore((s) => s.setDocument);
@@ -148,6 +149,7 @@ export default function EditorPage() {
             <ResultsPanel
               resultDataUrl={resultDataUrl}
               printSheetDataUrl={printSheetDataUrl}
+              printSheetBackDataUrl={printSheetBackDataUrl}
               documentId={documentId}
             />
           </motion.section>

@@ -52,6 +52,12 @@ export interface DocumentSpec {
    * is anchored on the crown rather than the eye line.
    */
   crownFromTopMm?: number;
+  /**
+   * When true, the 4×6 print sheet is paired with a back-of-sheet certification
+   * template (signature line, "I certify this to be a true likeness of …",
+   * live date). Required by Canada — the guarantor signs the back of one print.
+   */
+  requiresBackTemplate?: boolean;
   /** Background hex color (sRGB). */
   background: string;
   /** Glasses policy. */
@@ -154,11 +160,16 @@ export const COUNTRIES: CountrySpec[] = [
         eyeLineFromBottom: [0.55, 0.67],
         headHeightMm: 35,
         crownFromTopMm: 18,
+        requiresBackTemplate: true,
         background: '#FFFFFF',
         glasses: 'allowed_no_glare',
         expression: 'neutral',
         dpi: 300,
-        notes: ['50×70 mm, plain white or light background', 'Head height 31-36 mm'],
+        notes: [
+          '50×70 mm, plain white or light background',
+          'Head height 31-36 mm',
+          'Back of one photo includes guarantor certification template',
+        ],
       },
     ],
   },

@@ -31,6 +31,11 @@ interface PhotoState {
   resultDataUrl: string | null;
   /** Print-ready 4-up sheet data URL. */
   printSheetDataUrl: string | null;
+  /**
+   * Back-of-sheet (guarantor certification) data URL — only populated for
+   * documents whose spec requires it (currently Canada). null otherwise.
+   */
+  printSheetBackDataUrl: string | null;
   brightness: number;
   contrast: number;
   /**
@@ -54,7 +59,11 @@ interface PhotoState {
   setStep: (s: WizardStep) => void;
   setSource: (url: string | null, mime: string | null) => void;
   setDocument: (id: string | null) => void;
-  setResult: (dataUrl: string | null, sheetUrl?: string | null) => void;
+  setResult: (
+    dataUrl: string | null,
+    sheetUrl?: string | null,
+    sheetBackUrl?: string | null
+  ) => void;
   setAdjustments: (b: number, c: number, s: number) => void;
   setFaceConfidence: (c: number | null) => void;
   setRenderToken: (token: string | null) => void;
@@ -72,6 +81,7 @@ export const usePhotoStore = create<PhotoState>()(
       documentId: null,
       resultDataUrl: null,
       printSheetDataUrl: null,
+      printSheetBackDataUrl: null,
       brightness: 0,
       contrast: 0,
       shadow: 0,
@@ -81,8 +91,12 @@ export const usePhotoStore = create<PhotoState>()(
       setStep: (step) => set({ step }),
       setSource: (sourceUrl, sourceMime) => set({ sourceUrl, sourceMime }),
       setDocument: (documentId) => set({ documentId }),
-      setResult: (resultDataUrl, sheetUrl) =>
-        set({ resultDataUrl, printSheetDataUrl: sheetUrl ?? null }),
+      setResult: (resultDataUrl, sheetUrl, sheetBackUrl) =>
+        set({
+          resultDataUrl,
+          printSheetDataUrl: sheetUrl ?? null,
+          printSheetBackDataUrl: sheetBackUrl ?? null,
+        }),
       setAdjustments: (brightness, contrast, shadow) => set({ brightness, contrast, shadow }),
       setFaceConfidence: (faceConfidence) => set({ faceConfidence }),
       setRenderToken: (currentRenderToken) => set({ currentRenderToken }),
@@ -97,6 +111,7 @@ export const usePhotoStore = create<PhotoState>()(
           documentId: null,
           resultDataUrl: null,
           printSheetDataUrl: null,
+          printSheetBackDataUrl: null,
           brightness: 0,
           contrast: 0,
           shadow: 0,

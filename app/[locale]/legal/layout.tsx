@@ -5,15 +5,15 @@ import { Link } from '@/i18n/navigation';
 import { LegalSideNav } from '@/components/legal-side-nav';
 
 /**
- * Shared chrome for /legal/* — sidebar with three policy links on desktop,
- * a back-to-home link, and a max-width content well. Each policy page
- * supplies its own heading + body inside `children`.
+ * Shared chrome for /legal/* — sidebar with three policy links, a
+ * back-to-home link, and a max-width content well. Each policy page
+ * supplies its own heading + body inside `children`, fed from the
+ * `legal.{terms,privacy,refunds}` namespaces in the i18n catalogs.
  *
- * Legal copy is authored in English only and rendered identically across
- * every locale. Translating binding legal text is risky (mistranslation
- * can change meaning), so we keep one authoritative source. Non-English
- * locales see a small notice at the top of each page directing readers to
- * the English version as the controlling document.
+ * Policy bodies are now translated for every supported locale via the
+ * shared <LegalMarkdown> renderer. The English version remains the
+ * authoritative reference for legal interpretation, but the visible
+ * text now matches the visitor's language.
  */
 export default async function LegalLayout({
   children,
@@ -25,8 +25,6 @@ export default async function LegalLayout({
   const { locale } = await params;
   setRequestLocale(locale);
   const tLegal = await getTranslations('legal');
-
-  const isEnglish = locale === 'en';
 
   return (
     <div className="container py-10 md:py-14">
@@ -41,11 +39,6 @@ export default async function LegalLayout({
         <LegalSideNav />
 
         <article className="prose prose-zinc max-w-3xl dark:prose-invert">
-          {!isEnglish && (
-            <aside className="not-prose mb-6 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-700 dark:text-amber-300">
-              {tLegal('englishOnlyNotice')}
-            </aside>
-          )}
           {children}
         </article>
       </div>

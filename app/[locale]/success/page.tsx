@@ -263,16 +263,13 @@ function DownloadGrid({ stashed, packageId, tResults }: DownloadGridProps) {
 }
 
 function DownloadCard({ entry }: { entry: DownloadEntry }) {
-  const downloadAll = async () => {
-    // Tiny delay between files keeps Chrome happy when triggering more than
-    // one download from a single user gesture.
-    for (let i = 0; i < entry.files.length; i++) {
-      const f = entry.files[i];
-      downloadDataUrl(f.src, f.filename);
-      if (i < entry.files.length - 1) {
-        await new Promise((r) => setTimeout(r, 250));
-      }
-    }
+  // Fire every file in the same synchronous tick — front and back of the
+  // 4×6 sheet land in the buyer's Downloads folder at the same moment.
+  // The previous staggered version was an over-cautious workaround;
+  // browsers accept rapid consecutive `<a download>` triggers as long as
+  // they originate from one user gesture (this click handler).
+  const downloadAll = () => {
+    entry.files.forEach((f) => downloadDataUrl(f.src, f.filename));
   };
 
   return (

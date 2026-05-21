@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Download, Loader2, Mail, Truck } from 'lucide-react';
+import { CheckCircle2, Download, Loader2, Mail } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -63,7 +63,6 @@ function SuccessContent() {
   const params = useSearchParams();
   const sessionId = params.get('session_id');
   const [status, setStatus] = React.useState<OrderStatus | null>(null);
-  const [polls, setPolls] = React.useState(0);
   const [stashed, setStashed] = React.useState<StashedResult | null>(null);
   const updateOrderStatus = usePhotoStore((s) => s.updateOrderStatus);
 
@@ -117,17 +116,12 @@ function SuccessContent() {
       }
     };
     fetchStatus();
-    const i = setInterval(() => {
-      setPolls((p) => p + 1);
-      fetchStatus();
-    }, 4000);
+    const i = setInterval(fetchStatus, 4000);
     return () => {
       cancelled = true;
       clearInterval(i);
     };
   }, [sessionId, updateOrderStatus]);
-
-  const isFulfilled = status?.status === 'fulfilled' || status?.status === 'shipped';
 
   return (
     <div className="container max-w-2xl py-16">
@@ -149,30 +143,11 @@ function SuccessContent() {
                 value={status?.amountCents ? `$${(status.amountCents / 100).toFixed(2)}` : '—'}
               />
               <Row
-                icon={
-                  isFulfilled ? (
-                    <CheckCircle2 className="size-4 text-emerald-600" />
-                  ) : (
-                    <Loader2 className="size-4 animate-spin text-brand-600" />
-                  )
-                }
-                label={t('fulfillment')}
-                value={t(`status.${status?.status ?? 'unknown'}`)}
-              />
-              <Row
                 icon={<Mail className="size-4" />}
                 label={t('receiptTo')}
                 value={status?.email ?? '—'}
               />
-              <Row
-                icon={<Truck className="size-4" />}
-                label={t('shippingEta')}
-                value={t('etaText')}
-              />
             </div>
-            <p className="text-xs text-muted-foreground">
-              {t('pollLine', { count: polls + 1, session: sessionId?.slice(0, 14) ?? '' })}
-            </p>
 
             {/* Download grid — one card per file the customer actually paid
                 for, with a live preview thumbnail so they see exactly what
@@ -216,97 +191,127 @@ interface DownloadGridProps {
   tResults: ReturnType<typeof useTranslations>;
 }
 
+interface DownloadEntry {
+  key: string;
+  /** Preview thumbnail src (the front sheet doubles for print). */
+  thumbnail: string;
+  /** Optional second thumbnail (Canada's print-sheet back). */
+  thumbnailExtra?: string;
+  title: string;
+  /** All files that should download when the user clicks the card. */
+  files: Array<{ src: string; filename: string }>;
+}
+
 /**
- * Renders one card per file the buyer actually paid for, with a live preview
- * thumbnail so they see exactly what they're downloading before clicking.
+ * Mirrors the package picker on the editor: at most two cards — one for the
+ * Digital deliverable, one for the 4×6 Printable. When a country requires a
+ * back template (Canada), the Print card downloads BOTH front and back files
+ * in sequence on a single click; its preview shows both thumbnails so the
+ * buyer sees they're getting two sheets.
  *
- *   digital      → digital JPEG only
- *   print-sheet  → 4×6 sheet (front) [+ back if Canada/requiresBackTemplate]
- *   bundle       → all of the above
+ *   digital      → Digital card only
+ *   print-sheet  → Printable 4×6 card only
+ *   bundle       → both cards
  */
 function DownloadGrid({ stashed, packageId, tResults }: DownloadGridProps) {
-  const items: Array<{ key: string; src: string; title: string; filename: string }> = [];
+  const entries: DownloadEntry[] = [];
   const wantsDigital = packageId === 'digital' || packageId === 'bundle';
   const wantsPrint = packageId === 'print-sheet' || packageId === 'bundle';
 
   if (wantsDigital) {
-    items.push({
+    entries.push({
       key: 'digital',
-      src: stashed.digital,
+      thumbnail: stashed.digital,
       title: tResults('tabs.digital'),
-      filename: `${stashed.doc}.jpg`,
+      files: [{ src: stashed.digital, filename: `${stashed.doc}.jpg` }],
     });
   }
   if (wantsPrint && stashed.print) {
-    items.push({
-      key: 'print-front',
-      src: stashed.print,
-      title: `${tResults('tabs.print')} — ${tResults('frontLabel')}`,
-      filename: `${stashed.doc}-print-sheet-front.jpg`,
-    });
-  }
-  if (wantsPrint && stashed.printBack) {
-    items.push({
-      key: 'print-back',
-      src: stashed.printBack,
-      title: `${tResults('tabs.print')} — ${tResults('backLabel')}`,
-      filename: `${stashed.doc}-print-sheet-back.jpg`,
+    const files = [
+      { src: stashed.print, filename: `${stashed.doc}-print-sheet-front.jpg` },
+    ];
+    if (stashed.printBack) {
+      files.push({
+        src: stashed.printBack,
+        filename: `${stashed.doc}-print-sheet-back.jpg`,
+      });
+    }
+    entries.push({
+      key: 'print',
+      thumbnail: stashed.print,
+      thumbnailExtra: stashed.printBack ?? undefined,
+      title: tResults('tabs.print'),
+      files,
     });
   }
 
-  if (items.length === 0) return null;
+  if (entries.length === 0) return null;
 
   return (
     <div
       className={
-        items.length === 1
+        entries.length === 1
           ? 'grid grid-cols-1 gap-3'
-          : items.length === 2
-            ? 'grid grid-cols-1 gap-3 sm:grid-cols-2'
-            : 'grid grid-cols-1 gap-3 sm:grid-cols-3'
+          : 'grid grid-cols-1 gap-3 sm:grid-cols-2'
       }
     >
-      {items.map((it) => (
-        <DownloadCard
-          key={it.key}
-          src={it.src}
-          title={it.title}
-          filename={it.filename}
-        />
+      {entries.map((entry) => (
+        <DownloadCard key={entry.key} entry={entry} />
       ))}
     </div>
   );
 }
 
-function DownloadCard({
-  src,
-  title,
-  filename,
-}: {
-  src: string;
-  title: string;
-  filename: string;
-}) {
+function DownloadCard({ entry }: { entry: DownloadEntry }) {
+  const downloadAll = async () => {
+    // Tiny delay between files keeps Chrome happy when triggering more than
+    // one download from a single user gesture.
+    for (let i = 0; i < entry.files.length; i++) {
+      const f = entry.files[i];
+      downloadDataUrl(f.src, f.filename);
+      if (i < entry.files.length - 1) {
+        await new Promise((r) => setTimeout(r, 250));
+      }
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center gap-2 rounded-xl border bg-muted/30 p-3">
-      <div className="grid h-28 w-full place-items-center overflow-hidden rounded-lg bg-white">
-        <img
-          src={src}
-          alt={title}
-          className="max-h-full max-w-full object-contain"
-          draggable={false}
-        />
-      </div>
-      <p className="text-center text-xs font-medium leading-tight">{title}</p>
-      <p className="text-center text-[10px] text-muted-foreground">{filename}</p>
-      <Button
-        variant="brand"
-        size="sm"
-        className="mt-1 w-full"
-        onClick={() => downloadDataUrl(src, filename)}
+    <div className="flex flex-col items-center gap-3 rounded-xl border bg-muted/30 p-4">
+      <div
+        className={
+          entry.thumbnailExtra
+            ? 'grid w-full grid-cols-2 gap-2'
+            : 'grid w-full grid-cols-1'
+        }
       >
-        <Download className="size-3.5" /> {filename.split('.').pop()?.toUpperCase()}
+        <ThumbBox src={entry.thumbnail} />
+        {entry.thumbnailExtra && <ThumbBox src={entry.thumbnailExtra} />}
+      </div>
+      <p className="text-center text-sm font-semibold leading-tight">{entry.title}</p>
+      <Button variant="brand" size="lg" className="w-full" onClick={downloadAll}>
+        <Download className="size-4" />
+        {entry.files.length > 1
+          ? `Download ${entry.files.length} files`
+          : 'Download'}
       </Button>
+    </div>
+  );
+}
+
+/**
+ * Square-aspect preview box that scales the full image to fit without
+ * cropping. The previous fixed-height container clipped the bottom of
+ * portrait-aspect photos (heads visible, shoulders/body cut off).
+ */
+function ThumbBox({ src }: { src: string }) {
+  return (
+    <div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-lg border bg-white p-2">
+      <img
+        src={src}
+        alt=""
+        draggable={false}
+        className="max-h-full max-w-full object-contain"
+      />
     </div>
   );
 }

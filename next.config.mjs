@@ -20,15 +20,21 @@ const nextConfig = {
     return config;
   },
   async headers() {
+    // COOP/COEP enable SharedArrayBuffer, which MediaPipe (face landmarker)
+    // and the @imgly/background-removal Worker both need. BUT — these same
+    // headers block third-party iframes that don't ship a matching
+    // Cross-Origin-Resource-Policy, which means Stripe's embedded checkout
+    // iframe gets refused. So scope the headers to the *only* path that
+    // actually runs SharedArrayBuffer workloads: the editor. The landing,
+    // pricing, checkout, success, and legal pages stay header-free so
+    // js.stripe.com can mount its iframe on /checkout.
+    const coopCoepHeaders = [
+      { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+      { key: 'Cross-Origin-Embedder-Policy', value: 'credentialless' },
+    ];
     return [
-      {
-        // COOP/COEP enables SharedArrayBuffer required by some WASM models.
-        source: '/(.*)',
-        headers: [
-          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
-          { key: 'Cross-Origin-Embedder-Policy', value: 'credentialless' },
-        ],
-      },
+      { source: '/:locale/editor', headers: coopCoepHeaders },
+      { source: '/:locale/editor/:path*', headers: coopCoepHeaders },
     ];
   },
 };

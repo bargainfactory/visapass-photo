@@ -1,13 +1,19 @@
 /**
- * Order status endpoint — used by /success to poll the webhook-updated order state.
+ * Order status endpoint — used by /success to poll for payment confirmation.
  *
  * GET /api/order-status?session_id=cs_test_…  ->  { status, amountCents, documentId, email }
  *
- * Returns the in-memory ServerOrder if present, otherwise falls back to a
- * "pending" response so the polling UI shows a sensible placeholder.
+ * Reads directly from Stripe (the source of truth) instead of an in-memory
+ * store. Vercel runs each /api route in its own serverless instance, so an
+ * in-memory Map populated by the webhook lambda is invisible to this lambda —
+ * we'd be stuck on "pending" forever. Asking Stripe also means polling works
+ * even if the webhook is delayed, retried, or temporarily failing.
+ *
+ * Demo sessions (`cs_demo_…` created when STRIPE_SECRET_KEY is missing) skip
+ * the API call and return a synthetic fulfilled response.
  */
 import { NextResponse, type NextRequest } from 'next/server';
-import { orderStore } from '../order-store';
+import { getStripeServer } from '@/lib/stripe';
 
 export const runtime = 'nodejs';
 
@@ -17,20 +23,52 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'session_id is required' }, { status: 400 });
   }
 
-  const order = orderStore.get(sessionId);
-  if (!order) {
+  if (sessionId.startsWith('cs_demo_')) {
     return NextResponse.json({
-      status: sessionId.startsWith('cs_demo_') ? 'fulfilled' : 'pending',
+      status: 'fulfilled',
       amountCents: null,
       documentId: null,
       email: null,
     });
   }
 
-  return NextResponse.json({
-    status: order.status,
-    amountCents: order.amountCents,
-    documentId: order.documentId,
-    email: order.email,
-  });
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return NextResponse.json({
+      status: 'pending',
+      amountCents: null,
+      documentId: null,
+      email: null,
+    });
+  }
+
+  try {
+    const stripe = getStripeServer();
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    // Translate Stripe's two-axis (payment_status + session status) into our
+    // single status enum the UI understands.
+    let status: 'pending' | 'paid' | 'fulfilled' | 'shipped' = 'pending';
+    if (session.payment_status === 'paid' && session.status === 'complete') {
+      // Treat a confirmed Stripe payment as fulfilled — we don't currently
+      // model a separate "print queue accepted" state in any durable store.
+      status = 'fulfilled';
+    } else if (session.status === 'expired') {
+      status = 'pending';
+    }
+    return NextResponse.json({
+      status,
+      amountCents: session.amount_total ?? null,
+      documentId: (session.metadata?.documentId as string | undefined) ?? null,
+      email: session.customer_details?.email ?? null,
+    });
+  } catch (e: any) {
+    // Stripe returns 404 for session IDs from a different account / mode.
+    // Surface as pending so the UI keeps polling rather than throwing.
+    return NextResponse.json({
+      status: 'pending',
+      amountCents: null,
+      documentId: null,
+      email: null,
+      error: e?.message ?? 'lookup_failed',
+    });
+  }
 }

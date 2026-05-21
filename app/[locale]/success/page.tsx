@@ -25,7 +25,31 @@ interface StashedResult {
   doc: string;
 }
 
+// Next.js requires any component reading useSearchParams() to sit beneath a
+// <Suspense> boundary so the static prerender can defer it to client-side.
+// The default export is just that boundary; SuccessContent below holds the
+// real logic.
 export default function SuccessPage() {
+  return (
+    <React.Suspense fallback={<SuccessFallback />}>
+      <SuccessContent />
+    </React.Suspense>
+  );
+}
+
+function SuccessFallback() {
+  return (
+    <div className="container max-w-2xl py-16">
+      <Card>
+        <CardContent className="grid place-items-center gap-3 p-12 text-sm text-muted-foreground">
+          <Loader2 className="size-5 animate-spin" />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function SuccessContent() {
   const t = useTranslations('success');
   const tResults = useTranslations('results');
   const params = useSearchParams();

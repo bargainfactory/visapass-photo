@@ -28,6 +28,7 @@ export async function GET(req: NextRequest) {
       status: 'fulfilled',
       amountCents: null,
       documentId: null,
+      packageId: null,
       email: null,
     });
   }
@@ -37,6 +38,7 @@ export async function GET(req: NextRequest) {
       status: 'pending',
       amountCents: null,
       documentId: null,
+      packageId: null,
       email: null,
     });
   }
@@ -58,6 +60,11 @@ export async function GET(req: NextRequest) {
       status,
       amountCents: session.amount_total ?? null,
       documentId: (session.metadata?.documentId as string | undefined) ?? null,
+      // packageId comes from the checkout-session metadata we set in
+      // /api/checkout. The success page uses it to gate which download
+      // buttons to show — a buyer of "digital" never sees the print sheet,
+      // a buyer of "print-sheet" never sees the digital file.
+      packageId: (session.metadata?.packageId as string | undefined) ?? null,
       email: session.customer_details?.email ?? null,
     });
   } catch (e: any) {
@@ -67,6 +74,7 @@ export async function GET(req: NextRequest) {
       status: 'pending',
       amountCents: null,
       documentId: null,
+      packageId: null,
       email: null,
       error: e?.message ?? 'lookup_failed',
     });

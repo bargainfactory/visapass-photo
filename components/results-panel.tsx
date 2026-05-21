@@ -94,6 +94,14 @@ export function ResultsPanel({
         sessionStorage.setItem('vp-pending-doc', documentId);
         sessionStorage.setItem('vp-pending-result', resultDataUrl);
         if (printSheetDataUrl) sessionStorage.setItem('vp-pending-print', printSheetDataUrl);
+        // Canada (and any future doc with requiresBackTemplate) also gets a
+        // guarantor back sheet — stash it so /success can offer that download
+        // alongside the front. Skipped silently if there isn't one.
+        if (printSheetBackDataUrl) {
+          sessionStorage.setItem('vp-pending-print-back', printSheetBackDataUrl);
+        } else {
+          sessionStorage.removeItem('vp-pending-print-back');
+        }
         sessionStorage.setItem('vp-checkout-secret', data.clientSecret);
       } catch {
         /* quota — non-critical */

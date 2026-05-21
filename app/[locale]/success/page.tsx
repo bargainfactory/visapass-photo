@@ -16,12 +16,20 @@ interface OrderStatus {
   status: 'pending' | 'paid' | 'fulfilled' | 'shipped' | 'unknown';
   amountCents: number | null;
   documentId: string | null;
+  /**
+   * Which package was purchased — one of 'digital' | 'print-sheet' | 'bundle'.
+   * Read from Stripe checkout-session metadata. Drives which download buttons
+   * appear so a digital-only buyer never sees the print sheet and vice versa.
+   */
+  packageId: string | null;
   email: string | null;
 }
 
 interface StashedResult {
   digital: string;
   print: string | null;
+  /** Back-of-sheet (Canada) — null when the doc doesn't require one. */
+  printBack: string | null;
   doc: string;
 }
 
@@ -76,8 +84,9 @@ function SuccessContent() {
       if (!expectedSession || expectedSession !== sessionId) return;
       const digital = sessionStorage.getItem('vp-pending-result');
       const print = sessionStorage.getItem('vp-pending-print');
+      const printBack = sessionStorage.getItem('vp-pending-print-back');
       const doc = sessionStorage.getItem('vp-pending-doc');
-      if (digital && doc) setStashed({ digital, print, doc });
+      if (digital && doc) setStashed({ digital, print, printBack, doc });
     } catch {
       /* ignore */
     }
@@ -165,28 +174,17 @@ function SuccessContent() {
               {t('pollLine', { count: polls + 1, session: sessionId?.slice(0, 14) ?? '' })}
             </p>
 
-            {/* Download buttons unlock the moment the webhook confirms payment.
-                Same blue/white treatment as the /editor tabs for visual continuity. */}
+            {/* Download grid — one card per file the customer actually paid
+                for, with a live preview thumbnail so they see exactly what
+                they're getting. Gated by Stripe-confirmed packageId so a
+                "digital" buyer never sees the print sheet, a "print-sheet"
+                buyer never sees the digital file, etc. */}
             {paid && stashed && (
-              <div className="grid grid-cols-2 gap-2">
-                <Button
-                  variant="brand"
-                  size="lg"
-                  onClick={() => downloadDataUrl(stashed.digital, `${stashed.doc}.jpg`)}
-                >
-                  <Download className="size-4" /> {tResults('tabs.digital')}
-                </Button>
-                <Button
-                  variant="brand"
-                  size="lg"
-                  disabled={!stashed.print}
-                  onClick={() =>
-                    stashed.print && downloadDataUrl(stashed.print, `${stashed.doc}-print-sheet.jpg`)
-                  }
-                >
-                  <Download className="size-4" /> {tResults('tabs.print')}
-                </Button>
-              </div>
+              <DownloadGrid
+                stashed={stashed}
+                packageId={status?.packageId ?? 'bundle'}
+                tResults={tResults}
+              />
             )}
 
             <Button asChild variant={paid && stashed ? 'outline' : 'brand'} size="lg" className="w-full">
@@ -207,6 +205,108 @@ function Row({ icon, label, value }: { icon: React.ReactNode; label: string; val
         <span>{label}</span>
       </div>
       <Badge variant="outline">{value}</Badge>
+    </div>
+  );
+}
+
+interface DownloadGridProps {
+  stashed: StashedResult;
+  /** Stripe-confirmed package: 'digital' | 'print-sheet' | 'bundle'. */
+  packageId: string;
+  tResults: ReturnType<typeof useTranslations>;
+}
+
+/**
+ * Renders one card per file the buyer actually paid for, with a live preview
+ * thumbnail so they see exactly what they're downloading before clicking.
+ *
+ *   digital      → digital JPEG only
+ *   print-sheet  → 4×6 sheet (front) [+ back if Canada/requiresBackTemplate]
+ *   bundle       → all of the above
+ */
+function DownloadGrid({ stashed, packageId, tResults }: DownloadGridProps) {
+  const items: Array<{ key: string; src: string; title: string; filename: string }> = [];
+  const wantsDigital = packageId === 'digital' || packageId === 'bundle';
+  const wantsPrint = packageId === 'print-sheet' || packageId === 'bundle';
+
+  if (wantsDigital) {
+    items.push({
+      key: 'digital',
+      src: stashed.digital,
+      title: tResults('tabs.digital'),
+      filename: `${stashed.doc}.jpg`,
+    });
+  }
+  if (wantsPrint && stashed.print) {
+    items.push({
+      key: 'print-front',
+      src: stashed.print,
+      title: `${tResults('tabs.print')} — ${tResults('frontLabel')}`,
+      filename: `${stashed.doc}-print-sheet-front.jpg`,
+    });
+  }
+  if (wantsPrint && stashed.printBack) {
+    items.push({
+      key: 'print-back',
+      src: stashed.printBack,
+      title: `${tResults('tabs.print')} — ${tResults('backLabel')}`,
+      filename: `${stashed.doc}-print-sheet-back.jpg`,
+    });
+  }
+
+  if (items.length === 0) return null;
+
+  return (
+    <div
+      className={
+        items.length === 1
+          ? 'grid grid-cols-1 gap-3'
+          : items.length === 2
+            ? 'grid grid-cols-1 gap-3 sm:grid-cols-2'
+            : 'grid grid-cols-1 gap-3 sm:grid-cols-3'
+      }
+    >
+      {items.map((it) => (
+        <DownloadCard
+          key={it.key}
+          src={it.src}
+          title={it.title}
+          filename={it.filename}
+        />
+      ))}
+    </div>
+  );
+}
+
+function DownloadCard({
+  src,
+  title,
+  filename,
+}: {
+  src: string;
+  title: string;
+  filename: string;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-2 rounded-xl border bg-muted/30 p-3">
+      <div className="grid h-28 w-full place-items-center overflow-hidden rounded-lg bg-white">
+        <img
+          src={src}
+          alt={title}
+          className="max-h-full max-w-full object-contain"
+          draggable={false}
+        />
+      </div>
+      <p className="text-center text-xs font-medium leading-tight">{title}</p>
+      <p className="text-center text-[10px] text-muted-foreground">{filename}</p>
+      <Button
+        variant="brand"
+        size="sm"
+        className="mt-1 w-full"
+        onClick={() => downloadDataUrl(src, filename)}
+      >
+        <Download className="size-3.5" /> {filename.split('.').pop()?.toUpperCase()}
+      </Button>
     </div>
   );
 }

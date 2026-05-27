@@ -156,10 +156,14 @@ export const COUNTRIES: CountrySpec[] = [
         label: 'Canada Passport (50×70 mm)',
         widthMm: 50,
         heightMm: 70,
-        headHeightRatio: [0.45, 0.55],
+        // Tightened to IRCC's upper-half: targets 35.5 mm head height so
+        // ±0.5 mm landmark variance still lands inside the 35-36 mm window
+        // the user specified. headHeightRatio is kept for UI badge display
+        // only — Canada crops crown-anchored so headHeightMm wins.
+        headHeightRatio: [0.5, 0.514],
         eyeLineFromBottom: [0.55, 0.67],
-        headHeightMm: 35,
-        crownFromTopMm: 18,
+        headHeightMm: 35.5,
+        crownFromTopMm: 17.5,
         requiresBackTemplate: true,
         background: '#FFFFFF',
         glasses: 'allowed_no_glare',
@@ -167,7 +171,8 @@ export const COUNTRIES: CountrySpec[] = [
         dpi: 300,
         notes: [
           '50×70 mm, plain white or light background',
-          'Head height 31-36 mm',
+          'Head height calibrated to 35.5 mm (within IRCC 35-36 mm target)',
+          '17.5 mm above the crown, 17 mm below the chin for shoulders',
           'Back of one photo includes guarantor certification template',
         ],
       },

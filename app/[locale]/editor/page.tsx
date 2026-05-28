@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -52,15 +53,36 @@ export default function EditorPage() {
   };
 
   return (
-    <div className="container py-8 md:py-12">
-      <div className="mb-8 space-y-4">
-        <div className="flex items-center justify-between gap-3">
-          <Button variant="ghost" size="sm" onClick={goBack}>
-            <ArrowLeft className="size-4 rtl:rotate-180" /> {tCommon('back')}
-          </Button>
-          <ProgressStepper step={step} />
-        </div>
+    <div className="relative overflow-hidden">
+      {/* Same hero-journey background as the landing page so the editor
+          feels like a continuation of /en rather than a stripped-down chrome
+          on a flat surface. Heavier opacity overlay than the hero — the
+          wizard UI needs to stay the focal point, but the photo is still
+          visible behind it. */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 -z-30">
+        <Image
+          src="/showcase/hero-journey.webp"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center opacity-60"
+        />
       </div>
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 -z-20 bg-gradient-to-b from-background/85 via-background/75 to-background/95 dark:from-background/90 dark:via-background/80 dark:to-background"
+      />
+
+      <div className="container relative py-8 md:py-12">
+        <div className="mb-8 space-y-4">
+          <div className="flex items-center justify-between gap-3">
+            <Button variant="ghost" size="sm" onClick={goBack}>
+              <ArrowLeft className="size-4 rtl:rotate-180" /> {tCommon('back')}
+            </Button>
+            <ProgressStepper step={step} />
+          </div>
+        </div>
 
       <AnimatePresence mode="wait">
         {step === 'upload' && (
@@ -155,6 +177,7 @@ export default function EditorPage() {
           </motion.section>
         )}
       </AnimatePresence>
+      </div>
     </div>
   );
 }

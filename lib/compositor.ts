@@ -185,9 +185,11 @@ export async function composeFinal({
   // Cascades into the print sheet automatically because renderPrintSheet
   // copies from this same canvas.
   applyShadow(out, shadow);
-  const dataUrl = out.toDataURL('image/jpeg', 0.95);
 
-  // Step 3: build the 4×6 print sheet using the best gang-up for this photo size.
+  // Step 3: build the 4×6 print sheet using the best gang-up for this photo
+  // size. Done BEFORE the crop marks are drawn on `out` so the gang-up uses
+  // a clean copy — the print sheet has its own grid-level cut guides between
+  // photos and doesn't need both styles.
   const printSheetDataUrl = renderPrintSheet(out, doc.widthMm, doc.heightMm, doc.dpi);
 
   // Step 4: if this document requires a guarantor back-of-sheet (Canada),
@@ -196,7 +198,70 @@ export async function composeFinal({
     ? renderBackSheet(doc.widthMm, doc.heightMm, doc.dpi)
     : null;
 
-  return { dataUrl, printSheetDataUrl, printSheetBackDataUrl, pixelWidth: outW, pixelHeight: outH };
+  // Step 5: stamp subtle corner crop marks on the single compliant image so
+  // a user printing it on plain paper has a precise cut guide. The print
+  // sheet was already generated above from the clean canvas — marks are
+  // only on the digital download.
+  drawCropMarks(out, doc.dpi);
+  const dataUrl = out.toDataURL('image/jpeg', 0.95);
+
+  return {
+    dataUrl,
+    printSheetDataUrl,
+    printSheetBackDataUrl,
+    pixelWidth: outW,
+    pixelHeight: outH,
+  };
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Crop marks — corner ticks for trimming the single compliant photo.        */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Draws four L-shaped corner crop marks on the canvas, anchored to the four
+ * physical corners of the photo. Each leg is 3 mm long, ~0.3 mm thick (scaled
+ * to DPI), pure black so it reads on both white and tinted backgrounds.
+ *
+ *   ┌─                 ─┐
+ *   │                   │
+ *
+ *
+ *   │                   │
+ *   └─                 ─┘
+ *
+ * Only stamped on the single compliant image — the print sheet has its own
+ * grid-level cut guides between photos and would get redundant marks if we
+ * drew these before generating it.
+ */
+function drawCropMarks(canvas: HTMLCanvasElement, dpi: number) {
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  const lenPx = Math.max(8, Math.round(mmToPx(3, dpi)));
+  const thicknessPx = Math.max(1, Math.round(mmToPx(0.3, dpi)));
+  ctx.save();
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = thicknessPx;
+  ctx.lineCap = 'butt';
+  const w = canvas.width;
+  const h = canvas.height;
+  // Pixel-align the strokes so the marks render crisp at any DPI.
+  const off = thicknessPx / 2;
+  ctx.beginPath();
+  // Top-left corner
+  ctx.moveTo(off, off); ctx.lineTo(lenPx, off);
+  ctx.moveTo(off, off); ctx.lineTo(off, lenPx);
+  // Top-right corner
+  ctx.moveTo(w - lenPx, off); ctx.lineTo(w - off, off);
+  ctx.moveTo(w - off, off); ctx.lineTo(w - off, lenPx);
+  // Bottom-left corner
+  ctx.moveTo(off, h - lenPx); ctx.lineTo(off, h - off);
+  ctx.moveTo(off, h - off); ctx.lineTo(lenPx, h - off);
+  // Bottom-right corner
+  ctx.moveTo(w - lenPx, h - off); ctx.lineTo(w - off, h - off);
+  ctx.moveTo(w - off, h - lenPx); ctx.lineTo(w - off, h - off);
+  ctx.stroke();
+  ctx.restore();
 }
 
 /* -------------------------------------------------------------------------- */

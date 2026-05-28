@@ -28,6 +28,15 @@ export interface CompositeOptions {
   cutout?: ImageBitmap | null;
   doc: DocumentSpec;
   crop: CropRect;
+  /**
+   * Skip the 4×6 print-sheet + back-template generation. Used during
+   * slider-driven recomposes — the slider only affects the digital photo
+   * visibly, and rebuilding the ~2 megapixel print sheet on every tick is
+   * the single largest cost in the compose pipeline. The editor calls
+   * composeFinal with this flag during dragging and clears it for the
+   * final compose before showing the results panel.
+   */
+  digitalOnly?: boolean;
   /** -50..50 — maps linearly to a brightness multiplier of 0.5×..1.5×. */
   brightness?: number;
   /** -50..50 — maps linearly to a contrast multiplier of 0.5×..1.5×. */
@@ -133,6 +142,7 @@ export async function composeFinal({
   cutout,
   doc,
   crop,
+  digitalOnly = false,
   brightness = 0,
   contrast = 0,
   shadow = 0,
@@ -142,24 +152,32 @@ export async function composeFinal({
   const outW = mmToPx(doc.widthMm, doc.dpi);
   const outH = mmToPx(doc.heightMm, doc.dpi);
 
-  // Step 1: build a high-res working canvas at crop dimensions so we can resize cleanly.
-  const work = document.createElement('canvas');
-  work.width = Math.round(crop.width);
-  work.height = Math.round(crop.height);
-  const wctx = work.getContext('2d', { willReadFrequently: false })!;
+  // Single compliant-dimensions canvas. The previous version composed onto
+  // a full-crop-resolution intermediate then downscaled — a wasted ~3 MP
+  // draw given the final output is ~0.5 MP. drawImage handles cropping AND
+  // downsampling in one GPU op, so we can skip the intermediate entirely.
+  const out = document.createElement('canvas');
+  out.width = outW;
+  out.height = outH;
+  const octx = out.getContext('2d')!;
 
-  // Background fill first.
-  wctx.fillStyle = bg;
-  wctx.fillRect(0, 0, work.width, work.height);
+  // Background fill behind any transparent areas of the cutout.
+  octx.fillStyle = bg;
+  octx.fillRect(0, 0, outW, outH);
 
-  applyFilters(wctx, brightness, contrast);
+  // CSS filter applies to subsequent draws — the background fill above
+  // stays unfiltered, only the subject picks up the brightness/contrast.
+  applyFilters(octx, brightness, contrast);
 
   // Prefer the caller-supplied (cached) cutout bitmap. Fall back to decoding
   // the blob, then to the raw source if no background removal was performed.
   let subject: ImageBitmap | HTMLImageElement | null = cutout ?? null;
   if (!subject && cutoutBlob) subject = await blobToImageBitmap(cutoutBlob);
   if (!subject) subject = source;
-  wctx.drawImage(
+
+  octx.imageSmoothingEnabled = true;
+  octx.imageSmoothingQuality = 'high';
+  octx.drawImage(
     subject,
     crop.x,
     crop.y,
@@ -167,39 +185,30 @@ export async function composeFinal({
     crop.height,
     0,
     0,
-    work.width,
-    work.height
+    outW,
+    outH
   );
-  wctx.filter = 'none';
+  octx.filter = 'none';
 
-  // Step 2: downscale to final compliant dimensions with high-quality smoothing.
-  const out = document.createElement('canvas');
-  out.width = outW;
-  out.height = outH;
-  const octx = out.getContext('2d')!;
-  octx.imageSmoothingEnabled = true;
-  octx.imageSmoothingQuality = 'high';
-  octx.drawImage(work, 0, 0, outW, outH);
   // Photoshop-inspired shadow tone curve, run on the downscaled output so
   // the per-pixel cost is bounded (≈ 360k pixels at 51×51 mm @ 300 DPI).
-  // Cascades into the print sheet automatically because renderPrintSheet
-  // copies from this same canvas.
   applyShadow(out, shadow);
 
-  // Step 3: build the 4×6 print sheet using the best gang-up for this photo
-  // size. Done BEFORE the crop marks are drawn on `out` so the gang-up uses
-  // a clean copy — the print sheet has its own grid-level cut guides between
-  // photos and doesn't need both styles.
-  const printSheetDataUrl = renderPrintSheet(out, doc.widthMm, doc.heightMm, doc.dpi);
+  // Print sheet + back template — skipped during slider drags via
+  // `digitalOnly` because they dominate compose time (encoding a 2 MP JPEG
+  // is the single most expensive step). Editor passes `digitalOnly: true`
+  // for slider recomposes and clears it for the final compose before the
+  // results panel is shown.
+  let printSheetDataUrl = '';
+  let printSheetBackDataUrl: string | null = null;
+  if (!digitalOnly) {
+    printSheetDataUrl = renderPrintSheet(out, doc.widthMm, doc.heightMm, doc.dpi);
+    if (doc.requiresBackTemplate) {
+      printSheetBackDataUrl = renderBackSheet(doc.widthMm, doc.heightMm, doc.dpi);
+    }
+  }
 
-  // Step 4: if this document requires a guarantor back-of-sheet (Canada),
-  // also produce a matching 4×6 back canvas with the certification layout.
-  const printSheetBackDataUrl = doc.requiresBackTemplate
-    ? renderBackSheet(doc.widthMm, doc.heightMm, doc.dpi)
-    : null;
-
-  // Step 5: stamp subtle corner crop marks on the single compliant image so
-  // a user printing it on plain paper has a precise cut guide. The print
+  // Stamp subtle corner crop marks on the single compliant image. The print
   // sheet was already generated above from the clean canvas — marks are
   // only on the digital download.
   drawCropMarks(out, doc.dpi);

@@ -179,12 +179,17 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
   const recompose = React.useCallback(async () => {
     if (!docPair || !state.imageEl || !state.crop) return;
     const seq = ++recomposeSeqRef.current;
+    // Slider-driven recomposes skip the print-sheet + back-template
+    // generation entirely (digitalOnly). The print sheet stays cached at
+    // the values from the most recent full compose; a fresh full compose
+    // runs in handleContinue right before the user transitions to results.
     const out = await composeFinal({
       source: state.imageEl,
       cutout: cutoutBitmapRef.current,
       cutoutBlob: cutoutBitmapRef.current ? null : state.cutoutBlob,
       doc: docPair.doc,
       crop: state.crop,
+      digitalOnly: true,
       brightness,
       contrast,
       shadow,
@@ -192,9 +197,37 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
     // Drop the result if a newer recompose has started — avoids flicker when
     // multiple slider ticks are in flight at once.
     if (seq !== recomposeSeqRef.current) return;
-    setResult(out.dataUrl, out.printSheetDataUrl, out.printSheetBackDataUrl);
+    // Pass undefined for the sheet URLs so the store keeps its previously
+    // cached values from the last full compose.
+    setResult(out.dataUrl);
     setPreviewUrl(out.dataUrl);
   }, [docPair, state.imageEl, state.crop, state.cutoutBlob, brightness, contrast, shadow, setResult]);
+
+  // Final FULL compose with the print sheet + back template before handing
+  // off to the results panel — ensures whatever slider values the user
+  // ended on are reflected in the downloadable print files.
+  const handleContinue = React.useCallback(async () => {
+    if (!docPair || !state.imageEl || !state.crop) {
+      onComplete();
+      return;
+    }
+    try {
+      const out = await composeFinal({
+        source: state.imageEl,
+        cutout: cutoutBitmapRef.current,
+        cutoutBlob: cutoutBitmapRef.current ? null : state.cutoutBlob,
+        doc: docPair.doc,
+        crop: state.crop,
+        brightness,
+        contrast,
+        shadow,
+      });
+      setResult(out.dataUrl, out.printSheetDataUrl, out.printSheetBackDataUrl);
+    } catch {
+      /* fall through to onComplete with whatever we last cached */
+    }
+    onComplete();
+  }, [docPair, state.imageEl, state.crop, state.cutoutBlob, brightness, contrast, shadow, setResult, onComplete]);
 
   // Debounce slider-driven recomposes so dragging at full speed doesn't queue
   // a recompose per tick. ~110 ms is below the perceptual delay threshold but
@@ -424,7 +457,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
           <Button
             variant="brand"
             size="lg"
-            onClick={onComplete}
+            onClick={handleContinue}
             disabled={state.stage !== 'done'}
             className="flex-1"
           >

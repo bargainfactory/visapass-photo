@@ -30,6 +30,12 @@ ctx.onmessage = async (e: MessageEvent) => {
       output: { format: 'image/webp', quality: 0.92 },
       model: 'isnet_quint8',
       device: 'gpu',
+      // We are ALREADY inside a dedicated worker — imgly's default
+      // `proxyToWorker: true` would spin up a second nested worker
+      // (postMessage round-trip + another module bootstrap) on every
+      // call. Running inline in our own worker eliminates ~200-500 ms
+      // of startup overhead and one full thread of memory.
+      proxyToWorker: false,
       progress: (key, current, total) => {
         ctx.postMessage({ id, type: 'progress', key, current, total });
       },

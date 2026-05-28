@@ -117,14 +117,13 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
         progress: 35,
       }));
 
-      // The final compliant photo is ~600×800 px at most (50×70 mm @ 300 DPI),
-      // so anything beyond ~1500 px source resolution is wasted work for the
-      // background-removal model. Downscale the blob we feed to imgly to
-      // 1500-px max edge — keeps the cutout quality more than sufficient
-      // while shaving ~40-60 % off the processing stage on phone-camera
-      // sources (typically 4000×3000 +).
+      // The final compliant photo is ~600×800 px at most (50×70 mm @ 300 DPI)
+      // and imgly's isnet model resizes its input to 1024×1024 internally
+      // before inference anyway. Pre-downscale to 1024-px max edge so imgly
+      // skips its own resize step entirely and gets a head-start on inference.
+      // Cutout quality after the final 50×70 mm crop is indistinguishable.
       const sourceBlob = await fetch(sourceUrl).then((r) => r.blob());
-      const workBlob = await downscaleBlobForBgRemoval(sourceBlob, 1500);
+      const workBlob = await downscaleBlobForBgRemoval(sourceBlob, 1024);
       const cutoutBlob = await removeBackground(workBlob, (label, ratio) => {
         setState((s) => ({
           ...s,

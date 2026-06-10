@@ -77,7 +77,13 @@ export function calculateCrop(
 
   // --- 4) Clamp / scale down if the desired crop spills outside the source. ---
   if (x < 0 || y < 0 || x + photoWidth > imageWidth || y + photoHeight > imageHeight) {
-    const scale = Math.min(imageWidth / photoWidth, imageHeight / photoHeight) * 0.98;
+    // Only ever SHRINK the crop, never grow it. The fit ratio is >1 whenever
+    // the crop is smaller than the source and merely sits off-edge (very common
+    // when the crown anchor pushes y<0 on a tall photo). Capping at 1 means we
+    // just reposition in that case; without the cap the crop would inflate to
+    // fill the frame and the head would render far below the document spec.
+    const fitScale = Math.min(imageWidth / photoWidth, imageHeight / photoHeight) * 0.98;
+    const scale = Math.min(1, fitScale);
     photoWidth *= scale;
     photoHeight *= scale;
     x = Math.max(0, Math.min(cx - photoWidth / 2, imageWidth - photoWidth));
@@ -99,7 +105,7 @@ export function calculateCrop(
         )
       );
     }
-    warnings.push({ key: 'scaledDown' });
+    if (scale < 1) warnings.push({ key: 'scaledDown' });
   }
 
   if (face.confidence < 0.6) {

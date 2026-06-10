@@ -26,15 +26,27 @@ export async function POST(req: NextRequest) {
     if (!pkg) return NextResponse.json({ error: 'Unknown package' }, { status: 400 });
     if (!docPair) return NextResponse.json({ error: 'Unknown document' }, { status: 400 });
 
+    // The DEK (base64 AES-GCM key) encrypts the buyer's deliverables client-side.
+    // We stash it in the Stripe session metadata and only release it back to the
+    // browser once payment clears (see /api/release-key). Validate shape/length
+    // so we never write arbitrary client data into Stripe metadata.
+    const dek: string | undefined =
+      typeof body.dek === 'string' && /^[A-Za-z0-9+/=]{40,64}$/.test(body.dek)
+        ? body.dek
+        : undefined;
+
     if (!process.env.STRIPE_SECRET_KEY) {
       // Dev fallback — returns a fake clientSecret that /checkout recognises
       // by the `_secret_demo` suffix and renders a "demo payment" UI instead
-      // of trying to mount EmbeddedCheckout with an invalid Stripe key.
+      // of trying to mount EmbeddedCheckout with an invalid Stripe key. There's
+      // no real session to gate against, so the demo flow echoes the DEK back
+      // for the success page to decrypt with.
       const fakeId = `cs_demo_${Date.now()}`;
       return NextResponse.json({
         clientSecret: `${fakeId}_secret_demo`,
         sessionId: fakeId,
         amountCents: pkg.priceCents,
+        demoDek: dek ?? null,
       });
     }
 
@@ -65,6 +77,10 @@ export async function POST(req: NextRequest) {
         packageId: pkg.id,
         documentId: docPair.doc.id,
         country: docPair.country.code,
+        // Released to the buyer's browser only after payment clears. Stripe
+        // metadata is server-side only — it is NOT exposed via the client
+        // secret the embedded checkout receives.
+        ...(dek ? { dek } : {}),
       },
       // Embedded sessions use `return_url` — Stripe navigates the host page
       // to this URL once the payment completes. The session_id placeholder
@@ -78,6 +94,9 @@ export async function POST(req: NextRequest) {
       amountCents: pkg.priceCents,
     });
   } catch (e: any) {
-    return NextResponse.json({ error: e?.message ?? 'Checkout failed' }, { status: 500 });
+    // Log the real error server-side; return a generic message so Stripe SDK
+    // internals / config hints aren't leaked to the client.
+    console.error('[checkout]', e?.message ?? e);
+    return NextResponse.json({ error: 'Checkout failed' }, { status: 500 });
   }
 }

@@ -235,6 +235,8 @@
     "shippingEta": "Shipping ETA",
     "etaText": "1–3 business days",
     "another": "Create another photo",
+    "preparingFiles": "Preparing your files…",
+    "deliveryUnavailable": "We couldn’t find your photo on this device. Please reopen this link in the same browser you used to create it.",
     "pollLine": "Webhook poll #{count} · session {session}…",
     "status": {
       "pending": "Awaiting webhook",

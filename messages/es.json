@@ -235,6 +235,8 @@
     "shippingEta": "Tiempo de envío",
     "etaText": "1–3 días hábiles",
     "another": "Crear otra foto",
+    "preparingFiles": "Preparando tus archivos…",
+    "deliveryUnavailable": "No encontramos tu foto en este dispositivo. Vuelve a abrir este enlace en el mismo navegador que usaste para crearla.",
     "pollLine": "Consulta del webhook n.º {count} · sesión {session}…",
     "status": {
       "pending": "Esperando webhook",

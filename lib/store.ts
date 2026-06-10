@@ -89,7 +89,13 @@ export const usePhotoStore = create<PhotoState>()(
       faceConfidence: null,
       currentRenderToken: null,
       setStep: (step) => set({ step }),
-      setSource: (sourceUrl, sourceMime) => set({ sourceUrl, sourceMime }),
+      setSource: (sourceUrl, sourceMime) =>
+        set((s) => {
+          // Revoke the previous object URL before replacing it — otherwise each
+          // new upload leaks the full-resolution blob for the tab's lifetime.
+          revokeBlobUrl(s.sourceUrl);
+          return { sourceUrl, sourceMime };
+        }),
       setDocument: (documentId) => set({ documentId }),
       setResult: (resultDataUrl, sheetUrl, sheetBackUrl) =>
         set({
@@ -104,7 +110,9 @@ export const usePhotoStore = create<PhotoState>()(
       updateOrderStatus: (id, status) =>
         set((s) => ({ orders: s.orders.map((o) => (o.id === id ? { ...o, status } : o)) })),
       reset: () =>
-        set({
+        set((s) => {
+          revokeBlobUrl(s.sourceUrl);
+          return {
           step: 'upload',
           sourceUrl: null,
           sourceMime: null,
@@ -117,6 +125,7 @@ export const usePhotoStore = create<PhotoState>()(
           shadow: 0,
           faceConfidence: null,
           currentRenderToken: null,
+          };
         }),
     }),
     {
@@ -135,6 +144,17 @@ export const usePhotoStore = create<PhotoState>()(
  * Uses crypto.randomUUID where available (modern browsers) and falls back
  * to Math.random + timestamp on the small set of environments without it.
  */
+/** Revoke a blob: object URL if that's what was passed; no-op otherwise. */
+function revokeBlobUrl(url: string | null) {
+  if (url && url.startsWith('blob:') && typeof URL !== 'undefined') {
+    try {
+      URL.revokeObjectURL(url);
+    } catch {
+      /* ignore */
+    }
+  }
+}
+
 export function newRenderToken(): string {
   if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
     return crypto.randomUUID();

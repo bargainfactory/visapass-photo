@@ -235,6 +235,8 @@
     "shippingEta": "Tahmini teslimat",
     "etaText": "1–3 iş günü",
     "another": "Başka bir fotoğraf oluştur",
+    "preparingFiles": "Dosyalarınız hazırlanıyor…",
+    "deliveryUnavailable": "Fotoğrafınızı bu cihazda bulamadık. Lütfen bu bağlantıyı, fotoğrafı oluştururken kullandığınız tarayıcıda yeniden açın.",
     "pollLine": "Webhook sorgusu #{count} · oturum {session}…",
     "status": {
       "pending": "Webhook bekleniyor",

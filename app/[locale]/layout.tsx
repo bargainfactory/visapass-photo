@@ -33,11 +33,20 @@ export async function generateMetadata({
     metadataBase: new URL('https://visapassphoto.com'),
     title: { default: t('name'), template: `%s · ${t('name')}` },
     description: tHero('subtitle'),
-    openGraph: { title: t('name'), description: tHero('subtitle'), type: 'website', locale },
-    twitter: { card: 'summary_large_image' },
-    alternates: {
-      languages: Object.fromEntries(routing.locales.map((l) => [l, `/${l}`])),
+    openGraph: {
+      title: t('name'),
+      description: tHero('subtitle'),
+      type: 'website',
+      siteName: t('name'),
+      url: `/${locale}`,
+      locale,
     },
+    twitter: { card: 'summary_large_image', title: t('name'), description: tHero('subtitle') },
+    // NOTE: alternates are intentionally NOT set here. Layout metadata cascades
+    // to every child route, so a layout-level hreflang map would point every
+    // subpage at the homepage. Each indexable page sets its own per-path
+    // alternates via buildAlternates(); transactional pages (editor/checkout/
+    // success) are disallowed in robots.txt instead.
   };
 }
 

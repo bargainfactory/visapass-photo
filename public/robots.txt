@@ -1,5 +1,9 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+# Transactional / app pages — no SEO value and they carry no per-path hreflang.
+Disallow: /*/editor
+Disallow: /*/checkout
+Disallow: /*/success
 
 Sitemap: https://visapassphoto.com/sitemap.xml

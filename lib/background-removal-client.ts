@@ -39,6 +39,24 @@ function ensureWorker(): Worker {
       pending.delete(id);
     }
   };
+  // If the worker script itself fails to load/parse (bundler regression, CSP,
+  // a throw outside the onmessage try/catch), `onmessage` never fires and every
+  // pending promise would hang the editor at "Processing background…" forever.
+  // Reject all in-flight calls and tear down so the next call retries clean.
+  const fail = (message: string) => {
+    for (const [id, entry] of pending) {
+      entry.reject(new Error(message));
+      pending.delete(id);
+    }
+    try {
+      workerInstance?.terminate();
+    } catch {
+      /* ignore */
+    }
+    workerInstance = null;
+  };
+  workerInstance.onerror = (e) => fail(e.message || 'Background-removal worker crashed');
+  workerInstance.onmessageerror = () => fail('Background-removal worker message error');
   return workerInstance;
 }
 

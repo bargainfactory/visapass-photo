@@ -5,12 +5,13 @@ import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Download, Loader2, Mail } from 'lucide-react';
+import { CheckCircle2, Download, Loader2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { downloadDataUrl } from '@/lib/utils';
+import { downloadDataUrl, jpegDataUrlToPng } from '@/lib/utils';
 import { usePhotoStore } from '@/lib/store';
+import { loadRecord, importDek, decryptToObjectUrl } from '@/lib/secure-delivery';
 
 interface OrderStatus {
   status: 'pending' | 'paid' | 'fulfilled' | 'shipped' | 'unknown';
@@ -22,15 +23,17 @@ interface OrderStatus {
    * appear so a digital-only buyer never sees the print sheet and vice versa.
    */
   packageId: string | null;
-  email: string | null;
 }
 
 interface StashedResult {
+  /** Decrypted object URLs ready for download. */
   digital: string;
   print: string | null;
   /** Back-of-sheet (Canada) — null when the doc doesn't require one. */
   printBack: string | null;
   doc: string;
+  /** Buyer's chosen export format, carried from the editor. */
+  format: 'jpeg' | 'png';
 }
 
 // Next.js requires any component reading useSearchParams() to sit beneath a
@@ -64,36 +67,74 @@ function SuccessContent() {
   const sessionId = params.get('session_id');
   const [status, setStatus] = React.useState<OrderStatus | null>(null);
   const [stashed, setStashed] = React.useState<StashedResult | null>(null);
+  const [deliveryError, setDeliveryError] = React.useState(false);
   const updateOrderStatus = usePhotoStore((s) => s.updateOrderStatus);
 
-  // After payment is confirmed by the webhook, pull the rendered photo +
-  // print sheet out of sessionStorage (cached on the /editor side just
-  // before the Stripe redirect) and expose download buttons. Reading is
-  // gated on `paid` status so a stranger landing on /success with a bogus
-  // session_id can't pull stashed data.
   const paid =
     status?.status === 'paid' ||
     status?.status === 'fulfilled' ||
     status?.status === 'shipped';
 
+  // Once payment is confirmed, decrypt the deliverables. The encrypted bytes
+  // live in IndexedDB on THIS device (written at checkout); the AES key is
+  // released by /api/release-key only because Stripe says the session is paid.
+  // A stranger with a bogus/unpaid session_id gets no key, and even the buyer
+  // can't decrypt on a different device (the ciphertext isn't there). Demo
+  // sessions hold the key client-side since there's no real payment to gate.
   React.useEffect(() => {
-    if (!paid || stashed) return;
-    try {
-      const expectedSession = sessionStorage.getItem('vp-pending-session');
-      if (!expectedSession || expectedSession !== sessionId) return;
-      const digital = sessionStorage.getItem('vp-pending-result');
-      const print = sessionStorage.getItem('vp-pending-print');
-      const printBack = sessionStorage.getItem('vp-pending-print-back');
-      const doc = sessionStorage.getItem('vp-pending-doc');
-      if (digital && doc) setStashed({ digital, print, printBack, doc });
-    } catch {
-      /* ignore */
-    }
+    if (!paid || stashed || !sessionId) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const record = await loadRecord(sessionId);
+        // No ciphertext on this device (e.g. opened the success link elsewhere).
+        if (!record) return;
+
+        let dekB64: string | null = null;
+        if (sessionId.startsWith('cs_demo_')) {
+          dekB64 = sessionStorage.getItem('vp-demo-dek');
+        } else {
+          const r = await fetch(`/api/release-key?session_id=${encodeURIComponent(sessionId)}`);
+          if (r.ok) dekB64 = ((await r.json()) as { dek?: string }).dek ?? null;
+        }
+        if (!dekB64) {
+          if (!cancelled) setDeliveryError(true);
+          return;
+        }
+
+        const key = await importDek(dekB64);
+        const digital = (await decryptToObjectUrl(key, record.items.digital!)).url;
+        const print = record.items.print
+          ? (await decryptToObjectUrl(key, record.items.print)).url
+          : null;
+        const printBack = record.items.printBack
+          ? (await decryptToObjectUrl(key, record.items.printBack)).url
+          : null;
+        const format =
+          (sessionStorage.getItem('vp-pending-format') as 'jpeg' | 'png') || 'jpeg';
+
+        if (!cancelled) {
+          setStashed({ digital, print, printBack, doc: record.documentId, format });
+        }
+      } catch {
+        if (!cancelled) setDeliveryError(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [paid, sessionId, stashed]);
 
   React.useEffect(() => {
     if (!sessionId) return;
     let cancelled = false;
+    let timer: ReturnType<typeof setInterval> | null = null;
+    const stop = () => {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    };
     const fetchStatus = async () => {
       try {
         const r = await fetch(`/api/order-status?session_id=${encodeURIComponent(sessionId)}`);
@@ -110,16 +151,19 @@ function SuccessContent() {
           data.status === 'shipped'
         ) {
           updateOrderStatus(sessionId, data.status);
+          // Terminal state reached — stop polling instead of hammering Stripe
+          // (and the order-status route) every 4 s for the page's lifetime.
+          stop();
         }
       } catch {
         /* ignore */
       }
     };
     fetchStatus();
-    const i = setInterval(fetchStatus, 4000);
+    timer = setInterval(fetchStatus, 4000);
     return () => {
       cancelled = true;
-      clearInterval(i);
+      stop();
     };
   }, [sessionId, updateOrderStatus]);
 
@@ -142,11 +186,6 @@ function SuccessContent() {
                 label={t('paymentConfirmed')}
                 value={status?.amountCents ? `$${(status.amountCents / 100).toFixed(2)}` : '—'}
               />
-              <Row
-                icon={<Mail className="size-4" />}
-                label={t('receiptTo')}
-                value={status?.email ?? '—'}
-              />
             </div>
 
             {/* Download grid — one card per file the customer actually paid
@@ -160,6 +199,23 @@ function SuccessContent() {
                 packageId={status?.packageId ?? 'bundle'}
                 tResults={tResults}
               />
+            )}
+
+            {/* Paid, key released, but still decrypting the local ciphertext. */}
+            {paid && !stashed && !deliveryError && (
+              <div className="grid place-items-center gap-2 py-4 text-sm text-muted-foreground">
+                <Loader2 className="size-5 animate-spin" />
+                <span>{t('preparingFiles')}</span>
+              </div>
+            )}
+
+            {/* Paid, but the deliverables aren't on this device / couldn't be
+                unlocked (e.g. the success link was opened in a different
+                browser than the one used to create the photo). */}
+            {paid && deliveryError && (
+              <p className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-center text-xs text-amber-700 dark:text-amber-400">
+                {t('deliveryUnavailable')}
+              </p>
             )}
 
             <Button asChild variant={paid && stashed ? 'outline' : 'brand'} size="lg" className="w-full">
@@ -217,23 +273,24 @@ function DownloadGrid({ stashed, packageId, tResults }: DownloadGridProps) {
   const entries: DownloadEntry[] = [];
   const wantsDigital = packageId === 'digital' || packageId === 'bundle';
   const wantsPrint = packageId === 'print-sheet' || packageId === 'bundle';
+  const ext = stashed.format === 'png' ? 'png' : 'jpg';
 
   if (wantsDigital) {
     entries.push({
       key: 'digital',
       thumbnail: stashed.digital,
       title: tResults('tabs.digital'),
-      files: [{ src: stashed.digital, filename: `${stashed.doc}.jpg` }],
+      files: [{ src: stashed.digital, filename: `${stashed.doc}.${ext}` }],
     });
   }
   if (wantsPrint && stashed.print) {
     const files = [
-      { src: stashed.print, filename: `${stashed.doc}-print-sheet-front.jpg` },
+      { src: stashed.print, filename: `${stashed.doc}-print-sheet-front.${ext}` },
     ];
     if (stashed.printBack) {
       files.push({
         src: stashed.printBack,
-        filename: `${stashed.doc}-print-sheet-back.jpg`,
+        filename: `${stashed.doc}-print-sheet-back.${ext}`,
       });
     }
     entries.push({
@@ -256,20 +313,25 @@ function DownloadGrid({ stashed, packageId, tResults }: DownloadGridProps) {
       }
     >
       {entries.map((entry) => (
-        <DownloadCard key={entry.key} entry={entry} />
+        <DownloadCard key={entry.key} entry={entry} format={stashed.format} />
       ))}
     </div>
   );
 }
 
-function DownloadCard({ entry }: { entry: DownloadEntry }) {
-  // Fire every file in the same synchronous tick — front and back of the
-  // 4×6 sheet land in the buyer's Downloads folder at the same moment.
-  // The previous staggered version was an over-cautious workaround;
-  // browsers accept rapid consecutive `<a download>` triggers as long as
-  // they originate from one user gesture (this click handler).
-  const downloadAll = () => {
-    entry.files.forEach((f) => downloadDataUrl(f.src, f.filename));
+function DownloadCard({ entry, format }: { entry: DownloadEntry; format: 'jpeg' | 'png' }) {
+  // The decrypted deliverables are JPEG object URLs. For a JPEG export we hand
+  // them straight to the browser; for PNG we round-trip each through a canvas
+  // first. All triggered from one user gesture so multi-file downloads work.
+  const downloadAll = async () => {
+    for (const f of entry.files) {
+      if (format === 'png') {
+        const png = await jpegDataUrlToPng(f.src);
+        downloadDataUrl(png, f.filename);
+      } else {
+        downloadDataUrl(f.src, f.filename);
+      }
+    }
   };
 
   return (

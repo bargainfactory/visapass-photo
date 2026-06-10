@@ -235,6 +235,8 @@
     "shippingEta": "Verwachte levering",
     "etaText": "1–3 werkdagen",
     "another": "Nog een foto maken",
+    "preparingFiles": "Je bestanden worden voorbereid…",
+    "deliveryUnavailable": "We konden je foto niet op dit apparaat vinden. Open deze link opnieuw in dezelfde browser waarmee je de foto hebt gemaakt.",
     "pollLine": "Webhook-poll #{count} · sessie {session}…",
     "status": {
       "pending": "Wacht op webhook",

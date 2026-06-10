@@ -32,7 +32,6 @@ class OrderStore {
 
 // Reuse across Hot Module Reloads in dev — avoids losing in-memory state.
 declare global {
-  // eslint-disable-next-line no-var
   var __ORDER_STORE__: OrderStore | undefined;
 }
 export const orderStore: OrderStore = globalThis.__ORDER_STORE__ ?? new OrderStore();

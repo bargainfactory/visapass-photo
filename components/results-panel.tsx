@@ -17,11 +17,13 @@ import { Link, useRouter } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { cn, downloadDataUrl, jpegDataUrlToPng } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { findDocument } from '@/lib/countries';
 import { PRINT_PACKAGES, bundleSavingsCents, type PackageId } from '@/lib/stripe';
 import { pickSheetLayout } from '@/lib/compositor';
 import { usePhotoStore } from '@/lib/store';
+import { makeWatermarkedPreview } from '@/lib/preview';
+import { generateDek, storeEncrypted } from '@/lib/secure-delivery';
 
 interface ResultsPanelProps {
   resultDataUrl: string;
@@ -46,68 +48,116 @@ export function ResultsPanel({
   const docPair = findDocument(documentId);
 
   const [pendingPkg, setPendingPkg] = React.useState<string | null>(null);
-  // Digital JPEG is the default selection across the whole results card:
-  //   · Preview pill defaults to "Digital" (the single compliant photo)
-  //   · Format pill defaults to "JPEG"
-  //   · Package radio defaults to "Digital Download"
   const [previewTab, setPreviewTab] = React.useState<PreviewTab>('digital');
   const [format, setFormat] = React.useState<FormatTab>('jpeg');
   const [selectedPkg, setSelectedPkg] = React.useState<PackageId>('digital');
 
+  // Watermarked, downscaled previews. The CLEAN full-resolution images
+  // (resultDataUrl / printSheetDataUrl / …) are NEVER rendered — only these
+  // baked-watermark previews reach the DOM, so a screenshot or "save image"
+  // can't lift the unpaid deliverable. The clean images are kept in JS memory
+  // (props) solely to encrypt them at checkout. See lib/preview.ts + the
+  // payment-gated decryption on /success.
+  const [pvDigital, setPvDigital] = React.useState<string | null>(null);
+  const [pvPrint, setPvPrint] = React.useState<string | null>(null);
+  const [pvBack, setPvBack] = React.useState<string | null>(null);
+
   const addOrder = usePhotoStore((s) => s.addOrder);
-  const orders = usePhotoStore((s) => s.orders);
   const currentRenderToken = usePhotoStore((s) => s.currentRenderToken);
 
-  const isPaid = React.useMemo(() => {
-    if (!currentRenderToken) return false;
-    return orders.some(
-      (o) =>
-        o.renderToken === currentRenderToken &&
-        (o.status === 'paid' || o.status === 'fulfilled' || o.status === 'shipped')
-    );
-  }, [orders, currentRenderToken]);
+  React.useEffect(() => {
+    let alive = true;
+    makeWatermarkedPreview(resultDataUrl)
+      .then((p) => alive && setPvDigital(p))
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [resultDataUrl]);
+
+  React.useEffect(() => {
+    let alive = true;
+    if (printSheetDataUrl) {
+      makeWatermarkedPreview(printSheetDataUrl)
+        .then((p) => alive && setPvPrint(p))
+        .catch(() => {});
+    } else {
+      setPvPrint(null);
+    }
+    return () => {
+      alive = false;
+    };
+  }, [printSheetDataUrl]);
+
+  React.useEffect(() => {
+    let alive = true;
+    if (printSheetBackDataUrl) {
+      makeWatermarkedPreview(printSheetBackDataUrl)
+        .then((p) => alive && setPvBack(p))
+        .catch(() => {});
+    } else {
+      setPvBack(null);
+    }
+    return () => {
+      alive = false;
+    };
+  }, [printSheetBackDataUrl]);
 
   const startCheckout = async (packageId: string) => {
     setPendingPkg(packageId);
     try {
+      // 1) Generate the DEK up front so its base64 form can ride in the Stripe
+      //    session metadata (the server releases it only after payment clears).
+      const { key, b64 } = await generateDek();
+
+      // 2) Create the checkout session, handing the DEK to the server.
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ packageId, documentId }),
+        body: JSON.stringify({ packageId, documentId, dek: b64 }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || t('checkoutError'));
+
+      // 3) Write the small, load-bearing keys FIRST so they can never be lost
+      //    to a storage-quota error from a larger write (the old bug: the
+      //    clientSecret was written last, after multi-MB image data URLs, and a
+      //    QuotaExceededError silently broke /checkout). The deliverables no
+      //    longer touch sessionStorage at all — they go to IndexedDB below.
+      const sessionId: string = data.sessionId;
+      try {
+        sessionStorage.setItem('vp-checkout-secret', data.clientSecret);
+        sessionStorage.setItem('vp-pending-session', sessionId);
+        sessionStorage.setItem('vp-pending-format', format);
+        // Demo mode (no Stripe secret key) has no payment to gate, so the
+        // success page decrypts with the DEK held client-side.
+        if (sessionId.startsWith('cs_demo_')) {
+          sessionStorage.setItem('vp-demo-dek', b64);
+        } else {
+          sessionStorage.removeItem('vp-demo-dek');
+        }
+      } catch {
+        /* sessionStorage unavailable — checkout page handles the missing secret */
+      }
+
+      // 4) Encrypt the deliverables with the DEK and persist the CIPHERTEXT in
+      //    IndexedDB, keyed by the real Stripe session id. No size cap, and the
+      //    clean images are never written to disk in the clear.
+      await storeEncrypted(sessionId, documentId, key, {
+        digital: resultDataUrl,
+        print: printSheetDataUrl,
+        printBack: printSheetBackDataUrl,
+      });
+
       addOrder({
-        id: data.sessionId,
+        id: sessionId,
         documentId,
         amountCents: data.amountCents,
         status: 'pending',
         createdAt: Date.now(),
         renderToken: currentRenderToken ?? undefined,
       });
-      // Stash everything the next two pages need:
-      //   · /checkout reads vp-checkout-secret to mount <EmbeddedCheckout/>
-      //   · /success reads vp-pending-{session,doc,result,print} to surface
-      //     download buttons once the webhook confirms payment.
-      try {
-        sessionStorage.setItem('vp-pending-session', data.sessionId);
-        sessionStorage.setItem('vp-pending-doc', documentId);
-        sessionStorage.setItem('vp-pending-result', resultDataUrl);
-        if (printSheetDataUrl) sessionStorage.setItem('vp-pending-print', printSheetDataUrl);
-        // Canada (and any future doc with requiresBackTemplate) also gets a
-        // guarantor back sheet — stash it so /success can offer that download
-        // alongside the front. Skipped silently if there isn't one.
-        if (printSheetBackDataUrl) {
-          sessionStorage.setItem('vp-pending-print-back', printSheetBackDataUrl);
-        } else {
-          sessionStorage.removeItem('vp-pending-print-back');
-        }
-        sessionStorage.setItem('vp-checkout-secret', data.clientSecret);
-      } catch {
-        /* quota — non-critical */
-      }
-      // Locale-aware push to the embedded-checkout page on our own domain
-      // (replaces the previous redirect to Stripe's hosted page).
+
       router.push('/checkout');
     } catch (err: any) {
       alert(err?.message ?? t('checkoutError'));
@@ -122,8 +172,6 @@ export function ResultsPanel({
   // Print-sheet metadata — how many photos fit, in which orientation.
   const sheetLayout = pickSheetLayout(doc.widthMm, doc.heightMm, doc.dpi);
   const photosPerSheet = sheetLayout.cols * sheetLayout.rows;
-  // Only Canada currently emits a back-of-sheet certification; the pill +
-  // bundled download paths only appear when the doc spec requested one.
   const hasBackTemplate = !!doc.requiresBackTemplate && !!printSheetBackDataUrl;
 
   const selectedPkgData = PRINT_PACKAGES.find((p) => p.id === selectedPkg)!;
@@ -134,51 +182,6 @@ export function ResultsPanel({
     id === 'digital' ? 'digital' : id === 'print-sheet' ? 'printSheet' : 'bundle';
   const pkgIcon = (id: string) =>
     id === 'digital' ? ImageIcon : id === 'print-sheet' ? Printer : Sparkles;
-
-  // Trigger the download(s) the active package entitles after payment.
-  const handleDownload = async () => {
-    const exportDigital = async () => {
-      if (format === 'jpeg') {
-        downloadDataUrl(resultDataUrl, `${doc.id}.jpg`);
-      } else {
-        const png = await jpegDataUrlToPng(resultDataUrl);
-        downloadDataUrl(png, `${doc.id}.png`);
-      }
-    };
-    const exportPrint = async () => {
-      if (!printSheetDataUrl) return;
-      if (format === 'jpeg') {
-        downloadDataUrl(printSheetDataUrl, `${doc.id}-print-sheet-front.jpg`);
-      } else {
-        const png = await jpegDataUrlToPng(printSheetDataUrl);
-        downloadDataUrl(png, `${doc.id}-print-sheet-front.png`);
-      }
-      // Canada (or any doc that flips a guarantor certification onto the
-      // back of the 4×6 sheet): emit the back canvas as a second file so
-      // the user can print front + back duplex on one 4×6 piece of paper.
-      if (hasBackTemplate && printSheetBackDataUrl) {
-        if (format === 'jpeg') {
-          downloadDataUrl(printSheetBackDataUrl, `${doc.id}-print-sheet-back.jpg`);
-        } else {
-          const png = await jpegDataUrlToPng(printSheetBackDataUrl);
-          downloadDataUrl(png, `${doc.id}-print-sheet-back.png`);
-        }
-      }
-    };
-    if (selectedPkg === 'digital') return exportDigital();
-    if (selectedPkg === 'print-sheet') return exportPrint();
-    // Bundle — both files, sequentially.
-    await exportDigital();
-    await exportPrint();
-  };
-
-  const onCtaClick = () => {
-    if (isPaid) {
-      handleDownload();
-    } else {
-      startCheckout(selectedPkg);
-    }
-  };
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
@@ -200,7 +203,7 @@ export function ResultsPanel({
               </p>
             </div>
 
-            {/* PREVIEW IMAGE */}
+            {/* PREVIEW IMAGE — watermarked, downscaled. Never the clean file. */}
             <div className="relative px-6 pb-3" onContextMenu={(e) => e.preventDefault()}>
               <AnimatePresence mode="wait">
                 {previewTab === 'digital' && (
@@ -215,7 +218,7 @@ export function ResultsPanel({
                       background: `linear-gradient(135deg, ${doc.background}, ${doc.background}cc)`,
                     }}
                   >
-                    <PreviewImage src={resultDataUrl} />
+                    <PreviewImage src={pvDigital} />
                   </motion.div>
                 )}
                 {previewTab === 'print' && (
@@ -229,26 +232,15 @@ export function ResultsPanel({
                   >
                     {printSheetDataUrl ? (
                       hasBackTemplate ? (
-                        // Documents with a guarantor back (Canada): show the
-                        // front sheet on the left and the back template on the
-                        // right so the user sees both sides at a glance. The
-                        // canvas text on the back stays in English regardless
-                        // of the active locale — guarantor wording must match
-                        // what IRCC publishes on the official back-of-photo
-                        // certification format.
                         <div className="grid grid-cols-2 items-center gap-4">
                           <div className="grid place-items-center">
-                            <PreviewImage src={printSheetDataUrl} />
+                            <PreviewImage src={pvPrint} />
                             <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
                               {t('frontLabel')}
                             </p>
                           </div>
                           <div className="grid place-items-center">
-                            {printSheetBackDataUrl ? (
-                              <PreviewImage src={printSheetBackDataUrl} />
-                            ) : (
-                              <Loader2 className="size-5 animate-spin text-muted-foreground" />
-                            )}
+                            <PreviewImage src={pvBack} />
                             <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
                               {t('backLabel')}
                             </p>
@@ -256,7 +248,7 @@ export function ResultsPanel({
                         </div>
                       ) : (
                         <div className="grid place-items-center">
-                          <PreviewImage src={printSheetDataUrl} />
+                          <PreviewImage src={pvPrint} />
                         </div>
                       )
                     ) : (
@@ -267,8 +259,6 @@ export function ResultsPanel({
                   </motion.div>
                 )}
               </AnimatePresence>
-
-              {!isPaid && <PreviewWatermark />}
             </div>
 
             {/* PREVIEW CAPTION */}
@@ -324,7 +314,7 @@ export function ResultsPanel({
                     onClick={() => setPreviewTab('print')}
                     disabled={!printSheetDataUrl}
                   >
-                    <Printer className="size-4" /> 4×6"
+                    <Printer className="size-4" /> 4×6&quot;
                   </PillButton>
                 </div>
               </div>
@@ -377,25 +367,19 @@ export function ResultsPanel({
               variant="brand"
               className="h-14 w-full text-base"
               disabled={pendingPkg !== null}
-              onClick={onCtaClick}
+              onClick={() => startCheckout(selectedPkg)}
             >
               {pendingPkg === selectedPkg ? (
                 <Loader2 className="size-5 animate-spin" />
               ) : (
                 <>
                   <CreditCard className="size-5" />
-                  {isPaid
-                    ? t('downloadCta', { name: tPackages(`${pkgKey(selectedPkg)}.name`) })
-                    : t('payAndDownload', { price: priceLabel })}
+                  {t('payAndDownload', { price: priceLabel })}
                 </>
               )}
             </Button>
 
-            {/* CONSENT LINE — by clicking the Pay button above the user is
-                bound to our Terms and Privacy Policy, so we surface that
-                contract right at the moment of consent (not buried in the
-                footer). Rendered with t.rich so both policy names are
-                proper locale-aware <Link>s inline. */}
+            {/* CONSENT LINE */}
             <p className="text-center text-[11px] leading-relaxed text-muted-foreground">
               {t.rich('consentLine', {
                 terms: (chunks) => (
@@ -434,11 +418,9 @@ export function ResultsPanel({
               <span>Stripe</span>
             </div>
 
-            {!isPaid && (
-              <p className="flex items-start justify-center gap-1.5 text-center text-[11px] text-amber-600">
-                <Lock className="mt-0.5 size-3 shrink-0" /> {t('locked')}
-              </p>
-            )}
+            <p className="flex items-start justify-center gap-1.5 text-center text-[11px] text-amber-600">
+              <Lock className="mt-0.5 size-3 shrink-0" /> {t('locked')}
+            </p>
           </CardContent>
         </Card>
       </motion.div>
@@ -450,7 +432,14 @@ export function ResultsPanel({
 /*  Sub-components                                                            */
 /* -------------------------------------------------------------------------- */
 
-function PreviewImage({ src }: { src: string }) {
+function PreviewImage({ src }: { src: string | null }) {
+  if (!src) {
+    return (
+      <div className="grid h-72 w-full place-items-center">
+        <Loader2 className="size-5 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
   return (
     <img
       src={src}
@@ -461,39 +450,6 @@ function PreviewImage({ src }: { src: string }) {
       onCopy={(e) => e.preventDefault()}
       className="pointer-events-none max-h-80 select-none rounded-lg border bg-white shadow-2xl [-webkit-touch-callout:none] [-webkit-user-drag:none]"
     />
-  );
-}
-
-function PreviewWatermark() {
-  return (
-    <div className="pointer-events-none absolute inset-x-6 inset-y-0">
-      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-        <defs>
-          <pattern
-            id="visapass-wm"
-            patternUnits="userSpaceOnUse"
-            width="240"
-            height="160"
-            patternTransform="rotate(-22)"
-          >
-            <text
-              x="0"
-              y="44"
-              fontFamily="ui-sans-serif, system-ui, sans-serif"
-              fontSize="22"
-              fontWeight={800}
-              letterSpacing={4}
-              fill="rgba(255,255,255,0.55)"
-              stroke="rgba(0,0,0,0.25)"
-              strokeWidth={0.6}
-            >
-              PREVIEW · PAY TO UNLOCK
-            </text>
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#visapass-wm)" />
-      </svg>
-    </div>
   );
 }
 

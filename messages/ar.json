@@ -235,6 +235,8 @@
     "shippingEta": "الوقت المتوقع للشحن",
     "etaText": "1 إلى 3 أيام عمل",
     "another": "إنشاء صورة أخرى",
+    "preparingFiles": "جارٍ تجهيز ملفاتك…",
+    "deliveryUnavailable": "لم نتمكن من العثور على صورتك على هذا الجهاز. يُرجى إعادة فتح هذا الرابط في المتصفح نفسه الذي استخدمته لإنشائها.",
     "pollLine": "استعلام Webhook رقم {count} · جلسة {session}…",
     "status": {
       "pending": "بانتظار Webhook",

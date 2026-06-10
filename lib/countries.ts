@@ -279,12 +279,17 @@ export const COUNTRIES: CountrySpec[] = [
       {
         id: 'es-passport',
         type: 'passport',
-        label: 'Spain Passport (32×26 mm)',
-        widthMm: 32,
-        heightMm: 26,
+        // Spanish passport/DNI photo is PORTRAIT — 26 mm wide × 32 mm tall.
+        // (The "32×26" wording in older refs is height×width; storing it as
+        // 32 wide × 26 tall produced a landscape photo on every render.)
+        label: 'Spain Passport (26×32 mm)',
+        widthMm: 26,
+        heightMm: 32,
         headHeightRatio: [0.7, 0.8],
         eyeLineFromBottom: [0.55, 0.7],
-        headHeightMm: 19,
+        // Head crown→chin ≈ 75% of the 32 mm photo height, matching the
+        // 0.7–0.8 ratio above (the previous 19 mm was ~59%, too small).
+        headHeightMm: 24,
         crownFromTopMm: 3,
         background: '#FFFFFF',
         glasses: 'forbidden',

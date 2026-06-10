@@ -29,7 +29,6 @@ export async function GET(req: NextRequest) {
       amountCents: null,
       documentId: null,
       packageId: null,
-      email: null,
     });
   }
 
@@ -39,7 +38,6 @@ export async function GET(req: NextRequest) {
       amountCents: null,
       documentId: null,
       packageId: null,
-      email: null,
     });
   }
 
@@ -56,6 +54,12 @@ export async function GET(req: NextRequest) {
     } else if (session.status === 'expired') {
       status = 'pending';
     }
+    // NOTE: this endpoint is UNAUTHENTICATED and a checkout session_id leaks
+    // readily (it lands in the /success URL, browser history, Referer headers).
+    // So return ONLY non-PII fields the success UI needs to unlock downloads.
+    // The buyer's email is intentionally NOT returned here — Stripe already
+    // emails the receipt, and exposing it would let anyone holding a session_id
+    // read the customer's address.
     return NextResponse.json({
       status,
       amountCents: session.amount_total ?? null,
@@ -65,18 +69,17 @@ export async function GET(req: NextRequest) {
       // buttons to show — a buyer of "digital" never sees the print sheet,
       // a buyer of "print-sheet" never sees the digital file.
       packageId: (session.metadata?.packageId as string | undefined) ?? null,
-      email: session.customer_details?.email ?? null,
     });
   } catch (e: any) {
     // Stripe returns 404 for session IDs from a different account / mode.
-    // Surface as pending so the UI keeps polling rather than throwing.
+    // Surface as pending so the UI keeps polling rather than throwing. Log the
+    // detail server-side; never echo the raw error to the caller.
+    console.error('[order-status]', e?.message ?? e);
     return NextResponse.json({
       status: 'pending',
       amountCents: null,
       documentId: null,
       packageId: null,
-      email: null,
-      error: e?.message ?? 'lookup_failed',
     });
   }
 }

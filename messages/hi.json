@@ -235,6 +235,8 @@
     "shippingEta": "शिपिंग समय",
     "etaText": "1–3 कार्य दिवस",
     "another": "दूसरी फ़ोटो बनाएँ",
+    "preparingFiles": "आपकी फ़ाइलें तैयार की जा रही हैं…",
+    "deliveryUnavailable": "हमें इस डिवाइस पर आपकी फ़ोटो नहीं मिली। कृपया इस लिंक को उसी ब्राउज़र में दोबारा खोलें जिससे आपने इसे बनाया था।",
     "pollLine": "Webhook पोल #{count} · सत्र {session}…",
     "status": {
       "pending": "Webhook की प्रतीक्षा",

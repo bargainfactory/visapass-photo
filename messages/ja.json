@@ -235,6 +235,8 @@
     "shippingEta": "配送予定",
     "etaText": "1〜3 営業日",
     "another": "別の写真を作成",
+    "preparingFiles": "ファイルを準備しています…",
+    "deliveryUnavailable": "このデバイスで写真が見つかりませんでした。作成時に使用したものと同じブラウザでこのリンクを開き直してください。",
     "pollLine": "Webhook ポーリング #{count} · セッション {session}…",
     "status": {
       "pending": "Webhook 待ち",

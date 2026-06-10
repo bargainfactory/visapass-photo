@@ -5,7 +5,6 @@ import { ShieldCheck } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageSwitcher } from '@/components/language-switcher';
-import { Badge } from '@/components/ui/badge';
 import { COUNTRIES } from '@/lib/countries';
 
 export function SiteHeader() {
@@ -18,9 +17,6 @@ export function SiteHeader() {
             <ShieldCheck className="size-4" strokeWidth={2.5} />
           </span>
           <span className="font-display text-lg">{t('brand.name')}</span>
-          <Badge variant="brand" className="ms-2 hidden sm:inline-flex">
-            {t('brand.tagline')}
-          </Badge>
         </Link>
         <nav className="flex items-center gap-1.5">
           <Link

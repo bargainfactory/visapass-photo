@@ -166,6 +166,21 @@ export function ResultsPanel({
     }
   };
 
+  // Selecting a package also drives the FORMAT + PREVIEW pills so the buyer
+  // immediately sees what they're paying for:
+  //   · 4×6" Print Sheet → JPEG format + the 4×6" sheet preview
+  //   · Digital          → the single digital photo preview
+  //   · Bundle           → leave the buyer's current view untouched
+  const selectPackage = (id: PackageId) => {
+    setSelectedPkg(id);
+    if (id === 'print-sheet') {
+      setFormat('jpeg');
+      setPreviewTab('print');
+    } else if (id === 'digital') {
+      setPreviewTab('digital');
+    }
+  };
+
   if (!docPair) return null;
   const { country, doc } = docPair;
 
@@ -347,7 +362,7 @@ export function ResultsPanel({
                     priceLabel={`$${(pkg.priceCents / 100).toFixed(2)}`}
                     selected={isSelected}
                     badge={pkg.id === 'bundle' ? t('saveAmount', { amount: savingsLabel }) : undefined}
-                    onSelect={() => setSelectedPkg(pkg.id as PackageId)}
+                    onSelect={() => selectPackage(pkg.id as PackageId)}
                   />
                 );
               })}

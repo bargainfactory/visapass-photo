@@ -213,7 +213,7 @@ export function ResultsPanel({
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="grid place-items-center select-none rounded-xl p-4"
+                    className="grid place-items-center select-none p-4"
                     style={{
                       background: `linear-gradient(135deg, ${doc.background}, ${doc.background}cc)`,
                     }}
@@ -228,7 +228,7 @@ export function ResultsPanel({
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="select-none rounded-xl bg-[linear-gradient(135deg,#f4f4f5,#e7e7e8)] p-4 dark:bg-[linear-gradient(135deg,#1f2937,#111827)]"
+                    className="select-none bg-[linear-gradient(135deg,#f4f4f5,#e7e7e8)] p-4 dark:bg-[linear-gradient(135deg,#1f2937,#111827)]"
                   >
                     {printSheetDataUrl ? (
                       hasBackTemplate ? (

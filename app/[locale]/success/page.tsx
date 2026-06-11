@@ -358,19 +358,11 @@ function DownloadCard({ entry, format }: { entry: DownloadEntry; format: 'jpeg' 
 }
 
 /**
- * Square-aspect preview box that scales the full image to fit without
- * cropping. The previous fixed-height container clipped the bottom of
- * portrait-aspect photos (heads visible, shoulders/body cut off).
+ * Preview of the actual deliverable. Rendered at the photo's TRUE aspect ratio
+ * (the compliant output dimensions), edge-to-edge — no square letterbox, no
+ * white padding, no rounded corners or border. So a US 51×51 mm photo shows
+ * square and a 35×45 mm photo shows portrait, exactly as downloaded.
  */
 function ThumbBox({ src }: { src: string }) {
-  return (
-    <div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-lg border bg-white p-2">
-      <img
-        src={src}
-        alt=""
-        draggable={false}
-        className="max-h-full max-w-full object-contain"
-      />
-    </div>
-  );
+  return <img src={src} alt="" draggable={false} className="block h-auto w-full" />;
 }

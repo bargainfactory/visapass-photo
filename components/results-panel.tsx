@@ -448,7 +448,7 @@ function PreviewImage({ src }: { src: string | null }) {
       onContextMenu={(e) => e.preventDefault()}
       onDragStart={(e) => e.preventDefault()}
       onCopy={(e) => e.preventDefault()}
-      className="pointer-events-none max-h-80 select-none rounded-lg border bg-white shadow-2xl [-webkit-touch-callout:none] [-webkit-user-drag:none]"
+      className="pointer-events-none max-h-80 select-none border bg-white shadow-2xl [-webkit-touch-callout:none] [-webkit-user-drag:none]"
     />
   );
 }

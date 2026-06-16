@@ -161,6 +161,19 @@
       "generic": "Erreur inattendue",
       "lowConfidence": "La confiance de détection est de {pct}%. Envisagez une photo plus nette et de face.",
       "scaledDown": "La photo a été réduite pour entrer — pour une qualité optimale, envoyez une image en plus haute résolution."
+    },
+    "compliance": {
+      "title": "Vérification de conformité",
+      "pass": "Conforme",
+      "review": "{count} à revoir",
+      "help": "Reprenez ou ajustez la photo pour corriger les points signalés.",
+      "items": {
+        "headSize": "Taille de la tête conforme",
+        "eyesOpen": "Yeux ouverts et visibles",
+        "expression": "Expression neutre, bouche fermée",
+        "headLevel": "Tête droite, non inclinée",
+        "facingForward": "Face à l'appareil photo"
+      }
     }
   },
   "results": {

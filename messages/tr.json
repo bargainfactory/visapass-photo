@@ -161,6 +161,19 @@
       "generic": "Beklenmeyen hata",
       "lowConfidence": "Algılama güveni %{pct}. Daha net ve cepheden bir fotoğraf önerilir.",
       "scaledDown": "Fotoğraf sığması için küçültüldü — en iyi kalite için daha yüksek çözünürlükte bir fotoğraf yükleyin."
+    },
+    "compliance": {
+      "title": "Uygunluk kontrolü",
+      "pass": "Gerekliliklere uygun",
+      "review": "{count} öğe gözden geçirilecek",
+      "help": "İşaretlenen öğeleri düzeltmek için fotoğrafı yeniden çekin veya ayarlayın.",
+      "items": {
+        "headSize": "Baş boyutu standartlarda",
+        "eyesOpen": "Gözler açık ve görünür",
+        "expression": "Nötr ifade, ağız kapalı",
+        "headLevel": "Baş düz, eğik değil",
+        "facingForward": "Kameraya bakıyor"
+      }
     }
   },
   "results": {

@@ -11,7 +11,9 @@ import {
   Loader2,
   RefreshCw,
   ScanFace,
+  ShieldCheck,
   Wand2,
+  XCircle,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -23,10 +25,12 @@ import { Progress } from '@/components/ui/progress';
 import { LandmarkOverlay } from '@/components/landmark-overlay';
 import { detectFace, type FaceAnalysis } from '@/lib/face-landmarker';
 import { calculateCrop, type CropRect } from '@/lib/crop-calculator';
+import { checkCompliance, type ComplianceReport, type ComplianceStatus } from '@/lib/compliance';
 import { composeFinal } from '@/lib/compositor';
 import { removeBackground } from '@/lib/background-removal-client';
 import { findDocument } from '@/lib/countries';
 import { usePhotoStore } from '@/lib/store';
+import { cn } from '@/lib/utils';
 
 interface EditorStudioProps {
   sourceUrl: string;
@@ -42,6 +46,7 @@ interface PipelineState {
   progress: number;
   face: FaceAnalysis | null;
   crop: CropRect | null;
+  compliance: ComplianceReport | null;
   cutoutBlob: Blob | null;
   imageEl: HTMLImageElement | null;
   error: string | null;
@@ -53,6 +58,7 @@ const initialState: PipelineState = {
   progress: 0,
   face: null,
   crop: null,
+  compliance: null,
   cutoutBlob: null,
   imageEl: null,
   error: null,
@@ -107,11 +113,13 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
       if (!face) throw new Error('NO_FACE');
       setFaceConfidence(face.confidence);
       const crop = calculateCrop(face, docPair.doc, img.naturalWidth, img.naturalHeight);
+      const compliance = checkCompliance(face, docPair.doc, crop);
 
       setState((s) => ({
         ...s,
         face,
         crop,
+        compliance,
         stage: 'removing-bg',
         messageKey: 'messages.processingBg',
         progress: 35,
@@ -393,6 +401,43 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
           </CardContent>
         </Card>
 
+        {state.compliance && (
+          <Card>
+            <CardContent className="space-y-3 p-5">
+              <div className="flex items-center justify-between">
+                <p className="flex items-center gap-1.5 text-sm font-semibold">
+                  <ShieldCheck className="size-4 text-brand-500" /> {t('compliance.title')}
+                </p>
+                <Badge variant={state.compliance.overall === 'pass' ? 'success' : 'warning'}>
+                  {state.compliance.overall === 'pass'
+                    ? t('compliance.pass')
+                    : t('compliance.review', {
+                        count: state.compliance.checks.filter((c) => c.status !== 'pass').length,
+                      })}
+                </Badge>
+              </div>
+              <ul className="space-y-1.5">
+                {state.compliance.checks.map((c) => (
+                  <li key={c.id} className="flex items-center gap-2 text-sm">
+                    <ComplianceIcon status={c.status} />
+                    <span
+                      className={cn(
+                        c.status === 'fail' && 'text-destructive',
+                        c.status === 'warn' && 'text-amber-600'
+                      )}
+                    >
+                      {t(`compliance.items.${c.id}`)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              {state.compliance.overall !== 'pass' && (
+                <p className="text-xs text-muted-foreground">{t('compliance.help')}</p>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
         <Card>
           <CardContent className="space-y-5 p-5">
             <div className="flex items-center justify-between">
@@ -467,6 +512,12 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
       </div>
     </div>
   );
+}
+
+function ComplianceIcon({ status }: { status: ComplianceStatus }) {
+  if (status === 'pass') return <CheckCircle2 className="size-4 shrink-0 text-emerald-600" />;
+  if (status === 'warn') return <AlertTriangle className="size-4 shrink-0 text-amber-600" />;
+  return <XCircle className="size-4 shrink-0 text-destructive" />;
 }
 
 function loadImage(src: string): Promise<HTMLImageElement> {

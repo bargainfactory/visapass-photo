@@ -161,6 +161,19 @@
       "generic": "Error inesperado",
       "lowConfidence": "La confianza de detección es del {pct}%. Considera una foto frontal más clara.",
       "scaledDown": "La foto se redujo para encajar — sube una imagen de mayor resolución para máxima calidad."
+    },
+    "compliance": {
+      "title": "Verificación de cumplimiento",
+      "pass": "Cumple los requisitos",
+      "review": "{count} por revisar",
+      "help": "Vuelve a tomar o ajusta la foto para corregir los puntos marcados.",
+      "items": {
+        "headSize": "Tamaño de cabeza dentro de norma",
+        "eyesOpen": "Ojos abiertos y visibles",
+        "expression": "Expresión neutra, boca cerrada",
+        "headLevel": "Cabeza recta, sin inclinación",
+        "facingForward": "Mirando a la cámara"
+      }
     }
   },
   "results": {

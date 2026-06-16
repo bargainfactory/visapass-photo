@@ -161,6 +161,19 @@
       "generic": "Onverwachte fout",
       "lowConfidence": "Detectiebetrouwbaarheid is {pct}%. Probeer een helderdere frontale foto.",
       "scaledDown": "Foto is verkleind — upload een hogere resolutie voor topkwaliteit."
+    },
+    "compliance": {
+      "title": "Conformiteitscontrole",
+      "pass": "Voldoet aan eisen",
+      "review": "{count} te controleren",
+      "help": "Maak de foto opnieuw of pas hem aan om de gemarkeerde punten op te lossen.",
+      "items": {
+        "headSize": "Hoofdgrootte binnen norm",
+        "eyesOpen": "Ogen open en zichtbaar",
+        "expression": "Neutrale uitdrukking, mond dicht",
+        "headLevel": "Hoofd recht, niet gekanteld",
+        "facingForward": "Recht in de camera kijkend"
+      }
     }
   },
   "results": {

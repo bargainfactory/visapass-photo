@@ -161,6 +161,19 @@
       "generic": "Erro inesperado",
       "lowConfidence": "A confiança da detecção é de {pct}%. Considere uma foto mais clara e frontal.",
       "scaledDown": "A foto foi reduzida para caber — para qualidade máxima, envie uma imagem de maior resolução."
+    },
+    "compliance": {
+      "title": "Verificação de conformidade",
+      "pass": "Em conformidade",
+      "review": "{count} para revisar",
+      "help": "Tire novamente ou ajuste a foto para corrigir os itens sinalizados.",
+      "items": {
+        "headSize": "Tamanho da cabeça dentro do padrão",
+        "eyesOpen": "Olhos abertos e visíveis",
+        "expression": "Expressão neutra, boca fechada",
+        "headLevel": "Cabeça reta, sem inclinação",
+        "facingForward": "Olhando para a câmera"
+      }
     }
   },
   "results": {

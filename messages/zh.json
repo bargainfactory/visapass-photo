@@ -161,6 +161,19 @@
       "generic": "发生未知错误",
       "lowConfidence": "检测置信度为 {pct}%。建议使用更清晰、光线良好的正面照。",
       "scaledDown": "照片已被缩小以适配 — 上传更高分辨率的图像可获得最佳质量。"
+    },
+    "compliance": {
+      "title": "合规检查",
+      "pass": "符合要求",
+      "review": "{count} 项待检查",
+      "help": "重新拍摄或调整照片以修正标记的项目。",
+      "items": {
+        "headSize": "头部尺寸符合规范",
+        "eyesOpen": "双眼睁开且清晰可见",
+        "expression": "表情自然，嘴巴闭合",
+        "headLevel": "头部端正，没有倾斜",
+        "facingForward": "正对镜头"
+      }
     }
   },
   "results": {

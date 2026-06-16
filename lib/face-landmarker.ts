@@ -32,7 +32,10 @@ export async function getFaceLandmarker(): Promise<FaceLandmarker> {
         runningMode: 'IMAGE',
         numFaces: 1,
         outputFacialTransformationMatrixes: false,
-        outputFaceBlendshapes: false,
+        // Blendshapes power the on-device compliance pre-check (eyes open,
+        // neutral expression, mouth closed). The standard face_landmarker.task
+        // bundle ships the blendshape head, so this is a free signal.
+        outputFaceBlendshapes: true,
       });
     })();
   }
@@ -50,8 +53,19 @@ export interface FaceAnalysis {
   crown: { x: number; y: number };
   /** Mean of left/right eye centers in pixel coords. */
   eyeLine: { x: number; y: number };
+  /** Left/right eye outer-corner centers in pixel coords (for head-roll calc). */
+  leftEye: { x: number; y: number };
+  rightEye: { x: number; y: number };
+  /** Nose tip in pixel coords (for yaw / facing-forward calc). */
+  noseTip: { x: number; y: number };
   /** Pixel distance between chin and crown (head height). */
   headHeightPx: number;
+  /**
+   * MediaPipe face blendshape scores (0–1) keyed by category name, e.g.
+   * `eyeBlinkLeft`, `jawOpen`, `mouthSmileLeft`. Empty if blendshapes weren't
+   * produced. Consumed by the compliance pre-check (lib/compliance.ts).
+   */
+  blendshapes: Record<string, number>;
   /** All 468 landmarks in pixel coordinates. */
   landmarks: { x: number; y: number; z: number }[];
 }
@@ -60,6 +74,7 @@ const CHIN_INDEX = 152;
 const FOREHEAD_INDEX = 10;
 const LEFT_EYE_INDEX = 33;
 const RIGHT_EYE_INDEX = 263;
+const NOSE_TIP_INDEX = 1;
 
 export function analyseFace(
   result: FaceLandmarkerResult,
@@ -117,6 +132,12 @@ export function analyseFace(
   const ratio = eyeDist / Math.max(1, headHeightPx);
   const confidence = Math.max(0.95, Math.min(1, 1 - Math.abs(ratio - 0.27) * 0.4));
 
+  const blendshapes: Record<string, number> = {};
+  const categories = result.faceBlendshapes?.[0]?.categories;
+  if (categories) {
+    for (const c of categories) blendshapes[c.categoryName] = c.score;
+  }
+
   return {
     found: true,
     confidence,
@@ -124,7 +145,11 @@ export function analyseFace(
     chin,
     crown,
     eyeLine,
+    leftEye: { x: leftEye.x, y: leftEye.y },
+    rightEye: { x: rightEye.x, y: rightEye.y },
+    noseTip: { x: px[NOSE_TIP_INDEX].x, y: px[NOSE_TIP_INDEX].y },
     headHeightPx,
+    blendshapes,
     landmarks: px,
   };
 }

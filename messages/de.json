@@ -161,6 +161,19 @@
       "generic": "Unerwarteter Fehler",
       "lowConfidence": "Erkennungskonfidenz beträgt {pct}%. Bitte ein klareres, frontales Foto verwenden.",
       "scaledDown": "Das Foto wurde verkleinert — für höchste Qualität ein höher aufgelöstes Bild hochladen."
+    },
+    "compliance": {
+      "title": "Konformitätsprüfung",
+      "pass": "Konform",
+      "review": "{count} zu prüfen",
+      "help": "Nehmen Sie das Foto neu auf oder passen Sie es an, um die markierten Punkte zu beheben.",
+      "items": {
+        "headSize": "Kopfgröße im Sollbereich",
+        "eyesOpen": "Augen offen und sichtbar",
+        "expression": "Neutraler Ausdruck, Mund geschlossen",
+        "headLevel": "Kopf gerade, nicht geneigt",
+        "facingForward": "Blick in die Kamera"
+      }
     }
   },
   "results": {

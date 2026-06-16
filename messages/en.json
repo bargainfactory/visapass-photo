@@ -161,6 +161,19 @@
       "generic": "Unexpected error",
       "lowConfidence": "Face detection confidence is {pct}%. Consider a clearer, well-lit, front-facing photo.",
       "scaledDown": "Photo was scaled down to fit the source image — for highest quality, upload a higher-resolution photo."
+    },
+    "compliance": {
+      "title": "Compliance check",
+      "pass": "Looks compliant",
+      "review": "{count} to review",
+      "help": "Re-take or adjust your photo to fix the flagged items.",
+      "items": {
+        "headSize": "Head size within spec",
+        "eyesOpen": "Eyes open and visible",
+        "expression": "Neutral expression, mouth closed",
+        "headLevel": "Head straight, not tilted",
+        "facingForward": "Facing the camera"
+      }
     }
   },
   "results": {

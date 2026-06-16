@@ -161,6 +161,19 @@
       "generic": "Errore imprevisto",
       "lowConfidence": "La confidenza di rilevamento è {pct}%. Considera una foto frontale più nitida.",
       "scaledDown": "La foto è stata ridimensionata — per la qualità massima, carica un'immagine a risoluzione maggiore."
+    },
+    "compliance": {
+      "title": "Verifica di conformità",
+      "pass": "Conforme",
+      "review": "{count} da rivedere",
+      "help": "Riscatta o regola la foto per correggere gli elementi segnalati.",
+      "items": {
+        "headSize": "Dimensione della testa a norma",
+        "eyesOpen": "Occhi aperti e visibili",
+        "expression": "Espressione neutra, bocca chiusa",
+        "headLevel": "Testa dritta, non inclinata",
+        "facingForward": "Rivolto verso la fotocamera"
+      }
     }
   },
   "results": {

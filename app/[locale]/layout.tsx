@@ -82,7 +82,7 @@ export default async function LocaleLayout({
           'font-sans selection:bg-brand-500/30 selection:text-brand-900 dark:selection:text-brand-100'
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <NextIntlClientProvider messages={messages}>
             <TooltipProvider delayDuration={150}>
               <a

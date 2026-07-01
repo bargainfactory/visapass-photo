@@ -112,7 +112,17 @@
     "studioSubtitle": "Overlay MediaPipe a sinistra, anteprima conforme ICAO a destra.",
     "resultTitle": "La tua foto è pronta",
     "resultSubtitle": "Scarica il file digitale o ordina copie stampate professionalmente.",
-    "converting": "Conversione della foto…"
+    "converting": "Conversione della foto…",
+    "tips": {
+      "title": "Consigli per una foto accettata",
+      "items": [
+        "Sfondo uniforme e chiaro",
+        "Guarda dritto verso la fotocamera",
+        "Espressione neutra, bocca chiusa",
+        "Luce uniforme, senza ombre o riflessi",
+        "Senza occhiali né cappelli"
+      ]
+    }
   },
   "countrySelector": {
     "search": "Cerca tra oltre 20 Paesi — passaporto, visto, ID…",
@@ -174,6 +184,13 @@
         "expression": "Espressione neutra, bocca chiusa",
         "headLevel": "Testa dritta, non inclinata",
         "facingForward": "Rivolto verso la fotocamera"
+      },
+      "hints": {
+        "headSize": "Allontanati o usa una foto a risoluzione più alta affinché la testa entri nell'inquadratura.",
+        "eyesOpen": "Apri bene gli occhi e guarda la fotocamera.",
+        "expression": "Rilassati: viso neutro, bocca chiusa, senza sorridere.",
+        "headLevel": "Raddrizza la testa in modo che non sia inclinata.",
+        "facingForward": "Guarda dritto verso la fotocamera."
       }
     },
     "framing": {
@@ -216,7 +233,10 @@
     "checkoutError": "Impossibile avviare il pagamento",
     "frontLabel": "Fronte",
     "backLabel": "Retro",
-    "previewCaptionPrintWithBack": "Foglio 4×6\" — fronte + retro · {count} foto · {dpi} DPI · {format}"
+    "previewCaptionPrintWithBack": "Foglio 4×6\" — fronte + retro · {count} foto · {dpi} DPI · {format}",
+    "compliancePass": "Soddisfa i requisiti fotografici di {country}",
+    "complianceReview": "Alcuni controlli sono stati segnalati — torna a verificare prima di pagare.",
+    "guarantee": "Accettata dalle autorità o rimborsata."
   },
   "packages": {
     "digital": {

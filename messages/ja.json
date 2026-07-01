@@ -112,7 +112,17 @@
     "studioSubtitle": "左に MediaPipe オーバーレイ、右に ICAO 準拠プレビュー。",
     "resultTitle": "写真が完成しました",
     "resultSubtitle": "デジタルでダウンロードするか、プロ印刷をご注文ください。",
-    "converting": "写真を変換しています…"
+    "converting": "写真を変換しています…",
+    "tips": {
+      "title": "受理される写真のコツ",
+      "items": [
+        "無地で明るい背景",
+        "カメラを正面から見る",
+        "無表情で口を閉じる",
+        "均一な照明、影や反射なし",
+        "眼鏡や帽子を外す"
+      ]
+    }
   },
   "countrySelector": {
     "search": "20以上の国を検索 — パスポート、ビザ、ID…",
@@ -174,6 +184,13 @@
         "expression": "無表情で口を閉じている",
         "headLevel": "頭がまっすぐで傾いていない",
         "facingForward": "カメラを正面から見ている"
+      },
+      "hints": {
+        "headSize": "頭が枠に収まるよう、少し離れるか高解像度の写真を使ってください。",
+        "eyesOpen": "目をしっかり開いてカメラを見てください。",
+        "expression": "力を抜いて、無表情・口を閉じ・笑わないでください。",
+        "headLevel": "頭をまっすぐにして傾けないでください。",
+        "facingForward": "カメラを正面から見てください。"
       }
     },
     "framing": {
@@ -216,7 +233,10 @@
     "checkoutError": "チェックアウトを開始できませんでした",
     "frontLabel": "表面",
     "backLabel": "裏面",
-    "previewCaptionPrintWithBack": "4×6\" シート — 表面 + 裏面 · {count} 枚 · {dpi} DPI · {format}"
+    "previewCaptionPrintWithBack": "4×6\" シート — 表面 + 裏面 · {count} 枚 · {dpi} DPI · {format}",
+    "compliancePass": "{country} の写真要件を満たしています",
+    "complianceReview": "いくつかのチェックが指摘されました。支払い前に戻って確認してください。",
+    "guarantee": "政府に受理されない場合は返金します。"
   },
   "packages": {
     "digital": {

@@ -2,6 +2,7 @@
 
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import type { ComplianceReport } from './compliance';
 
 export type WizardStep = 'upload' | 'select' | 'edit' | 'result';
 
@@ -50,6 +51,8 @@ interface PhotoState {
   orders: OrderRecord[];
   /** Last face detection confidence (0–1). */
   faceConfidence: number | null;
+  /** Latest on-device compliance report, surfaced on the results panel. */
+  compliance: ComplianceReport | null;
   /**
    * Random token regenerated on every fresh upload — scopes the paid flag
    * to *this* photo. Not persisted: a reload deliberately invalidates it
@@ -66,6 +69,7 @@ interface PhotoState {
   ) => void;
   setAdjustments: (b: number, c: number, s: number) => void;
   setFaceConfidence: (c: number | null) => void;
+  setCompliance: (c: ComplianceReport | null) => void;
   setRenderToken: (token: string | null) => void;
   addOrder: (o: OrderRecord) => void;
   updateOrderStatus: (id: string, status: OrderRecord['status']) => void;
@@ -87,6 +91,7 @@ export const usePhotoStore = create<PhotoState>()(
       shadow: 0,
       orders: [],
       faceConfidence: null,
+      compliance: null,
       currentRenderToken: null,
       setStep: (step) => set({ step }),
       setSource: (sourceUrl, sourceMime) =>
@@ -105,6 +110,7 @@ export const usePhotoStore = create<PhotoState>()(
         }),
       setAdjustments: (brightness, contrast, shadow) => set({ brightness, contrast, shadow }),
       setFaceConfidence: (faceConfidence) => set({ faceConfidence }),
+      setCompliance: (compliance) => set({ compliance }),
       setRenderToken: (currentRenderToken) => set({ currentRenderToken }),
       addOrder: (o) => set((s) => ({ orders: [o, ...s.orders].slice(0, 20) })),
       updateOrderStatus: (id, status) =>
@@ -124,6 +130,7 @@ export const usePhotoStore = create<PhotoState>()(
           contrast: 0,
           shadow: 0,
           faceConfidence: null,
+          compliance: null,
           currentRenderToken: null,
           };
         }),

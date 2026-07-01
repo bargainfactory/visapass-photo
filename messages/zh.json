@@ -112,7 +112,17 @@
     "studioSubtitle": "左侧为 MediaPipe 实时叠加,右侧为 ICAO 合规预览。",
     "resultTitle": "你的照片已就绪",
     "resultSubtitle": "下载数字文件或订购专业冲印的纸质版本。",
-    "converting": "正在转换您的照片…"
+    "converting": "正在转换您的照片…",
+    "tips": {
+      "title": "拍出合格照片的提示",
+      "items": [
+        "浅色纯色背景",
+        "正对镜头",
+        "表情自然，嘴巴闭合",
+        "光线均匀，无阴影或反光",
+        "不戴眼镜和帽子"
+      ]
+    }
   },
   "countrySelector": {
     "search": "搜索 20+ 国家 — 护照、签证、身份证…",
@@ -174,6 +184,13 @@
         "expression": "表情自然，嘴巴闭合",
         "headLevel": "头部端正，没有倾斜",
         "facingForward": "正对镜头"
+      },
+      "hints": {
+        "headSize": "请后退一些或使用更高分辨率的照片，让头部适合画面。",
+        "eyesOpen": "完全睁开双眼并注视镜头。",
+        "expression": "放松：表情自然，闭嘴，不要微笑。",
+        "headLevel": "把头摆正，不要倾斜。",
+        "facingForward": "正对镜头。"
       }
     },
     "framing": {
@@ -216,7 +233,10 @@
     "checkoutError": "无法启动支付",
     "frontLabel": "正面",
     "backLabel": "背面",
-    "previewCaptionPrintWithBack": "4×6\" 印张 — 正面 + 背面 · {count} 张 · {dpi} DPI · {format}"
+    "previewCaptionPrintWithBack": "4×6\" 印张 — 正面 + 背面 · {count} 张 · {dpi} DPI · {format}",
+    "compliancePass": "符合 {country} 的照片要求",
+    "complianceReview": "部分检查被标记——请在付款前返回查看。",
+    "guarantee": "政府认可，否则退款。"
   },
   "packages": {
     "digital": {

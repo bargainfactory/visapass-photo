@@ -81,6 +81,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
   const shadow = usePhotoStore((s) => s.shadow);
   const setAdjustments = usePhotoStore((s) => s.setAdjustments);
   const setFaceConfidence = usePhotoStore((s) => s.setFaceConfidence);
+  const setCompliance = usePhotoStore((s) => s.setCompliance);
 
   const [state, setState] = React.useState<PipelineState>(initialState);
   const [showLandmarks, setShowLandmarks] = React.useState(true);
@@ -136,6 +137,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
       setFaceConfidence(face.confidence);
       const crop = calculateCrop(face, docPair.doc, img.naturalWidth, img.naturalHeight);
       const compliance = checkCompliance(face, docPair.doc, crop);
+      setCompliance(compliance);
 
       setState((s) => ({
         ...s,
@@ -280,6 +282,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
     if (!state.face || !effectiveCrop || !docPair) return;
     const report = checkCompliance(state.face, docPair.doc, effectiveCrop);
     setState((s) => (s.compliance ? { ...s, compliance: report } : s));
+    setCompliance(report);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [effectiveCrop]);
 
@@ -447,24 +450,28 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
                       })}
                 </Badge>
               </div>
-              <ul className="space-y-1.5">
+              <ul className="space-y-2">
                 {state.compliance.checks.map((c) => (
-                  <li key={c.id} className="flex items-center gap-2 text-sm">
-                    <ComplianceIcon status={c.status} />
-                    <span
-                      className={cn(
-                        c.status === 'fail' && 'text-destructive',
-                        c.status === 'warn' && 'text-amber-600'
-                      )}
-                    >
-                      {t(`compliance.items.${c.id}`)}
-                    </span>
+                  <li key={c.id} className="text-sm">
+                    <div className="flex items-center gap-2">
+                      <ComplianceIcon status={c.status} />
+                      <span
+                        className={cn(
+                          c.status === 'fail' && 'text-destructive',
+                          c.status === 'warn' && 'text-amber-600'
+                        )}
+                      >
+                        {t(`compliance.items.${c.id}`)}
+                      </span>
+                    </div>
+                    {c.status !== 'pass' && (
+                      <p className="ms-6 mt-0.5 text-xs text-muted-foreground">
+                        {t(`compliance.hints.${c.id}`)}
+                      </p>
+                    )}
                   </li>
                 ))}
               </ul>
-              {state.compliance.overall !== 'pass' && (
-                <p className="text-xs text-muted-foreground">{t('compliance.help')}</p>
-              )}
             </CardContent>
           </Card>
         )}

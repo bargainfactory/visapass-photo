@@ -112,7 +112,17 @@
     "studioSubtitle": "Superposition MediaPipe à gauche, aperçu conforme ICAO à droite.",
     "resultTitle": "Votre photo est prête",
     "resultSubtitle": "Téléchargez le fichier numérique ou commandez des tirages professionnels.",
-    "converting": "Conversion de votre photo…"
+    "converting": "Conversion de votre photo…",
+    "tips": {
+      "title": "Conseils pour une photo acceptée",
+      "items": [
+        "Fond uni et clair",
+        "Regardez droit vers l'objectif",
+        "Expression neutre, bouche fermée",
+        "Éclairage uniforme, sans ombres ni reflets",
+        "Sans lunettes ni chapeau"
+      ]
+    }
   },
   "countrySelector": {
     "search": "Rechercher parmi plus de 20 pays — passeport, visa, CNI…",
@@ -174,6 +184,13 @@
         "expression": "Expression neutre, bouche fermée",
         "headLevel": "Tête droite, non inclinée",
         "facingForward": "Face à l'appareil photo"
+      },
+      "hints": {
+        "headSize": "Reculez ou utilisez une photo de meilleure résolution pour que la tête tienne dans le cadre.",
+        "eyesOpen": "Ouvrez bien les yeux et regardez l'objectif.",
+        "expression": "Détendez-vous : visage neutre, bouche fermée, sans sourire.",
+        "headLevel": "Redressez la tête pour qu'elle ne soit pas inclinée.",
+        "facingForward": "Regardez droit vers l'objectif."
       }
     },
     "framing": {
@@ -216,7 +233,10 @@
     "checkoutError": "Impossible de démarrer le paiement",
     "frontLabel": "Recto",
     "backLabel": "Verso",
-    "previewCaptionPrintWithBack": "Feuille 4×6\" — recto + verso · {count} photos · {dpi} DPI · {format}"
+    "previewCaptionPrintWithBack": "Feuille 4×6\" — recto + verso · {count} photos · {dpi} DPI · {format}",
+    "compliancePass": "Conforme aux exigences photo de {country}",
+    "complianceReview": "Certaines vérifications ont été signalées — revenez vérifier avant de payer.",
+    "guarantee": "Acceptée par l'administration ou remboursée."
   },
   "packages": {
     "digital": {

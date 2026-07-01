@@ -5,8 +5,9 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, Lightbulb, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { ProgressStepper } from '@/components/progress-stepper';
 import { UploadDropzone } from '@/components/upload-dropzone';
 import { CameraCapture } from '@/components/camera-capture';
@@ -18,7 +19,6 @@ import { findDocument } from '@/lib/countries';
 import { toDecodableImage } from '@/lib/heic';
 import { getFaceLandmarker } from '@/lib/face-landmarker';
 import { warmupBackgroundRemoval } from '@/lib/background-removal-client';
-import { Loader2 } from 'lucide-react';
 
 export default function EditorPage() {
   const t = useTranslations('editorPage');
@@ -134,6 +134,23 @@ export default function EditorPage() {
               <UploadDropzone onAccept={handleFile} onOpenCamera={() => setCameraOpen(true)} />
             )}
             <CameraCapture open={cameraOpen} onOpenChange={setCameraOpen} onCapture={handleFile} />
+            {!converting && (
+              <Card className="bg-muted/30">
+                <CardContent className="p-5">
+                  <p className="mb-3 flex items-center gap-1.5 text-sm font-semibold">
+                    <Lightbulb className="size-4 text-brand-500" /> {t('tips.title')}
+                  </p>
+                  <ul className="grid gap-2 sm:grid-cols-2">
+                    {(t.raw('tips.items') as string[]).map((tip, i) => (
+                      <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
+                        <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-emerald-600" />
+                        {tip}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
           </motion.section>
         )}
 

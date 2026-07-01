@@ -112,7 +112,17 @@
     "studioSubtitle": "MediaPipe-Overlay links, ICAO-konforme Vorschau rechts.",
     "resultTitle": "Dein Foto ist fertig",
     "resultSubtitle": "Lade die Datei herunter oder bestelle professionelle Drucke.",
-    "converting": "Foto wird konvertiert…"
+    "converting": "Foto wird konvertiert…",
+    "tips": {
+      "title": "Tipps für ein akzeptiertes Foto",
+      "items": [
+        "Schlichter, heller Hintergrund",
+        "Blicken Sie gerade in die Kamera",
+        "Neutraler Ausdruck, Mund geschlossen",
+        "Gleichmäßiges Licht, keine Schatten oder Reflexe",
+        "Keine Brille, kein Hut"
+      ]
+    }
   },
   "countrySelector": {
     "search": "In über 20 Ländern suchen — Pass, Visum, Ausweis…",
@@ -174,6 +184,13 @@
         "expression": "Neutraler Ausdruck, Mund geschlossen",
         "headLevel": "Kopf gerade, nicht geneigt",
         "facingForward": "Blick in die Kamera"
+      },
+      "hints": {
+        "headSize": "Gehen Sie weiter weg oder nutzen Sie ein höher aufgelöstes Foto, damit der Kopf ins Bild passt.",
+        "eyesOpen": "Öffnen Sie die Augen ganz und schauen Sie in die Kamera.",
+        "expression": "Entspannen Sie sich: neutrales Gesicht, Mund zu, kein Lächeln.",
+        "headLevel": "Richten Sie den Kopf gerade, nicht geneigt.",
+        "facingForward": "Blicken Sie gerade in die Kamera."
       }
     },
     "framing": {
@@ -216,7 +233,10 @@
     "checkoutError": "Checkout konnte nicht gestartet werden",
     "frontLabel": "Vorderseite",
     "backLabel": "Rückseite",
-    "previewCaptionPrintWithBack": "4×6\"-Bogen — Vorder- + Rückseite · {count} Fotos · {dpi} DPI · {format}"
+    "previewCaptionPrintWithBack": "4×6\"-Bogen — Vorder- + Rückseite · {count} Fotos · {dpi} DPI · {format}",
+    "compliancePass": "Erfüllt die Fotoanforderungen für {country}",
+    "complianceReview": "Einige Prüfungen wurden markiert — bitte vor dem Bezahlen erneut prüfen.",
+    "guarantee": "Behördlich akzeptiert oder Geld zurück."
   },
   "packages": {
     "digital": {

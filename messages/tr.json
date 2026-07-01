@@ -112,7 +112,17 @@
     "studioSubtitle": "Solda MediaPipe katmanı, sağda ICAO uyumlu önizleme.",
     "resultTitle": "Fotoğrafınız hazır",
     "resultSubtitle": "Dijital dosyayı indirin veya profesyonelce basılmış kopyalar sipariş edin.",
-    "converting": "Fotoğrafınız dönüştürülüyor…"
+    "converting": "Fotoğrafınız dönüştürülüyor…",
+    "tips": {
+      "title": "Kabul edilen bir fotoğraf için ipuçları",
+      "items": [
+        "Düz, açık renk arka plan",
+        "Doğrudan kameraya bakın",
+        "Nötr ifade, ağız kapalı",
+        "Eşit ışık, gölge veya parlama yok",
+        "Gözlük ve şapka takmayın"
+      ]
+    }
   },
   "countrySelector": {
     "search": "20+ ülkede ara — pasaport, vize, kimlik…",
@@ -174,6 +184,13 @@
         "expression": "Nötr ifade, ağız kapalı",
         "headLevel": "Baş düz, eğik değil",
         "facingForward": "Kameraya bakıyor"
+      },
+      "hints": {
+        "headSize": "Başın kadraja sığması için geri çekilin veya daha yüksek çözünürlüklü bir fotoğraf kullanın.",
+        "eyesOpen": "Gözlerinizi tam açın ve kameraya bakın.",
+        "expression": "Rahatlayın: nötr yüz, ağız kapalı, gülümseme yok.",
+        "headLevel": "Başınızı düz tutun, eğik olmasın.",
+        "facingForward": "Doğrudan kameraya bakın."
       }
     },
     "framing": {
@@ -216,7 +233,10 @@
     "checkoutError": "Ödeme başlatılamadı",
     "frontLabel": "Ön",
     "backLabel": "Arka",
-    "previewCaptionPrintWithBack": "4×6\" sayfa — ön + arka · {count} fotoğraf · {dpi} DPI · {format}"
+    "previewCaptionPrintWithBack": "4×6\" sayfa — ön + arka · {count} fotoğraf · {dpi} DPI · {format}",
+    "compliancePass": "{country} fotoğraf gerekliliklerini karşılıyor",
+    "complianceReview": "Bazı kontroller işaretlendi — ödemeden önce geri dönüp inceleyin.",
+    "guarantee": "Resmî olarak kabul edilir veya paranız iade edilir."
   },
   "packages": {
     "digital": {

@@ -112,7 +112,17 @@
     "studioSubtitle": "Sobreposição do MediaPipe à esquerda, prévia conforme ICAO à direita.",
     "resultTitle": "Sua foto está pronta",
     "resultSubtitle": "Baixe o arquivo digital ou peça cópias impressas profissionalmente.",
-    "converting": "Convertendo sua foto…"
+    "converting": "Convertendo sua foto…",
+    "tips": {
+      "title": "Dicas para uma foto aceita",
+      "items": [
+        "Fundo liso e claro",
+        "Olhe de frente para a câmera",
+        "Expressão neutra, boca fechada",
+        "Luz uniforme, sem sombras ou reflexos",
+        "Sem óculos ou chapéus"
+      ]
+    }
   },
   "countrySelector": {
     "search": "Buscar entre 20+ países — passaporte, visto, ID…",
@@ -174,6 +184,13 @@
         "expression": "Expressão neutra, boca fechada",
         "headLevel": "Cabeça reta, sem inclinação",
         "facingForward": "Olhando para a câmera"
+      },
+      "hints": {
+        "headSize": "Afaste-se ou use uma foto de maior resolução para a cabeça caber.",
+        "eyesOpen": "Abra bem os olhos e olhe para a câmera.",
+        "expression": "Relaxe: rosto neutro, boca fechada, sem sorrir.",
+        "headLevel": "Endireite a cabeça para não ficar inclinada.",
+        "facingForward": "Olhe de frente para a câmera."
       }
     },
     "framing": {
@@ -216,7 +233,10 @@
     "checkoutError": "Não foi possível iniciar o checkout",
     "frontLabel": "Frente",
     "backLabel": "Verso",
-    "previewCaptionPrintWithBack": "Folha 4×6\" — frente + verso · {count} fotos · {dpi} DPI · {format}"
+    "previewCaptionPrintWithBack": "Folha 4×6\" — frente + verso · {count} fotos · {dpi} DPI · {format}",
+    "compliancePass": "Atende aos requisitos de foto de {country}",
+    "complianceReview": "Algumas verificações foram sinalizadas — volte para revisar antes de pagar.",
+    "guarantee": "Aceita pelo governo ou seu dinheiro de volta."
   },
   "packages": {
     "digital": {

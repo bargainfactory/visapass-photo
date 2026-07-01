@@ -112,7 +112,17 @@
     "studioSubtitle": "MediaPipe-overlay links, ICAO-conforme preview rechts.",
     "resultTitle": "Je foto is klaar",
     "resultSubtitle": "Download het digitale bestand of bestel professioneel afgedrukte exemplaren.",
-    "converting": "Je foto wordt geconverteerd…"
+    "converting": "Je foto wordt geconverteerd…",
+    "tips": {
+      "title": "Tips voor een geaccepteerde foto",
+      "items": [
+        "Effen, lichte achtergrond",
+        "Kijk recht in de camera",
+        "Neutrale uitdrukking, mond dicht",
+        "Gelijkmatig licht, geen schaduw of schittering",
+        "Geen bril of hoed"
+      ]
+    }
   },
   "countrySelector": {
     "search": "Zoek in 20+ landen — paspoort, visum, ID…",
@@ -174,6 +184,13 @@
         "expression": "Neutrale uitdrukking, mond dicht",
         "headLevel": "Hoofd recht, niet gekanteld",
         "facingForward": "Recht in de camera kijkend"
+      },
+      "hints": {
+        "headSize": "Ga verder weg staan of gebruik een foto met hogere resolutie zodat het hoofd past.",
+        "eyesOpen": "Open je ogen volledig en kijk in de camera.",
+        "expression": "Ontspan: neutraal gezicht, mond dicht, niet lachen.",
+        "headLevel": "Zet je hoofd recht zodat het niet gekanteld is.",
+        "facingForward": "Kijk recht in de camera."
       }
     },
     "framing": {
@@ -216,7 +233,10 @@
     "checkoutError": "Kan checkout niet starten",
     "frontLabel": "Voorkant",
     "backLabel": "Achterkant",
-    "previewCaptionPrintWithBack": "4×6\"-blad — voor- + achterkant · {count} foto's · {dpi} DPI · {format}"
+    "previewCaptionPrintWithBack": "4×6\"-blad — voor- + achterkant · {count} foto's · {dpi} DPI · {format}",
+    "compliancePass": "Voldoet aan de foto-eisen van {country}",
+    "complianceReview": "Enkele controles zijn gemarkeerd — ga terug om te controleren vóór je betaalt.",
+    "guarantee": "Door de overheid geaccepteerd of geld terug."
   },
   "packages": {
     "digital": {

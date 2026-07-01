@@ -4,6 +4,8 @@ import * as React from 'react';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
+  AlertTriangle,
+  BadgeCheck,
   CreditCard,
   FileImage,
   ImageIcon,
@@ -11,6 +13,7 @@ import {
   Lock,
   Printer,
   Shield,
+  ShieldCheck,
   Sparkles,
 } from 'lucide-react';
 import { Link, useRouter } from '@/i18n/navigation';
@@ -64,6 +67,7 @@ export function ResultsPanel({
 
   const addOrder = usePhotoStore((s) => s.addOrder);
   const currentRenderToken = usePhotoStore((s) => s.currentRenderToken);
+  const compliance = usePhotoStore((s) => s.compliance);
 
   React.useEffect(() => {
     let alive = true;
@@ -376,6 +380,29 @@ export function ResultsPanel({
               <p className="mt-1 text-xs text-muted-foreground">{t('secureCheckoutLine')}</p>
             </div>
 
+            {/* COMPLIANCE ECHO — reassurance (or a gentle nudge) at the point of
+                purchase, from the on-device pre-check run in the Studio step. */}
+            {compliance && (
+              <p
+                className={cn(
+                  'flex items-center justify-center gap-1.5 text-center text-xs',
+                  compliance.overall === 'pass' ? 'text-emerald-600' : 'text-amber-600'
+                )}
+              >
+                {compliance.overall === 'pass' ? (
+                  <>
+                    <ShieldCheck className="size-3.5 shrink-0" />
+                    {t('compliancePass', { country: country.name })}
+                  </>
+                ) : (
+                  <>
+                    <AlertTriangle className="size-3.5 shrink-0" />
+                    {t('complianceReview')}
+                  </>
+                )}
+              </p>
+            )}
+
             {/* BIG CTA */}
             <Button
               size="lg"
@@ -393,6 +420,11 @@ export function ResultsPanel({
                 </>
               )}
             </Button>
+
+            {/* ACCEPTANCE GUARANTEE — trust signal at the moment of purchase. */}
+            <p className="flex items-center justify-center gap-1.5 text-center text-xs font-semibold text-emerald-600">
+              <BadgeCheck className="size-4 shrink-0" /> {t('guarantee')}
+            </p>
 
             {/* CONSENT LINE */}
             <p className="text-center text-[11px] leading-relaxed text-muted-foreground">

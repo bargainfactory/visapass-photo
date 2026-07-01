@@ -112,7 +112,17 @@
     "studioSubtitle": "Live MediaPipe overlay on the left, ICAO-compliant preview on the right.",
     "resultTitle": "Your photo is ready",
     "resultSubtitle": "Download the digital file or order professionally printed copies.",
-    "converting": "Converting your photo…"
+    "converting": "Converting your photo…",
+    "tips": {
+      "title": "Tips for an accepted photo",
+      "items": [
+        "Plain, light-coloured background",
+        "Face the camera straight on",
+        "Neutral expression, mouth closed",
+        "Even lighting, no shadows or glare",
+        "Remove glasses and hats"
+      ]
+    }
   },
   "countrySelector": {
     "search": "Search 20+ countries — passport, visa, ID…",
@@ -174,6 +184,13 @@
         "expression": "Neutral expression, mouth closed",
         "headLevel": "Head straight, not tilted",
         "facingForward": "Facing the camera"
+      },
+      "hints": {
+        "headSize": "Move back or use a higher-resolution photo so the head fits the frame.",
+        "eyesOpen": "Open your eyes fully and look at the camera.",
+        "expression": "Relax — neutral face, mouth closed, no smile.",
+        "headLevel": "Straighten your head so it isn't tilted.",
+        "facingForward": "Face the camera straight on."
       }
     },
     "framing": {
@@ -216,7 +233,10 @@
     "checkoutError": "Could not start checkout",
     "frontLabel": "Front",
     "backLabel": "Back",
-    "previewCaptionPrintWithBack": "4×6\" sheet — front + back · {count} photos · {dpi} DPI · {format}"
+    "previewCaptionPrintWithBack": "4×6\" sheet — front + back · {count} photos · {dpi} DPI · {format}",
+    "compliancePass": "Meets {country} photo requirements",
+    "complianceReview": "Some photo checks were flagged — go back to review before paying.",
+    "guarantee": "Government-accepted or your money back."
   },
   "packages": {
     "digital": {

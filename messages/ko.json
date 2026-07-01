@@ -112,7 +112,17 @@
     "studioSubtitle": "왼쪽은 MediaPipe 오버레이, 오른쪽은 ICAO 준수 미리보기.",
     "resultTitle": "사진이 준비되었습니다",
     "resultSubtitle": "디지털 파일을 다운로드하거나 전문 인쇄본을 주문하세요.",
-    "converting": "사진을 변환하는 중…"
+    "converting": "사진을 변환하는 중…",
+    "tips": {
+      "title": "승인되는 사진을 위한 팁",
+      "items": [
+        "단색의 밝은 배경",
+        "카메라를 정면으로 응시",
+        "무표정, 입을 다묾",
+        "고른 조명, 그림자나 반사 없음",
+        "안경과 모자 제거"
+      ]
+    }
   },
   "countrySelector": {
     "search": "20개 이상 국가에서 검색 — 여권, 비자, 신분증…",
@@ -174,6 +184,13 @@
         "expression": "무표정, 입을 다묾",
         "headLevel": "머리가 똑바르고 기울지 않음",
         "facingForward": "카메라를 정면으로 응시"
+      },
+      "hints": {
+        "headSize": "머리가 화면에 맞도록 뒤로 물러나거나 더 높은 해상도의 사진을 사용하세요.",
+        "eyesOpen": "눈을 완전히 뜨고 카메라를 보세요.",
+        "expression": "긴장을 풀고 무표정으로 입을 다물고 웃지 마세요.",
+        "headLevel": "머리를 똑바로 세워 기울지 않게 하세요.",
+        "facingForward": "카메라를 정면으로 보세요."
       }
     },
     "framing": {
@@ -216,7 +233,10 @@
     "checkoutError": "결제를 시작할 수 없습니다",
     "frontLabel": "앞면",
     "backLabel": "뒷면",
-    "previewCaptionPrintWithBack": "4×6\" 시트 — 앞면 + 뒷면 · 사진 {count}장 · {dpi} DPI · {format}"
+    "previewCaptionPrintWithBack": "4×6\" 시트 — 앞면 + 뒷면 · 사진 {count}장 · {dpi} DPI · {format}",
+    "compliancePass": "{country} 사진 요건을 충족합니다",
+    "complianceReview": "일부 검사가 표시되었습니다 — 결제 전에 돌아가 확인하세요.",
+    "guarantee": "정부 승인 또는 환불 보장."
   },
   "packages": {
     "digital": {

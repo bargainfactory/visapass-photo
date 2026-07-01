@@ -111,7 +111,8 @@
     "studioTitle": "Studio",
     "studioSubtitle": "Overlay MediaPipe a sinistra, anteprima conforme ICAO a destra.",
     "resultTitle": "La tua foto è pronta",
-    "resultSubtitle": "Scarica il file digitale o ordina copie stampate professionalmente."
+    "resultSubtitle": "Scarica il file digitale o ordina copie stampate professionalmente.",
+    "converting": "Conversione della foto…"
   },
   "countrySelector": {
     "search": "Cerca tra oltre 20 Paesi — passaporto, visto, ID…",

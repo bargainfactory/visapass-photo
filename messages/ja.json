@@ -111,7 +111,8 @@
     "studioTitle": "スタジオ",
     "studioSubtitle": "左に MediaPipe オーバーレイ、右に ICAO 準拠プレビュー。",
     "resultTitle": "写真が完成しました",
-    "resultSubtitle": "デジタルでダウンロードするか、プロ印刷をご注文ください。"
+    "resultSubtitle": "デジタルでダウンロードするか、プロ印刷をご注文ください。",
+    "converting": "写真を変換しています…"
   },
   "countrySelector": {
     "search": "20以上の国を検索 — パスポート、ビザ、ID…",

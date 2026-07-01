@@ -111,7 +111,8 @@
     "studioTitle": "Estúdio",
     "studioSubtitle": "Sobreposição do MediaPipe à esquerda, prévia conforme ICAO à direita.",
     "resultTitle": "Sua foto está pronta",
-    "resultSubtitle": "Baixe o arquivo digital ou peça cópias impressas profissionalmente."
+    "resultSubtitle": "Baixe o arquivo digital ou peça cópias impressas profissionalmente.",
+    "converting": "Convertendo sua foto…"
   },
   "countrySelector": {
     "search": "Buscar entre 20+ países — passaporte, visto, ID…",

@@ -111,7 +111,8 @@
     "studioTitle": "스튜디오",
     "studioSubtitle": "왼쪽은 MediaPipe 오버레이, 오른쪽은 ICAO 준수 미리보기.",
     "resultTitle": "사진이 준비되었습니다",
-    "resultSubtitle": "디지털 파일을 다운로드하거나 전문 인쇄본을 주문하세요."
+    "resultSubtitle": "디지털 파일을 다운로드하거나 전문 인쇄본을 주문하세요.",
+    "converting": "사진을 변환하는 중…"
   },
   "countrySelector": {
     "search": "20개 이상 국가에서 검색 — 여권, 비자, 신분증…",

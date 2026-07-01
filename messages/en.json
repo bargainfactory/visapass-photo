@@ -111,7 +111,8 @@
     "studioTitle": "Studio",
     "studioSubtitle": "Live MediaPipe overlay on the left, ICAO-compliant preview on the right.",
     "resultTitle": "Your photo is ready",
-    "resultSubtitle": "Download the digital file or order professionally printed copies."
+    "resultSubtitle": "Download the digital file or order professionally printed copies.",
+    "converting": "Converting your photo…"
   },
   "countrySelector": {
     "search": "Search 20+ countries — passport, visa, ID…",

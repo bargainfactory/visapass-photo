@@ -111,7 +111,8 @@
     "studioTitle": "Estudio",
     "studioSubtitle": "Capa de MediaPipe a la izquierda, vista previa conforme a ICAO a la derecha.",
     "resultTitle": "Tu foto está lista",
-    "resultSubtitle": "Descarga el archivo digital o pide copias impresas profesionalmente."
+    "resultSubtitle": "Descarga el archivo digital o pide copias impresas profesionalmente.",
+    "converting": "Convirtiendo tu foto…"
   },
   "countrySelector": {
     "search": "Buscar entre más de 20 países: pasaporte, visa, DNI…",

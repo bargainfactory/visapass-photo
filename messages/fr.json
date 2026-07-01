@@ -111,7 +111,8 @@
     "studioTitle": "Studio",
     "studioSubtitle": "Superposition MediaPipe à gauche, aperçu conforme ICAO à droite.",
     "resultTitle": "Votre photo est prête",
-    "resultSubtitle": "Téléchargez le fichier numérique ou commandez des tirages professionnels."
+    "resultSubtitle": "Téléchargez le fichier numérique ou commandez des tirages professionnels.",
+    "converting": "Conversion de votre photo…"
   },
   "countrySelector": {
     "search": "Rechercher parmi plus de 20 pays — passeport, visa, CNI…",

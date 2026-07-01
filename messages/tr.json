@@ -111,7 +111,8 @@
     "studioTitle": "Stüdyo",
     "studioSubtitle": "Solda MediaPipe katmanı, sağda ICAO uyumlu önizleme.",
     "resultTitle": "Fotoğrafınız hazır",
-    "resultSubtitle": "Dijital dosyayı indirin veya profesyonelce basılmış kopyalar sipariş edin."
+    "resultSubtitle": "Dijital dosyayı indirin veya profesyonelce basılmış kopyalar sipariş edin.",
+    "converting": "Fotoğrafınız dönüştürülüyor…"
   },
   "countrySelector": {
     "search": "20+ ülkede ara — pasaport, vize, kimlik…",

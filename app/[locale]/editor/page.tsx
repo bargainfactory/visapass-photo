@@ -15,6 +15,10 @@ import { EditorStudio } from '@/components/editor-studio';
 import { ResultsPanel } from '@/components/results-panel';
 import { newRenderToken, usePhotoStore } from '@/lib/store';
 import { findDocument } from '@/lib/countries';
+import { toDecodableImage } from '@/lib/heic';
+import { getFaceLandmarker } from '@/lib/face-landmarker';
+import { warmupBackgroundRemoval } from '@/lib/background-removal-client';
+import { Loader2 } from 'lucide-react';
 
 export default function EditorPage() {
   const t = useTranslations('editorPage');
@@ -31,14 +35,39 @@ export default function EditorPage() {
   const setDocument = usePhotoStore((s) => s.setDocument);
   const setRenderToken = usePhotoStore((s) => s.setRenderToken);
   const [cameraOpen, setCameraOpen] = React.useState(false);
+  const [converting, setConverting] = React.useState(false);
 
   React.useEffect(() => {
     if (!sourceUrl && step !== 'upload') setStep('upload');
   }, [sourceUrl, step, setStep]);
 
-  const handleFile = (file: File) => {
-    const url = URL.createObjectURL(file);
-    setSource(url, file.type);
+  // Warm the heavy on-device models ahead of the Studio step so the pipeline
+  // feels instant. The face landmarker (MediaPipe wasm + model) starts as soon
+  // as the editor mounts; the ~22 MB background-removal model is kicked off
+  // once the user has committed a photo (the 'select' step), while they pick a
+  // country — so its download overlaps the country selection instead of
+  // stalling on "Warming up the AI…" later.
+  React.useEffect(() => {
+    getFaceLandmarker().catch(() => {});
+  }, []);
+  React.useEffect(() => {
+    if (step === 'select' || step === 'edit') warmupBackgroundRemoval();
+  }, [step]);
+
+  const handleFile = async (file: File) => {
+    // iPhone HEIC/HEIF → JPEG so Chrome/Firefox/Edge can actually decode it.
+    let f = file;
+    try {
+      setConverting(true);
+      f = await toDecodableImage(file);
+    } catch {
+      /* decode failed — fall through with the original; the pipeline surfaces
+         a friendly "could not load" error if it truly can't be read */
+    } finally {
+      setConverting(false);
+    }
+    const url = URL.createObjectURL(f);
+    setSource(url, f.type);
     // Fresh upload → fresh render token so any earlier paid order does
     // NOT carry over to this new photo. See lib/store.ts comments.
     setRenderToken(newRenderToken());
@@ -96,7 +125,14 @@ export default function EditorPage() {
           >
             <h1 className="font-display text-3xl font-semibold">{t('uploadTitle')}</h1>
             <p className="text-muted-foreground">{t('uploadSubtitle')}</p>
-            <UploadDropzone onAccept={handleFile} onOpenCamera={() => setCameraOpen(true)} />
+            {converting ? (
+              <div className="grid place-items-center gap-3 rounded-2xl border bg-muted/30 py-16 text-sm text-muted-foreground">
+                <Loader2 className="size-6 animate-spin" />
+                <span>{t('converting')}</span>
+              </div>
+            ) : (
+              <UploadDropzone onAccept={handleFile} onOpenCamera={() => setCameraOpen(true)} />
+            )}
             <CameraCapture open={cameraOpen} onOpenChange={setCameraOpen} onCapture={handleFile} />
           </motion.section>
         )}

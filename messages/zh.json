@@ -111,7 +111,8 @@
     "studioTitle": "工作室",
     "studioSubtitle": "左侧为 MediaPipe 实时叠加,右侧为 ICAO 合规预览。",
     "resultTitle": "你的照片已就绪",
-    "resultSubtitle": "下载数字文件或订购专业冲印的纸质版本。"
+    "resultSubtitle": "下载数字文件或订购专业冲印的纸质版本。",
+    "converting": "正在转换您的照片…"
   },
   "countrySelector": {
     "search": "搜索 20+ 国家 — 护照、签证、身份证…",

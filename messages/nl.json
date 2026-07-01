@@ -111,7 +111,8 @@
     "studioTitle": "Studio",
     "studioSubtitle": "MediaPipe-overlay links, ICAO-conforme preview rechts.",
     "resultTitle": "Je foto is klaar",
-    "resultSubtitle": "Download het digitale bestand of bestel professioneel afgedrukte exemplaren."
+    "resultSubtitle": "Download het digitale bestand of bestel professioneel afgedrukte exemplaren.",
+    "converting": "Je foto wordt geconverteerd…"
   },
   "countrySelector": {
     "search": "Zoek in 20+ landen — paspoort, visum, ID…",

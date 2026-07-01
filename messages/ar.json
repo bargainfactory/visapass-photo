@@ -111,7 +111,8 @@
     "studioTitle": "الاستوديو",
     "studioSubtitle": "طبقة MediaPipe على اليسار، معاينة ICAO على اليمين.",
     "resultTitle": "صورتك جاهزة",
-    "resultSubtitle": "حمّل الملف الرقمي أو اطلب نسخًا مطبوعة باحترافية."
+    "resultSubtitle": "حمّل الملف الرقمي أو اطلب نسخًا مطبوعة باحترافية.",
+    "converting": "جارٍ تحويل صورتك…"
   },
   "countrySelector": {
     "search": "ابحث في 20+ دولة — جواز سفر، تأشيرة، هوية…",

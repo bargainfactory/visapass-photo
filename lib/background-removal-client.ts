@@ -71,3 +71,24 @@ export function removeBackground(
     w.postMessage({ id, type: 'remove', input });
   });
 }
+
+let warmed = false;
+/**
+ * Force the ~22 MB background-removal model + wasm to download early (during
+ * country selection) by running the pipeline on a throwaway 1×1 pixel. The
+ * model download dominates; inference on one pixel is instant. Best-effort and
+ * idempotent — failures are swallowed so warmup never blocks the real flow.
+ */
+export async function warmupBackgroundRemoval(): Promise<void> {
+  if (warmed || typeof document === 'undefined') return;
+  warmed = true;
+  try {
+    const c = document.createElement('canvas');
+    c.width = 1;
+    c.height = 1;
+    const blob: Blob | null = await new Promise((res) => c.toBlob((b) => res(b), 'image/png'));
+    if (blob) await removeBackground(blob);
+  } catch {
+    warmed = false; // allow a later retry if warmup failed
+  }
+}

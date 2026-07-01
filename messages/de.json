@@ -111,7 +111,8 @@
     "studioTitle": "Studio",
     "studioSubtitle": "MediaPipe-Overlay links, ICAO-konforme Vorschau rechts.",
     "resultTitle": "Dein Foto ist fertig",
-    "resultSubtitle": "Lade die Datei herunter oder bestelle professionelle Drucke."
+    "resultSubtitle": "Lade die Datei herunter oder bestelle professionelle Drucke.",
+    "converting": "Foto wird konvertiert…"
   },
   "countrySelector": {
     "search": "In über 20 Ländern suchen — Pass, Visum, Ausweis…",

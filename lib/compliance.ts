@@ -32,6 +32,12 @@ export interface ComplianceReport {
   checks: ComplianceCheck[];
   /** Worst status across all checks. */
   overall: ComplianceStatus;
+  /**
+   * True when the subject appears to be showing teeth — a broad/open smile or a
+   * clearly open mouth. Passport specs require a neutral, closed-mouth
+   * expression, so this drives the checkout caution specifically.
+   */
+  teethVisible: boolean;
 }
 
 function bs(face: FaceAnalysis, name: string): number {
@@ -116,5 +122,11 @@ export function checkCompliance(
       ? 'warn'
       : 'pass';
 
-  return { checks, overall };
+  // Teeth showing ≈ a broad smile (mouthSmile) or a clearly open mouth
+  // (jawOpen). MediaPipe has no direct "teeth" blendshape, so this is a
+  // pragmatic proxy — a closed-lip smile stays under the smile threshold.
+  const smile = Math.max(bs(face, 'mouthSmileLeft'), bs(face, 'mouthSmileRight'));
+  const teethVisible = smile > 0.45 || bs(face, 'jawOpen') > 0.4;
+
+  return { checks, overall, teethVisible };
 }

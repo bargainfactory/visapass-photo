@@ -380,28 +380,22 @@ export function ResultsPanel({
               <p className="mt-1 text-xs text-muted-foreground">{t('secureCheckoutLine')}</p>
             </div>
 
-            {/* COMPLIANCE ECHO — reassurance (or a gentle nudge) at the point of
-                purchase, from the on-device pre-check run in the Studio step. */}
-            {compliance && (
-              <p
-                className={cn(
-                  'flex items-center justify-center gap-1.5 text-center text-xs',
-                  compliance.overall === 'pass' ? 'text-emerald-600' : 'text-amber-600'
-                )}
-              >
-                {compliance.overall === 'pass' ? (
-                  <>
-                    <ShieldCheck className="size-3.5 shrink-0" />
-                    {t('compliancePass', { country: country.name })}
-                  </>
-                ) : (
-                  <>
-                    <AlertTriangle className="size-3.5 shrink-0" />
-                    {t('complianceReview')}
-                  </>
-                )}
+            {/* COMPLIANCE ECHO — at the point of purchase. The caution is
+                reserved for teeth showing (a broad/open smile), the one issue
+                most likely to get a photo rejected; a fully-clean photo still
+                gets the positive reassurance. Other minor flags stay in the
+                Studio checklist and don't nag here. */}
+            {compliance?.teethVisible ? (
+              <p className="flex items-center justify-center gap-1.5 text-center text-xs text-amber-600">
+                <AlertTriangle className="size-3.5 shrink-0" />
+                {t('complianceReview')}
               </p>
-            )}
+            ) : compliance?.overall === 'pass' ? (
+              <p className="flex items-center justify-center gap-1.5 text-center text-xs text-emerald-600">
+                <ShieldCheck className="size-3.5 shrink-0" />
+                {t('compliancePass', { country: country.name })}
+              </p>
+            ) : null}
 
             {/* BIG CTA */}
             <Button

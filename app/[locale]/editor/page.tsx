@@ -18,7 +18,6 @@ import { newRenderToken, usePhotoStore } from '@/lib/store';
 import { findDocument } from '@/lib/countries';
 import { toDecodableImage } from '@/lib/heic';
 import { getFaceLandmarker } from '@/lib/face-landmarker';
-import { warmupBackgroundRemoval } from '@/lib/background-removal-client';
 
 export default function EditorPage() {
   const t = useTranslations('editorPage');
@@ -41,18 +40,14 @@ export default function EditorPage() {
     if (!sourceUrl && step !== 'upload') setStep('upload');
   }, [sourceUrl, step, setStep]);
 
-  // Warm the heavy on-device models ahead of the Studio step so the pipeline
-  // feels instant. The face landmarker (MediaPipe wasm + model) starts as soon
-  // as the editor mounts; the ~22 MB background-removal model is kicked off
-  // once the user has committed a photo (the 'select' step), while they pick a
-  // country — so its download overlaps the country selection instead of
-  // stalling on "Warming up the AI…" later.
+  // Warm the MediaPipe face landmarker (wasm + model) as soon as the editor
+  // mounts so face detection is ready by the Studio step. We deliberately do
+  // NOT pre-warm the background-removal worker: imgly/onnxruntime can't run two
+  // inferences on the same worker at once, so a warmup call collides with the
+  // real Studio pass and wedges it at 35%.
   React.useEffect(() => {
     getFaceLandmarker().catch(() => {});
   }, []);
-  React.useEffect(() => {
-    if (step === 'select' || step === 'edit') warmupBackgroundRemoval();
-  }, [step]);
 
   const handleFile = async (file: File) => {
     // iPhone HEIC/HEIF → JPEG so Chrome/Firefox/Edge can actually decode it.

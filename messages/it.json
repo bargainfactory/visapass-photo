@@ -285,6 +285,10 @@
       "fulfilled": "Stampa in corso",
       "shipped": "Spedito",
       "unknown": "Ricerca ordine…"
+    },
+    "printTip": {
+      "title": "Stampi a casa?",
+      "body": "Stampa il foglio 4×6 a dimensione reale (disattiva 'adatta alla pagina' / ridimensionamento) su carta fotografica, o porta il file a un chiosco fotografico."
     }
   },
   "footer": {

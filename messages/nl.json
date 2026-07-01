@@ -285,6 +285,10 @@
       "fulfilled": "Wordt geprint",
       "shipped": "Verzonden",
       "unknown": "Bestelling zoeken…"
+    },
+    "printTip": {
+      "title": "Thuis afdrukken?",
+      "body": "Druk het 4×6-vel op ware grootte af (schaal / 'passend maken' uit) op fotopapier, of neem het bestand mee naar een fotokiosk."
     }
   },
   "footer": {

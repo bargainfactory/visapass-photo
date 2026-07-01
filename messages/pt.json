@@ -285,6 +285,10 @@
       "fulfilled": "Imprimindo",
       "shipped": "Enviado",
       "unknown": "Localizando pedido…"
+    },
+    "printTip": {
+      "title": "Imprimir em casa?",
+      "body": "Imprima a folha 4×6 em tamanho real (desative 'ajustar à página' / escala) em papel fotográfico, ou leve o arquivo a qualquer quiosque de fotos."
     }
   },
   "footer": {

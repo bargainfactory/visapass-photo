@@ -285,6 +285,10 @@
       "fulfilled": "Impression en cours",
       "shipped": "Expédié",
       "unknown": "Recherche de la commande…"
+    },
+    "printTip": {
+      "title": "Imprimer chez vous ?",
+      "body": "Imprimez la planche 4×6 à taille réelle (désactivez « ajuster à la page » / mise à l'échelle) sur papier photo, ou apportez le fichier à une borne photo."
     }
   },
   "footer": {

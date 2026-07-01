@@ -285,6 +285,10 @@
       "fulfilled": "Printing now",
       "shipped": "Shipped",
       "unknown": "Locating order…"
+    },
+    "printTip": {
+      "title": "Printing at home?",
+      "body": "Print the 4×6 sheet at actual size (turn off 'fit to page' / scaling) on photo paper — or take the file to any pharmacy photo kiosk."
     }
   },
   "footer": {

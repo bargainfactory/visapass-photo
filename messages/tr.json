@@ -285,6 +285,10 @@
       "fulfilled": "Basılıyor",
       "shipped": "Gönderildi",
       "unknown": "Sipariş aranıyor…"
+    },
+    "printTip": {
+      "title": "Evde mi yazdıracaksınız?",
+      "body": "4×6 sayfayı gerçek boyutta ('sayfaya sığdır' / ölçekleme kapalı) fotoğraf kağıdına yazdırın veya dosyayı bir fotoğraf kioskuna götürün."
     }
   },
   "footer": {

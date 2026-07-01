@@ -285,6 +285,10 @@
       "fulfilled": "Wird gedruckt",
       "shipped": "Versendet",
       "unknown": "Bestellung wird gesucht…"
+    },
+    "printTip": {
+      "title": "Zu Hause drucken?",
+      "body": "Drucken Sie den 4×6-Bogen in Originalgröße (Skalierung / 'an Seite anpassen' aus) auf Fotopapier – oder bringen Sie die Datei zu einem Foto-Kiosk."
     }
   },
   "footer": {

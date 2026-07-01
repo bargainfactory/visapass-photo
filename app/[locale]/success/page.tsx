@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Download, Loader2 } from 'lucide-react';
+import { CheckCircle2, Download, Loader2, Printer } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -200,6 +200,18 @@ function SuccessContent() {
                 tResults={tResults}
               />
             )}
+
+            {/* Print-at-home guidance — only when the purchase includes a sheet. */}
+            {paid &&
+              stashed?.print &&
+              (status?.packageId ?? 'bundle') !== 'digital' && (
+                <div className="rounded-xl border bg-muted/30 px-4 py-3 text-start text-xs text-muted-foreground">
+                  <p className="mb-1 flex items-center gap-1.5 font-semibold text-foreground">
+                    <Printer className="size-3.5" /> {t('printTip.title')}
+                  </p>
+                  <p>{t('printTip.body')}</p>
+                </div>
+              )}
 
             {/* Paid, key released, but still decrypting the local ciphertext. */}
             {paid && !stashed && !deliveryError && (

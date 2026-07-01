@@ -175,6 +175,13 @@
         "headLevel": "Cabeza recta, sin inclinación",
         "facingForward": "Mirando a la cámara"
       }
+    },
+    "framing": {
+      "title": "Encuadre",
+      "help": "Ajusta el recorte si el encuadre automático no es exacto.",
+      "zoom": "Zoom",
+      "horizontal": "Horizontal",
+      "vertical": "Vertical"
     }
   },
   "results": {

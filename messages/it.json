@@ -175,6 +175,13 @@
         "headLevel": "Testa dritta, non inclinata",
         "facingForward": "Rivolto verso la fotocamera"
       }
+    },
+    "framing": {
+      "title": "Inquadratura",
+      "help": "Regola il ritaglio se l'inquadratura automatica non è precisa.",
+      "zoom": "Zoom",
+      "horizontal": "Orizzontale",
+      "vertical": "Verticale"
     }
   },
   "results": {

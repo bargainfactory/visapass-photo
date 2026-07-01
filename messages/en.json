@@ -175,6 +175,13 @@
         "headLevel": "Head straight, not tilted",
         "facingForward": "Facing the camera"
       }
+    },
+    "framing": {
+      "title": "Framing",
+      "help": "Fine-tune the crop if the auto-frame is slightly off.",
+      "zoom": "Zoom",
+      "horizontal": "Horizontal",
+      "vertical": "Vertical"
     }
   },
   "results": {

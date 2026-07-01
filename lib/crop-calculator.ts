@@ -114,3 +114,39 @@ export function calculateCrop(
 
   return { x, y, width: photoWidth, height: photoHeight, aspect: photoAspect, warnings };
 }
+
+export interface CropAdjust {
+  /** >1 zooms in (head larger); <1 zooms out. */
+  zoom: number;
+  /** Horizontal pan as a fraction of the base crop width (−0.5…0.5). */
+  x: number;
+  /** Vertical pan as a fraction of the base crop height (−0.5…0.5). */
+  y: number;
+}
+
+export const IDENTITY_ADJUST: CropAdjust = { zoom: 1, x: 0, y: 0 };
+
+/**
+ * Apply a user zoom/pan on top of the auto-calculated crop, preserving the
+ * document aspect ratio and clamping so the crop never leaves the source image.
+ * Used by the manual "Framing" controls to rescue photos the auto-crop centred
+ * imperfectly (hats, long hair, off-angle shots).
+ */
+export function applyCropAdjust(
+  base: CropRect,
+  adj: CropAdjust,
+  imageWidth: number,
+  imageHeight: number
+): CropRect {
+  // Never let the crop grow larger than the source (would require upscaling /
+  // break the aspect); cap the effective zoom-out at the fit-to-image point.
+  const minZoom = Math.max(base.width / imageWidth, base.height / imageHeight, 0.0001);
+  const zoom = Math.max(minZoom, adj.zoom);
+  const w = base.width / zoom;
+  const h = base.height / zoom;
+  const cx = base.x + base.width / 2 + adj.x * base.width;
+  const cy = base.y + base.height / 2 + adj.y * base.height;
+  const x = Math.max(0, Math.min(cx - w / 2, imageWidth - w));
+  const y = Math.max(0, Math.min(cy - h / 2, imageHeight - h));
+  return { ...base, x, y, width: w, height: h };
+}

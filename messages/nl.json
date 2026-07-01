@@ -175,6 +175,13 @@
         "headLevel": "Hoofd recht, niet gekanteld",
         "facingForward": "Recht in de camera kijkend"
       }
+    },
+    "framing": {
+      "title": "Kadrering",
+      "help": "Pas de uitsnede aan als het automatische kader net niet klopt.",
+      "zoom": "Zoom",
+      "horizontal": "Horizontaal",
+      "vertical": "Verticaal"
     }
   },
   "results": {

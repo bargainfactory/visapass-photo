@@ -175,6 +175,13 @@
         "headLevel": "Tête droite, non inclinée",
         "facingForward": "Face à l'appareil photo"
       }
+    },
+    "framing": {
+      "title": "Cadrage",
+      "help": "Ajustez le recadrage si le cadrage automatique n'est pas parfait.",
+      "zoom": "Zoom",
+      "horizontal": "Horizontal",
+      "vertical": "Vertical"
     }
   },
   "results": {

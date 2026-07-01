@@ -175,6 +175,13 @@
         "headLevel": "Kopf gerade, nicht geneigt",
         "facingForward": "Blick in die Kamera"
       }
+    },
+    "framing": {
+      "title": "Bildausschnitt",
+      "help": "Feinjustieren Sie den Zuschnitt, falls der Auto-Rahmen leicht daneben liegt.",
+      "zoom": "Zoom",
+      "horizontal": "Horizontal",
+      "vertical": "Vertikal"
     }
   },
   "results": {

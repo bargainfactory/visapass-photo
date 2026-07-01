@@ -175,6 +175,13 @@
         "headLevel": "Baş düz, eğik değil",
         "facingForward": "Kameraya bakıyor"
       }
+    },
+    "framing": {
+      "title": "Çerçeveleme",
+      "help": "Otomatik çerçeve biraz kaymışsa kırpmayı ince ayarlayın.",
+      "zoom": "Yakınlaştırma",
+      "horizontal": "Yatay",
+      "vertical": "Dikey"
     }
   },
   "results": {

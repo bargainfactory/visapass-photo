@@ -175,6 +175,13 @@
         "headLevel": "머리가 똑바르고 기울지 않음",
         "facingForward": "카메라를 정면으로 응시"
       }
+    },
+    "framing": {
+      "title": "프레이밍",
+      "help": "자동 프레임이 약간 어긋나면 잘라내기를 미세 조정하세요.",
+      "zoom": "확대",
+      "horizontal": "수평",
+      "vertical": "수직"
     }
   },
   "results": {

@@ -175,6 +175,13 @@
         "headLevel": "头部端正，没有倾斜",
         "facingForward": "正对镜头"
       }
+    },
+    "framing": {
+      "title": "取景",
+      "help": "如果自动取景略有偏差，可微调裁剪。",
+      "zoom": "缩放",
+      "horizontal": "水平",
+      "vertical": "垂直"
     }
   },
   "results": {

@@ -7,6 +7,7 @@ import {
   AlertTriangle,
   Aperture,
   CheckCircle2,
+  Crop,
   Eye,
   Loader2,
   RefreshCw,
@@ -24,7 +25,13 @@ import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { LandmarkOverlay } from '@/components/landmark-overlay';
 import { detectFace, type FaceAnalysis } from '@/lib/face-landmarker';
-import { calculateCrop, type CropRect } from '@/lib/crop-calculator';
+import {
+  calculateCrop,
+  applyCropAdjust,
+  IDENTITY_ADJUST,
+  type CropRect,
+  type CropAdjust,
+} from '@/lib/crop-calculator';
 import { checkCompliance, type ComplianceReport, type ComplianceStatus } from '@/lib/compliance';
 import { composeFinal } from '@/lib/compositor';
 import { removeBackground } from '@/lib/background-removal-client';
@@ -79,6 +86,20 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
   const [showLandmarks, setShowLandmarks] = React.useState(true);
   const [showCrop, setShowCrop] = React.useState(true);
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
+  // User zoom/position tweaks layered on top of the auto crop (manual framing).
+  const [cropAdjust, setCropAdjust] = React.useState<CropAdjust>(IDENTITY_ADJUST);
+
+  // Auto crop + the user's manual framing, clamped to the source image. Drives
+  // the overlay, the compose, and the compliance re-check.
+  const effectiveCrop = React.useMemo(() => {
+    if (!state.crop || !state.imageEl) return state.crop;
+    return applyCropAdjust(
+      state.crop,
+      cropAdjust,
+      state.imageEl.naturalWidth,
+      state.imageEl.naturalHeight
+    );
+  }, [state.crop, state.imageEl, cropAdjust]);
 
   // Decoded cutout reused across slider-driven recomposes — pays the
   // blob → bitmap decode cost once instead of on every brightness/contrast tick.
@@ -100,6 +121,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
 
   const runPipeline = React.useCallback(async () => {
     if (!docPair) return;
+    setCropAdjust(IDENTITY_ADJUST);
     setState({ ...initialState, stage: 'detecting', messageKey: 'messages.loadingPhoto', progress: 5 });
     try {
       const img = await loadImage(sourceUrl);
@@ -185,7 +207,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
   }, [runPipeline]);
 
   const recompose = React.useCallback(async () => {
-    if (!docPair || !state.imageEl || !state.crop) return;
+    if (!docPair || !state.imageEl || !effectiveCrop) return;
     const seq = ++recomposeSeqRef.current;
     // Slider-driven recomposes skip the print-sheet + back-template
     // generation entirely (digitalOnly). The print sheet stays cached at
@@ -196,7 +218,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
       cutout: cutoutBitmapRef.current,
       cutoutBlob: cutoutBitmapRef.current ? null : state.cutoutBlob,
       doc: docPair.doc,
-      crop: state.crop,
+      crop: effectiveCrop,
       digitalOnly: true,
       brightness,
       contrast,
@@ -209,13 +231,13 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
     // cached values from the last full compose.
     setResult(out.dataUrl);
     setPreviewUrl(out.dataUrl);
-  }, [docPair, state.imageEl, state.crop, state.cutoutBlob, brightness, contrast, shadow, setResult]);
+  }, [docPair, state.imageEl, effectiveCrop, state.cutoutBlob, brightness, contrast, shadow, setResult]);
 
   // Final FULL compose with the print sheet + back template before handing
   // off to the results panel — ensures whatever slider values the user
   // ended on are reflected in the downloadable print files.
   const handleContinue = React.useCallback(async () => {
-    if (!docPair || !state.imageEl || !state.crop) {
+    if (!docPair || !state.imageEl || !effectiveCrop) {
       onComplete();
       return;
     }
@@ -225,7 +247,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
         cutout: cutoutBitmapRef.current,
         cutoutBlob: cutoutBitmapRef.current ? null : state.cutoutBlob,
         doc: docPair.doc,
-        crop: state.crop,
+        crop: effectiveCrop,
         brightness,
         contrast,
         shadow,
@@ -235,7 +257,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
       /* fall through to onComplete with whatever we last cached */
     }
     onComplete();
-  }, [docPair, state.imageEl, state.crop, state.cutoutBlob, brightness, contrast, shadow, setResult, onComplete]);
+  }, [docPair, state.imageEl, effectiveCrop, state.cutoutBlob, brightness, contrast, shadow, setResult, onComplete]);
 
   // Debounce slider-driven recomposes so dragging at full speed doesn't queue
   // a recompose per tick. ~110 ms is below the perceptual delay threshold but
@@ -250,7 +272,16 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [brightness, contrast, shadow]);
+  }, [brightness, contrast, shadow, cropAdjust]);
+
+  // Re-run the compliance check whenever the framing changes — head size,
+  // centring and level all move with the crop.
+  React.useEffect(() => {
+    if (!state.face || !effectiveCrop || !docPair) return;
+    const report = checkCompliance(state.face, docPair.doc, effectiveCrop);
+    setState((s) => (s.compliance ? { ...s, compliance: report } : s));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [effectiveCrop]);
 
   if (!docPair) return null;
   const { doc, country } = docPair;
@@ -279,7 +310,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
                     imageWidth={state.imageEl.naturalWidth}
                     imageHeight={state.imageEl.naturalHeight}
                     face={state.face}
-                    crop={state.crop}
+                    crop={effectiveCrop}
                     showLandmarks={showLandmarks}
                     showCrop={showCrop}
                   />
@@ -434,6 +465,57 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
               {state.compliance.overall !== 'pass' && (
                 <p className="text-xs text-muted-foreground">{t('compliance.help')}</p>
               )}
+            </CardContent>
+          </Card>
+        )}
+
+        {state.stage === 'done' && (
+          <Card>
+            <CardContent className="space-y-4 p-5">
+              <div className="flex items-center justify-between">
+                <p className="flex items-center gap-1.5 text-sm font-semibold">
+                  <Crop className="size-4" /> {t('framing.title')}
+                </p>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setCropAdjust(IDENTITY_ADJUST)}
+                  disabled={cropAdjust.zoom === 1 && cropAdjust.x === 0 && cropAdjust.y === 0}
+                >
+                  <RefreshCw className="size-3" /> {tCommon('reset')}
+                </Button>
+              </div>
+              <p className="text-xs text-muted-foreground">{t('framing.help')}</p>
+              <div className="space-y-2">
+                <Label className="text-xs">{t('framing.zoom')}</Label>
+                <Slider
+                  value={[cropAdjust.zoom]}
+                  onValueChange={([v]) => setCropAdjust((a) => ({ ...a, zoom: v }))}
+                  min={0.85}
+                  max={1.3}
+                  step={0.01}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs">{t('framing.horizontal')}</Label>
+                <Slider
+                  value={[cropAdjust.x]}
+                  onValueChange={([v]) => setCropAdjust((a) => ({ ...a, x: v }))}
+                  min={-0.25}
+                  max={0.25}
+                  step={0.01}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs">{t('framing.vertical')}</Label>
+                <Slider
+                  value={[cropAdjust.y]}
+                  onValueChange={([v]) => setCropAdjust((a) => ({ ...a, y: v }))}
+                  min={-0.25}
+                  max={0.25}
+                  step={0.01}
+                />
+              </div>
             </CardContent>
           </Card>
         )}

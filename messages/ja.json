@@ -175,6 +175,13 @@
         "headLevel": "頭がまっすぐで傾いていない",
         "facingForward": "カメラを正面から見ている"
       }
+    },
+    "framing": {
+      "title": "フレーミング",
+      "help": "自動フレームがわずかにずれている場合は切り取りを微調整します。",
+      "zoom": "ズーム",
+      "horizontal": "水平",
+      "vertical": "垂直"
     }
   },
   "results": {

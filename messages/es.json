@@ -193,6 +193,11 @@
         "headLevel": "Endereza la cabeza para que no quede inclinada.",
         "facingForward": "Mira de frente a la cámara.",
         "position": "Centra la cabeza y mantén toda la cabeza (de la coronilla al mentón) dentro del encuadre."
+      },
+      "status": {
+        "pass": "Correcto",
+        "warn": "Advertencia",
+        "fail": "No cumple"
       }
     },
     "framing": {

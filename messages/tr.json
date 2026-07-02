@@ -193,6 +193,11 @@
         "headLevel": "Başınızı düz tutun, eğik olmasın.",
         "facingForward": "Doğrudan kameraya bakın.",
         "position": "Başınızı ortalayın ve tüm başı (tepeden çeneye) çerçeve içinde tutun."
+      },
+      "status": {
+        "pass": "Geçti",
+        "warn": "Uyarı",
+        "fail": "Karşılanmadı"
       }
     },
     "framing": {

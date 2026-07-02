@@ -193,6 +193,11 @@
         "headLevel": "Endireite a cabeça para não ficar inclinada.",
         "facingForward": "Olhe de frente para a câmera.",
         "position": "Centralize a cabeça e mantenha toda a cabeça (do topo ao queixo) dentro do quadro."
+      },
+      "status": {
+        "pass": "Aprovado",
+        "warn": "Aviso",
+        "fail": "Não cumpre"
       }
     },
     "framing": {

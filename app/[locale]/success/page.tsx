@@ -11,7 +11,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { downloadDataUrl, jpegDataUrlToPng } from '@/lib/utils';
 import { usePhotoStore } from '@/lib/store';
-import { loadRecord, importDek, decryptToObjectUrl } from '@/lib/secure-delivery';
+import {
+  loadRecord,
+  importDek,
+  decryptToObjectUrl,
+  purgeOldRecords,
+} from '@/lib/secure-delivery';
 
 interface OrderStatus {
   status: 'pending' | 'paid' | 'fulfilled' | 'shipped' | 'unknown';
@@ -69,6 +74,19 @@ function SuccessContent() {
   const [stashed, setStashed] = React.useState<StashedResult | null>(null);
   const [deliveryError, setDeliveryError] = React.useState(false);
   const updateOrderStatus = usePhotoStore((s) => s.updateOrderStatus);
+  // Track decrypted object URLs so we can revoke them on unmount (they'd
+  // otherwise live for the tab's lifetime).
+  const objectUrlsRef = React.useRef<string[]>([]);
+
+  // Housekeeping: drop encrypted deliverables older than 7 days from IndexedDB
+  // and revoke our object URLs when leaving the page.
+  React.useEffect(() => {
+    purgeOldRecords(7 * 24 * 60 * 60 * 1000).catch(() => {});
+    return () => {
+      objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
+      objectUrlsRef.current = [];
+    };
+  }, []);
 
   const paid =
     status?.status === 'paid' ||
@@ -115,6 +133,7 @@ function SuccessContent() {
         const printBack = record.items.printBack
           ? (await decryptToObjectUrl(key, record.items.printBack)).url
           : null;
+        objectUrlsRef.current.push(...[digital, print, printBack].filter(Boolean) as string[]);
         const format =
           (sessionStorage.getItem('vp-pending-format') as 'jpeg' | 'png') || 'jpeg';
 

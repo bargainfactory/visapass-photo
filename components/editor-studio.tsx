@@ -467,6 +467,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
                   <li key={c.id} className="text-sm">
                     <div className="flex items-center gap-2">
                       <ComplianceIcon status={c.status} />
+                      <span className="sr-only">{t(`compliance.status.${c.status}`)}</span>
                       <span
                         className={cn(
                           c.status === 'fail' && 'text-destructive',

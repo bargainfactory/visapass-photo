@@ -97,12 +97,15 @@ export function checkCompliance(
     status: blink > 0.55 ? 'fail' : blink > 0.4 ? 'warn' : 'pass',
   });
 
-  // 3) NEUTRAL EXPRESSION — open mouth (jawOpen) or a smile (mouthSmile*).
-  const expr = Math.max(
-    bs(face, 'jawOpen'),
-    bs(face, 'mouthSmileLeft'),
-    bs(face, 'mouthSmileRight')
-  );
+  // 3) EXPRESSION — always flag an open mouth (jawOpen). A smile is only flagged
+  // where the spec requires a strictly neutral expression; specs that allow a
+  // natural smile (doc.expression === 'neutral_or_natural_smile', e.g. US) don't
+  // penalise smiling.
+  const smile = Math.max(bs(face, 'mouthSmileLeft'), bs(face, 'mouthSmileRight'));
+  const expr =
+    doc.expression === 'neutral_or_natural_smile'
+      ? bs(face, 'jawOpen')
+      : Math.max(bs(face, 'jawOpen'), smile);
   checks.push({
     id: 'expression',
     status: expr > 0.55 ? 'fail' : expr > 0.35 ? 'warn' : 'pass',
@@ -137,10 +140,9 @@ export function checkCompliance(
       ? 'warn'
       : 'pass';
 
-  // Teeth showing ≈ a broad smile (mouthSmile) or a clearly open mouth
-  // (jawOpen). MediaPipe has no direct "teeth" blendshape, so this is a
-  // pragmatic proxy — a closed-lip smile stays under the smile threshold.
-  const smile = Math.max(bs(face, 'mouthSmileLeft'), bs(face, 'mouthSmileRight'));
+  // Teeth showing ≈ a broad smile (mouthSmile, computed above) or a clearly
+  // open mouth (jawOpen). MediaPipe has no direct "teeth" blendshape, so this
+  // is a pragmatic proxy — a closed-lip smile stays under the smile threshold.
   const teethVisible = smile > 0.45 || bs(face, 'jawOpen') > 0.4;
 
   return { checks, overall, teethVisible };

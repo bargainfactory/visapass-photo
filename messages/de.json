@@ -193,6 +193,11 @@
         "headLevel": "Richten Sie den Kopf gerade, nicht geneigt.",
         "facingForward": "Blicken Sie gerade in die Kamera.",
         "position": "Zentrieren Sie den Kopf und halten Sie den ganzen Kopf (Scheitel bis Kinn) im Bild."
+      },
+      "status": {
+        "pass": "Bestanden",
+        "warn": "Warnung",
+        "fail": "Nicht erfüllt"
       }
     },
     "framing": {

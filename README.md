@@ -1,54 +1,59 @@
 # VisaPass Photo
 
-Studio-grade passport & visa photos in seconds — all rendered on-device.
+Studio-grade passport & visa photos in seconds — the whole image pipeline runs **on-device**.
 
-VisaPass Photo is a production-ready **Next.js 15 (App Router) + TypeScript** application
-that turns any selfie into an ICAO-compliant passport or visa photo for 20+ countries.
-The entire image pipeline (468 MediaPipe landmarks, high-resolution background
-removal, country-precise cropping, and 300-DPI print compositing) runs in the
-browser. Stripe Checkout handles physical print fulfillment with proper webhook
-signature verification.
+VisaPass Photo is a **Next.js 16 (App Router) + TypeScript** application that turns any
+selfie into an ICAO-compliant passport or visa photo for **22 countries**, localized into
+**14 languages**. Face detection, background removal, country-precise cropping, an on-device
+compliance pre-check, and 300-DPI print compositing all run in the browser. Stripe embedded
+checkout handles payment, gated by a client-side encryption paywall.
 
 ```
-✓ 468 facial landmarks via @mediapipe/tasks-vision
-✓ High-res background swap in a Web Worker (@imgly/background-removal)
-✓ 20+ country specs (US, UK, Schengen, India, China, Japan, …)
-✓ Live split-view editor with brightness/contrast tuning
-✓ 4×6 print-ready sheets at 300 DPI
-✓ Stripe Checkout + verified webhook fulfillment
-✓ Dark / light / system theme, WCAG 2.2 AA accessible
-✓ shadcn/ui primitives, framer-motion micro-interactions
+✓ 468 facial landmarks + blendshapes via @mediapipe/tasks-vision
+✓ High-res background removal in a Web Worker (@imgly/background-removal, WebGPU→CPU fallback)
+✓ 22 country specs (US, UK, Schengen, Canada, India, China, Japan, …)
+✓ On-device ICAO compliance pre-check (head size, eyes open, expression, level, framing)
+✓ Manual framing (zoom / position) + brightness / contrast / shadow tuning
+✓ HEIC/HEIF (iPhone) transcoding on upload
+✓ 4×6 print-ready sheets at 300 DPI (+ Canada guarantor back template)
+✓ Stripe embedded checkout + payment-gated encryption paywall + verified webhook
+✓ 14 locales (incl. RTL Arabic), dark-by-default theme
+✓ Per-country programmatic-SEO landing pages, sitemap, hreflang, JSON-LD
 ```
 
 ---
 
 ## 1. Stack
 
-| Layer        | Tech                                                                |
-| ------------ | ------------------------------------------------------------------- |
-| Framework    | Next.js 15 (App Router, RSC where it helps), React 19, TypeScript    |
-| Styling      | Tailwind CSS, shadcn/ui, CVA, lucide-react                          |
-| Motion       | framer-motion                                                       |
-| State        | Zustand (with localStorage persistence)                             |
-| AI / CV      | @mediapipe/tasks-vision (Face Landmarker, 468 points)               |
-| BG removal   | @imgly/background-removal (Web Worker, isnet model)                  |
-| Payments     | @stripe/stripe-js, server-side `stripe` SDK with webhook signing    |
-| Theming      | next-themes                                                         |
+| Layer      | Tech                                                                  |
+| ---------- | -------------------------------------------------------------------- |
+| Framework  | Next.js 16 (App Router), React 18, TypeScript (strict)               |
+| i18n       | next-intl (14 locales, RTL-aware), middleware convention `proxy.ts`  |
+| Styling    | Tailwind CSS, shadcn/ui (Radix), CVA, lucide-react                   |
+| Motion     | framer-motion                                                        |
+| State      | Zustand (localStorage-persisted, image data intentionally not persisted) |
+| AI / CV    | @mediapipe/tasks-vision (Face Landmarker + blendshapes)              |
+| BG removal | @imgly/background-removal (Web Worker, onnxruntime-web)              |
+| HEIC       | heic2any (lazy-loaded, client-side)                                  |
+| Payments   | @stripe/stripe-js + @stripe/react-stripe-js (embedded), server `stripe` SDK |
+| Crypto     | WebCrypto AES-GCM + IndexedDB (paywall delivery)                     |
+| Theming    | next-themes (dark by default)                                        |
 
 ---
 
 ## 2. Quick start
 
 ```bash
-git clone <repo>
-cd "final passport website"
 npm install
-cp .env.example .env.local       # add your Stripe keys
-npm run dev                      # http://localhost:3000
+cp .env.example .env.local     # fill in Stripe keys (optional — demo mode works without)
+npm run dev                    # http://localhost:3000
 ```
 
-The dev server boots without any keys — the checkout API returns a mock session
-when `STRIPE_SECRET_KEY` is missing so you can preview the success flow end-to-end.
+Scripts: `npm run dev` · `npm run build` · `npm run start` · `npm run lint` (ESLint 9 flat
+config) · `npm run typecheck`.
+
+Without `STRIPE_SECRET_KEY` set, checkout runs in **demo mode** ("Simulate payment") so the
+whole flow — including the encrypted delivery — can be exercised locally.
 
 ---
 
@@ -56,209 +61,87 @@ when `STRIPE_SECRET_KEY` is missing so you can preview the success flow end-to-e
 
 ```
 app/
-  layout.tsx               # root layout, theme provider, header/footer
-  page.tsx                 # landing (hero + features + country showcase)
-  editor/page.tsx          # 4-step wizard: upload → select → studio → result
-  success/page.tsx         # polls /api/order-status after Stripe redirects back
+  [locale]/              # all localized routes (next-intl, localePrefix: 'always')
+    page.tsx             # landing (hero, features, countries, pricing)
+    editor/page.tsx      # 4-step wizard: upload → country → studio → results
+    checkout/page.tsx    # Stripe EmbeddedCheckout on our own domain
+    success/page.tsx     # decrypts IndexedDB ciphertext with the payment-released key
+    legal/{terms,privacy,refunds}/
+    photo/[country]/     # programmatic-SEO country landing pages
+    layout.tsx           # <html lang/dir>, providers, metadata
   api/
-    checkout/route.ts      # POST  -> Stripe Checkout Session
-    webhook/stripe/route.ts# POST  -> verified Stripe webhook + fulfillment hooks
-    order-status/route.ts  # GET   -> polled by /success
-    order-store.ts         # in-memory order persistence (swap for your DB)
-    ai/                    # optional server-side fallbacks (stubs)
-
-components/
-  hero.tsx, feature-grid.tsx, country-showcase.tsx
-  upload-dropzone.tsx, camera-capture.tsx
-  country-selector.tsx
-  editor-studio.tsx        # full pipeline + split-view preview + tuning
-  landmark-overlay.tsx
-  results-panel.tsx
-  progress-stepper.tsx
-  site-header.tsx, site-footer.tsx
-  theme-provider.tsx, theme-toggle.tsx
-  ui/                      # shadcn primitives (button, card, slider, …)
-
-lib/
-  countries.ts             # 20+ country specs (mm, head ratio, bg, glasses)
-  face-landmarker.ts       # MediaPipe wrapper + landmark analysis
-  crop-calculator.ts       # solves the compliant crop rect from landmarks
-  compositor.ts            # canvas compositing + 4×6 sheet generation
-  background-removal-client.ts # Web Worker proxy
-  store.ts                 # Zustand store (persists doc choice + orders)
-  stripe.ts                # server-side Stripe init + package catalogue
-  utils.ts                 # cn(), mm/in -> px, downloadDataUrl, …
-
-workers/
-  background-removal.worker.ts # off-thread @imgly/background-removal
+    checkout/            # creates a Stripe session, stores the AES key in metadata
+    release-key/         # returns the AES key ONLY when Stripe confirms payment
+    order-status/        # polls Stripe (source of truth) for payment status
+    webhook/stripe/      # signature-verified webhook (fulfillment side-effects)
+    ai/{detect-face,remove-background}/  # 501 stubs for optional server-side fallback
+  sitemap.ts · opengraph-image.tsx · icon.svg
+components/              # editor-studio, results-panel, camera-capture, ui/* (shadcn), …
+lib/                    # countries, crop-calculator, compositor, compliance, face-landmarker,
+                        # background-removal-client, secure-delivery, preview, heic, rate-limit, stripe, store
+workers/                # background-removal.worker.ts
+messages/               # en.json + 13 locales (key-consistent)
+i18n/                   # routing, request, navigation, metadata (hreflang helper)
+proxy.ts                # next-intl middleware (Next 16 convention)
 ```
 
 ---
 
-## 4. The image pipeline (high level)
+## 4. How it works
 
-```
-Upload / Camera
-    │
-    ▼
-HTMLImageElement at native resolution
-    │                                       Web Worker (@imgly/background-removal)
-    ▼                                                       │
-MediaPipe Face Landmarker (468 points)                       ▼
-    │                                       RGBA cutout (transparent bg)
-    ▼                                                       │
-crop-calculator.ts ─ solves a CropRect that satisfies        ▼
-the country's head-height & eye-line ranges                  │
-    └─────────────────►   compositor.ts   ◄──────────────────┘
-                              │
-                              ▼
-            ┌─────────────────────────────────────┐
-            │ Final compliant JPEG (300 DPI)       │
-            │ Print-ready 4×6 sheet (4-up / 8-up)  │
-            └─────────────────────────────────────┘
-```
+**On-device pipeline** (`components/editor-studio.tsx`): upload (HEIC transcoded) →
+MediaPipe Face Landmarker (468 points + blendshapes) → `calculateCrop` to the country spec →
+`@imgly/background-removal` in a Web Worker → `composeFinal` canvas compositor → on-device
+compliance check (`lib/compliance.ts`). Manual framing (`applyCropAdjust`) and color sliders
+recompose live.
 
-Key decisions:
-
-- **Why MediaPipe Face Landmarker (not BlazeFace)?**  
-  468-point mesh gives exact chin (152), forehead (10), eye corners (33/263).
-  We use those to measure head height (chin → crown) and eye-line vertical
-  position, which is what every passport authority actually specifies.
-
-- **Why a Web Worker for background removal?**  
-  imgly's wasm pipeline pegs the main thread for several seconds at high
-  resolution. Running it in a worker keeps the MediaPipe overlay smooth and
-  lets the progress bar animate at 60fps. The worker also reuses the warmed-up
-  model across photos.
-
-- **Why composite at the source resolution, then downscale?**  
-  Hair edges and shoulder seams remain crisp. Downscaling after compositing
-  gives effectively 600 DPI input → 300 DPI output supersampling.
-
-- **Why a JSON config of country specs?**  
-  Specifications change. The single source of truth is [`lib/countries.ts`](lib/countries.ts).
-  Each entry includes physical dimensions (mm), allowed head-height ratios,
-  eye-line position, background color, glasses & expression policy.
+**Payment-gated delivery** (the paywall): deliverables are AES-GCM encrypted in the browser;
+the ciphertext is stored in IndexedDB (`lib/secure-delivery.ts`) and the pre-payment preview
+is a baked-watermark, downscaled image (`lib/preview.ts`) — the clean file never enters the
+DOM. The AES key rides in the Stripe session metadata and is released by `/api/release-key`
+**only** once Stripe confirms `payment_status === 'paid'`. No server-side image storage, no
+upload — the photo never leaves the device.
 
 ---
 
-## 5. Stripe setup
+## 5. Environment variables
 
-1. Create a Stripe account & put test keys in `.env.local`.
-2. Install the CLI: `brew install stripe/stripe-cli/stripe` (or platform equiv).
-3. Forward webhooks locally:
+See `.env.example`. Set these in Vercel (Production) for live payments:
 
-   ```bash
-   stripe listen --forward-to localhost:3000/api/webhook/stripe
-   ```
+| Var                                  | Purpose                                        |
+| ------------------------------------ | ---------------------------------------------- |
+| `STRIPE_SECRET_KEY`                  | Create sessions; retrieve for status/key release |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe.js on the client                        |
+| `STRIPE_WEBHOOK_SECRET`              | Verify `checkout.session.completed` webhooks   |
+| `NEXT_PUBLIC_SITE_URL`               | e.g. `https://www.visapassphoto.com`           |
 
-   Copy the `whsec_…` it prints into `STRIPE_WEBHOOK_SECRET`.
-
-4. The webhook handler ([app/api/webhook/stripe/route.ts](app/api/webhook/stripe/route.ts)):
-   - Verifies the `stripe-signature` using the **raw** request body.
-   - Handles `checkout.session.completed`.
-   - Persists the order in `orderStore` (replace with your DB).
-   - Calls `mockSendReceiptEmail` and `mockSubmitToPrintQueue` — wire these to
-     your real email and print partner.
-   - Responds with `200 { received: true }` quickly so Stripe doesn't retry.
-
-5. The `/success` page polls `/api/order-status?session_id=…` every 4s so the
-   fulfillment status badge updates live as the webhook fires.
-
-### Production webhook URL
-
-Deploy to Vercel and use `https://<your-domain>/api/webhook/stripe` as the
-endpoint. Vercel passes the raw body through correctly — no extra config.
+`.env.local` is git-ignored — never commit real keys.
 
 ---
 
-## 6. Server-side AI fallback (optional)
+## 6. Deployment
 
-The default pipeline is **100% client-side**. If you need higher accuracy on
-profile shots, low-resolution inputs, or production SLAs, plug a server model
-into the stubs at:
+Deploys continuously to **Vercel** from `main`. To go live with real payments: activate the
+Stripe live account, swap the three Stripe vars to `sk_live_`/`pk_live_` + a live webhook
+secret, and redeploy.
 
-- [`app/api/ai/remove-background/route.ts`](app/api/ai/remove-background/route.ts)
-- [`app/api/ai/detect-face/route.ts`](app/api/ai/detect-face/route.ts)
+**Security headers / CSP** live in `next.config.mjs` (`frame-ancestors`, HSTS, nosniff,
+Permissions-Policy, and a scoped CSP). COOP/COEP are intentionally **not** set — enabling
+`crossOriginIsolated` switches onnxruntime-web to a threaded build that crashes here, and the
+single-threaded path works fine (MediaPipe/imgly don't need SharedArrayBuffer). Do not re-add
+them.
 
-Suggested vendors (sample integration notes are inline in the route files):
-
-| Vendor                | Best for                                  |
-| --------------------- | ----------------------------------------- |
-| Replicate             | RMBG-2.0 / SAM / InSPyReNet — quick swap   |
-| Hugging Face Inference| `briaai/RMBG-1.4`, very low cost          |
-| Google Cloud Vision   | `faceAnnotations`, very accurate landmarks |
-| Azure Face API        | Pose, smile, glasses detection            |
-| AWS Rekognition       | `DetectFaces` with quality checks         |
-| Self-host             | rembg + InsightFace on Triton / Modal     |
-
-Then in [`lib/background-removal-client.ts`](lib/background-removal-client.ts)
-or [`lib/face-landmarker.ts`](lib/face-landmarker.ts), branch on a feature flag
-to call the server route instead of the local worker.
+**Third-party runtime assets:** MediaPipe wasm/model load from jsdelivr (→ unpkg fallback) +
+Google storage; the imgly model loads from `staticimgly.com`. For zero third-party dependency
+you can self-host these under your own origin and tighten the CSP accordingly.
 
 ---
 
-## 7. Deploying to Vercel
+## 7. Notes
 
-```bash
-npm i -g vercel
-vercel link
-vercel env add STRIPE_SECRET_KEY production
-vercel env add STRIPE_WEBHOOK_SECRET production
-vercel --prod
-```
-
-Vercel automatically:
-- Routes `/api/webhook/stripe` through the Node runtime (`runtime = 'nodejs'`).
-- Serves the MediaPipe WASM from jsdelivr (no custom Edge config needed).
-- Respects the COOP/COEP headers in [next.config.mjs](next.config.mjs) so
-  SharedArrayBuffer-enabled WASM stays available.
-
----
-
-## 8. Extending — adding a country
-
-Append an entry to `COUNTRIES` in [lib/countries.ts](lib/countries.ts):
-
-```ts
-{
-  code: 'XX',
-  name: 'Your country',
-  flag: '🏳️',
-  documents: [
-    {
-      id: 'xx-passport',
-      type: 'passport',
-      label: 'XX Passport (35×45 mm)',
-      widthMm: 35,
-      heightMm: 45,
-      headHeightRatio: [0.7, 0.8],
-      eyeLineFromBottom: [0.55, 0.7],
-      background: '#FFFFFF',
-      glasses: 'forbidden',
-      expression: 'neutral',
-      dpi: 300,
-    },
-  ],
-}
-```
-
-That single addition propagates through the search, presets, editor, and
-country showcase automatically.
-
----
-
-## 9. Accessibility & UX notes
-
-- Skip-to-content link, focus-visible rings, semantic `<main>` / `<section>`.
-- Color contrast meets WCAG 2.2 AA in both light and dark themes.
-- All sliders, switches, dialogs are Radix primitives — keyboard accessible.
-- Friendly errors with actionable next steps ("Try a clearer, well-lit photo").
-- localStorage persists the chosen country + recent orders so reloading the
-  editor doesn't lose your place. Photos themselves are kept in-memory only.
-
----
-
-## 10. License
-
-MIT.
+- **Not-yet-durable:** the webhook order store is in-memory (fine — status reads Stripe
+  directly). Wire a real DB + `event.id` dedupe before relying on webhook side-effects.
+- **Rate limiting** (`lib/rate-limit.ts`) is in-memory / best-effort; swap for Upstash or
+  Vercel KV for a hard, distributed limit.
+- Country specs (`lib/countries.ts`) reflect public specifications at authoring time — always
+  verify against the issuing authority for production use.

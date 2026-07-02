@@ -193,6 +193,11 @@
         "headLevel": "Straighten your head so it isn't tilted.",
         "facingForward": "Face the camera straight on.",
         "position": "Center your head and keep the whole head (crown to chin) inside the frame."
+      },
+      "status": {
+        "pass": "Passed",
+        "warn": "Warning",
+        "fail": "Failed"
       }
     },
     "framing": {

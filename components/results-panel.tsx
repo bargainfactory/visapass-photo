@@ -353,7 +353,7 @@ export function ResultsPanel({
               <p className="mt-1 text-sm text-muted-foreground">{t('oneTimePayment')}</p>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-3" role="radiogroup" aria-label={t('chooseYourPackage')}>
               {PRINT_PACKAGES.map((pkg) => {
                 const Icon = pkgIcon(pkg.id);
                 const isSelected = selectedPkg === pkg.id;

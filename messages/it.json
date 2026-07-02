@@ -193,6 +193,11 @@
         "headLevel": "Raddrizza la testa in modo che non sia inclinata.",
         "facingForward": "Guarda dritto verso la fotocamera.",
         "position": "Centra la testa e mantieni tutta la testa (dalla sommità al mento) nell'inquadratura."
+      },
+      "status": {
+        "pass": "Superato",
+        "warn": "Avviso",
+        "fail": "Non conforme"
       }
     },
     "framing": {

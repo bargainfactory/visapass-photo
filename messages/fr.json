@@ -193,6 +193,11 @@
         "headLevel": "Redressez la tête pour qu'elle ne soit pas inclinée.",
         "facingForward": "Regardez droit vers l'objectif.",
         "position": "Centrez votre tête et gardez toute la tête (du sommet au menton) dans le cadre."
+      },
+      "status": {
+        "pass": "Validé",
+        "warn": "Avertissement",
+        "fail": "Non conforme"
       }
     },
     "framing": {

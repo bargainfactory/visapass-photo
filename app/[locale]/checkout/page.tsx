@@ -1,13 +1,12 @@
 'use client';
 
 import * as React from 'react';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { ArrowLeft, CreditCard, Loader2, ShieldCheck } from 'lucide-react';
 import { loadStripe, type Stripe } from '@stripe/stripe-js';
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
-import { useRouter } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 

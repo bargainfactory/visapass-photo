@@ -193,6 +193,11 @@
         "headLevel": "把头摆正，不要倾斜。",
         "facingForward": "正对镜头。",
         "position": "将头部居中，并让整个头部（从头顶到下巴）都在画面内。"
+      },
+      "status": {
+        "pass": "通过",
+        "warn": "警告",
+        "fail": "未通过"
       }
     },
     "framing": {

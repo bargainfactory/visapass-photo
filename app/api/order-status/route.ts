@@ -14,10 +14,19 @@
  */
 import { NextResponse, type NextRequest } from 'next/server';
 import { getStripeServer } from '@/lib/stripe';
+import { rateLimit, clientIp } from '@/lib/rate-limit';
 
 export const runtime = 'nodejs';
 
 export async function GET(req: NextRequest) {
+  // Generous — /success polls this every 4s (~15/min per tab) until paid.
+  const rl = rateLimit(`order-status:${clientIp(req)}`, 90, 60_000);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: 'Too many requests' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } }
+    );
+  }
   const sessionId = req.nextUrl.searchParams.get('session_id');
   if (!sessionId) {
     return NextResponse.json({ error: 'session_id is required' }, { status: 400 });

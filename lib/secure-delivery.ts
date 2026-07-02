@@ -128,6 +128,32 @@ export async function loadRecord(sessionId: string): Promise<SecureRecord | null
   }
 }
 
+/** Delete stored ciphertext records older than maxAgeMs (housekeeping so the
+ *  encrypted deliverables don't accumulate in IndexedDB forever). */
+export async function purgeOldRecords(maxAgeMs: number): Promise<void> {
+  const cutoff = Date.now() - maxAgeMs;
+  const db = await openDb();
+  try {
+    await new Promise<void>((resolve) => {
+      const tx = db.transaction(STORE, 'readwrite');
+      const req = tx.objectStore(STORE).openCursor();
+      req.onsuccess = () => {
+        const cursor = req.result;
+        if (!cursor) return;
+        const rec = cursor.value as SecureRecord;
+        if (rec && typeof rec.createdAt === 'number' && rec.createdAt < cutoff) {
+          cursor.delete();
+        }
+        cursor.continue();
+      };
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => resolve();
+    });
+  } finally {
+    db.close();
+  }
+}
+
 export async function deleteRecord(sessionId: string): Promise<void> {
   const db = await openDb();
   try {

@@ -193,6 +193,11 @@
         "headLevel": "Zet je hoofd recht zodat het niet gekanteld is.",
         "facingForward": "Kijk recht in de camera.",
         "position": "Centreer je hoofd en houd het hele hoofd (kruin tot kin) binnen het kader."
+      },
+      "status": {
+        "pass": "Geslaagd",
+        "warn": "Waarschuwing",
+        "fail": "Niet voldaan"
       }
     },
     "framing": {

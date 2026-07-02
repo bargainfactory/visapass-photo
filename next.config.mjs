@@ -5,9 +5,6 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    serverActions: { bodySizeLimit: '15mb' },
-  },
   // MediaPipe & imgly ship wasm/binaries that Webpack should leave alone.
   webpack: (config, { isServer }) => {
     config.module.rules.push({
@@ -66,7 +63,7 @@ const nextConfig = {
       // WebAssembly to instantiate. blob: is required because onnxruntime-web
       // (inside @imgly/background-removal) loads its backend by dynamically
       // importing a blob: module — without it ORT reports "no available backend".
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://js.stripe.com https://cdn.jsdelivr.net",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://js.stripe.com https://cdn.jsdelivr.net https://unpkg.com",
       "style-src 'self' 'unsafe-inline'",
       // Only local previews (data:/blob:) and our own assets — NOT bare https:,
       // which would let a future XSS exfiltrate data via `new Image().src=…`.
@@ -76,10 +73,10 @@ const nextConfig = {
       // + storage.googleapis.com: MediaPipe wasm + face-landmarker model.
       // staticimgly.com: @imgly/background-removal model + wasm (its default CDN;
       // no publicPath override is set).
-      "connect-src 'self' blob: data: https://api.stripe.com https://merchant-ui-api.stripe.com https://cdn.jsdelivr.net https://storage.googleapis.com https://staticimgly.com",
+      "connect-src 'self' blob: data: https://api.stripe.com https://merchant-ui-api.stripe.com https://r.stripe.com https://cdn.jsdelivr.net https://unpkg.com https://storage.googleapis.com https://staticimgly.com",
       // MediaPipe's GPU delegate spins up a worker from its WASM glue (blob or
       // jsdelivr); the imgly worker is bundled (self/blob).
-      "worker-src 'self' blob: https://cdn.jsdelivr.net",
+      "worker-src 'self' blob: https://cdn.jsdelivr.net https://unpkg.com",
       // js.stripe.com: Stripe.js iframe. checkout.stripe.com: embedded checkout.
       // hooks.stripe.com: 3-D Secure challenge frames.
       "frame-src https://js.stripe.com https://checkout.stripe.com https://hooks.stripe.com",

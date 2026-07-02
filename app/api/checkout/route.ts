@@ -15,10 +15,18 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { getStripeServer, findPackage } from '@/lib/stripe';
 import { findDocument } from '@/lib/countries';
+import { rateLimit, clientIp } from '@/lib/rate-limit';
 
 export const runtime = 'nodejs';
 
 export async function POST(req: NextRequest) {
+  const rl = rateLimit(`checkout:${clientIp(req)}`, 15, 60_000);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: 'Too many requests' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } }
+    );
+  }
   try {
     const body = await req.json();
     const pkg = findPackage(body.packageId);

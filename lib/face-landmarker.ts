@@ -19,27 +19,43 @@ import {
 
 let landmarkerPromise: Promise<FaceLandmarker> | null = null;
 
-// Keep this version EXACTLY in sync with the pinned @mediapipe/tasks-vision in
-// package.json — the JS API and the wasm glue are a matched pair and mixing
-// minor versions can break silently.
-const WASM_BASE = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/wasm';
+// Version MUST match the pinned @mediapipe/tasks-vision in package.json — the JS
+// API and the wasm glue are a matched pair. We try jsdelivr first and fall back
+// to unpkg so a single-CDN outage (jsdelivr has recurring issues in some
+// regions) doesn't brick the whole product. For zero third-party dependency,
+// self-host the wasm/ folder + face_landmarker.task under public/ and point
+// these at your own origin (also lets you drop the CDN origins from the CSP).
+const WASM_BASES = [
+  'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/wasm',
+  'https://unpkg.com/@mediapipe/tasks-vision@0.10.35/wasm',
+];
 const MODEL_URL =
   'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task';
 
 export async function getFaceLandmarker(): Promise<FaceLandmarker> {
   if (!landmarkerPromise) {
     landmarkerPromise = (async () => {
-      const fileset = await FilesetResolver.forVisionTasks(WASM_BASE);
-      return FaceLandmarker.createFromOptions(fileset, {
-        baseOptions: { modelAssetPath: MODEL_URL, delegate: 'GPU' },
-        runningMode: 'IMAGE',
-        numFaces: 1,
-        outputFacialTransformationMatrixes: false,
-        // Blendshapes power the on-device compliance pre-check (eyes open,
-        // neutral expression, mouth closed). The standard face_landmarker.task
-        // bundle ships the blendshape head, so this is a free signal.
-        outputFaceBlendshapes: true,
-      });
+      let lastErr: unknown;
+      for (const base of WASM_BASES) {
+        try {
+          const fileset = await FilesetResolver.forVisionTasks(base);
+          return await FaceLandmarker.createFromOptions(fileset, {
+            baseOptions: { modelAssetPath: MODEL_URL, delegate: 'GPU' },
+            runningMode: 'IMAGE',
+            numFaces: 1,
+            outputFacialTransformationMatrixes: false,
+            // Blendshapes power the on-device compliance pre-check (eyes open,
+            // neutral expression, mouth closed). The standard face_landmarker.task
+            // bundle ships the blendshape head, so this is a free signal.
+            outputFaceBlendshapes: true,
+          });
+        } catch (e) {
+          lastErr = e;
+        }
+      }
+      // Both CDNs failed — let the caller reset the singleton and retry.
+      landmarkerPromise = null;
+      throw lastErr ?? new Error('Failed to load face landmarker');
     })();
   }
   return landmarkerPromise;

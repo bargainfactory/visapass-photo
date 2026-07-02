@@ -183,14 +183,16 @@
         "eyesOpen": "Yeux ouverts et visibles",
         "expression": "Expression neutre, bouche fermée",
         "headLevel": "Tête droite, non inclinée",
-        "facingForward": "Face à l'appareil photo"
+        "facingForward": "Face à l'appareil photo",
+        "position": "Tête centrée dans le cadre"
       },
       "hints": {
         "headSize": "Reculez ou utilisez une photo de meilleure résolution pour que la tête tienne dans le cadre.",
         "eyesOpen": "Ouvrez bien les yeux et regardez l'objectif.",
         "expression": "Détendez-vous : visage neutre, bouche fermée, sans sourire.",
         "headLevel": "Redressez la tête pour qu'elle ne soit pas inclinée.",
-        "facingForward": "Regardez droit vers l'objectif."
+        "facingForward": "Regardez droit vers l'objectif.",
+        "position": "Centrez votre tête et gardez toute la tête (du sommet au menton) dans le cadre."
       }
     },
     "framing": {
@@ -289,7 +291,9 @@
     "printTip": {
       "title": "Imprimer chez vous ?",
       "body": "Imprimez la planche 4×6 à taille réelle (désactivez « ajuster à la page » / mise à l'échelle) sur papier photo, ou apportez le fichier à une borne photo."
-    }
+    },
+    "download": "Télécharger",
+    "downloadN": "Télécharger {count} fichiers"
   },
   "footer": {
     "productHeading": "Produit",

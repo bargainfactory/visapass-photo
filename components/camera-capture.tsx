@@ -49,10 +49,9 @@ export function CameraCapture({ open, onOpenChange, onCapture }: CameraCapturePr
     c.width = v.videoWidth;
     c.height = v.videoHeight;
     const ctx = c.getContext('2d')!;
-    if (facing === 'user') {
-      ctx.translate(c.width, 0);
-      ctx.scale(-1, 1);
-    }
+    // Do NOT mirror the saved image. The front-camera live preview is mirrored
+    // (familiar selfie feel), but a passport photo must be a TRUE likeness —
+    // baking the flip in would reverse the hair part, moles and asymmetries.
     ctx.drawImage(v, 0, 0);
     c.toBlob(
       (b) => {

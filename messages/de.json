@@ -183,14 +183,16 @@
         "eyesOpen": "Augen offen und sichtbar",
         "expression": "Neutraler Ausdruck, Mund geschlossen",
         "headLevel": "Kopf gerade, nicht geneigt",
-        "facingForward": "Blick in die Kamera"
+        "facingForward": "Blick in die Kamera",
+        "position": "Kopf mittig im Bild"
       },
       "hints": {
         "headSize": "Gehen Sie weiter weg oder nutzen Sie ein höher aufgelöstes Foto, damit der Kopf ins Bild passt.",
         "eyesOpen": "Öffnen Sie die Augen ganz und schauen Sie in die Kamera.",
         "expression": "Entspannen Sie sich: neutrales Gesicht, Mund zu, kein Lächeln.",
         "headLevel": "Richten Sie den Kopf gerade, nicht geneigt.",
-        "facingForward": "Blicken Sie gerade in die Kamera."
+        "facingForward": "Blicken Sie gerade in die Kamera.",
+        "position": "Zentrieren Sie den Kopf und halten Sie den ganzen Kopf (Scheitel bis Kinn) im Bild."
       }
     },
     "framing": {
@@ -289,7 +291,9 @@
     "printTip": {
       "title": "Zu Hause drucken?",
       "body": "Drucken Sie den 4×6-Bogen in Originalgröße (Skalierung / 'an Seite anpassen' aus) auf Fotopapier – oder bringen Sie die Datei zu einem Foto-Kiosk."
-    }
+    },
+    "download": "Herunterladen",
+    "downloadN": "{count} Dateien herunterladen"
   },
   "footer": {
     "productHeading": "Produkt",

@@ -68,7 +68,9 @@ const nextConfig = {
       // importing a blob: module — without it ORT reports "no available backend".
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://js.stripe.com https://cdn.jsdelivr.net",
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https:",
+      // Only local previews (data:/blob:) and our own assets — NOT bare https:,
+      // which would let a future XSS exfiltrate data via `new Image().src=…`.
+      "img-src 'self' data: blob:",
       "font-src 'self' data:",
       // api.stripe.com + merchant-ui-api.stripe.com: embedded checkout. jsdelivr
       // + storage.googleapis.com: MediaPipe wasm + face-landmarker model.

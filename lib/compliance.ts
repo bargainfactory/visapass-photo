@@ -18,6 +18,7 @@ import type { CropRect } from './crop-calculator';
 export type ComplianceStatus = 'pass' | 'warn' | 'fail';
 export type ComplianceId =
   | 'headSize'
+  | 'position'
   | 'eyesOpen'
   | 'expression'
   | 'headLevel'
@@ -74,6 +75,20 @@ export function checkCompliance(
     [lo, hi] = doc.headHeightRatio;
   }
   checks.push({ id: 'headSize', status: rangeStatus(achieved, lo, hi) });
+
+  // 1b) POSITION — the head must be centred and fully inside the crop. Catches
+  // manual panning (the framing sliders) that shoves the head off-centre or
+  // clips the crown/chin — headSize alone is pan-invariant and would miss it.
+  const cropCx = crop.x + crop.width / 2;
+  const faceCx = (face.eyeLine.x + face.chin.x) / 2;
+  const dxFrac = Math.abs(faceCx - cropCx) / crop.width;
+  const margin = crop.height * 0.02;
+  const headClipped =
+    face.crown.y < crop.y - margin || face.chin.y > crop.y + crop.height + margin;
+  checks.push({
+    id: 'position',
+    status: headClipped || dxFrac > 0.2 ? 'fail' : dxFrac > 0.1 ? 'warn' : 'pass',
+  });
 
   // 2) EYES OPEN — high eyeBlink* score means the eye is closed.
   const blink = Math.max(bs(face, 'eyeBlinkLeft'), bs(face, 'eyeBlinkRight'));

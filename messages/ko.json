@@ -183,14 +183,16 @@
         "eyesOpen": "눈을 뜨고 잘 보임",
         "expression": "무표정, 입을 다묾",
         "headLevel": "머리가 똑바르고 기울지 않음",
-        "facingForward": "카메라를 정면으로 응시"
+        "facingForward": "카메라를 정면으로 응시",
+        "position": "머리가 프레임 중앙에 위치"
       },
       "hints": {
         "headSize": "머리가 화면에 맞도록 뒤로 물러나거나 더 높은 해상도의 사진을 사용하세요.",
         "eyesOpen": "눈을 완전히 뜨고 카메라를 보세요.",
         "expression": "긴장을 풀고 무표정으로 입을 다물고 웃지 마세요.",
         "headLevel": "머리를 똑바로 세워 기울지 않게 하세요.",
-        "facingForward": "카메라를 정면으로 보세요."
+        "facingForward": "카메라를 정면으로 보세요.",
+        "position": "머리를 중앙에 두고 머리 전체(정수리부터 턱까지)를 프레임 안에 두세요."
       }
     },
     "framing": {
@@ -289,7 +291,9 @@
     "printTip": {
       "title": "집에서 인쇄하시나요?",
       "body": "4×6 시트를 실제 크기로('페이지에 맞춤'/배율 끄기) 인화지에 인쇄하거나, 파일을 사진 인화 키오스크로 가져가세요."
-    }
+    },
+    "download": "다운로드",
+    "downloadN": "파일 {count}개 다운로드"
   },
   "footer": {
     "productHeading": "제품",

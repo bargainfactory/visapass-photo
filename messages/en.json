@@ -183,14 +183,16 @@
         "eyesOpen": "Eyes open and visible",
         "expression": "Neutral expression, mouth closed",
         "headLevel": "Head straight, not tilted",
-        "facingForward": "Facing the camera"
+        "facingForward": "Facing the camera",
+        "position": "Head centred in frame"
       },
       "hints": {
         "headSize": "Move back or use a higher-resolution photo so the head fits the frame.",
         "eyesOpen": "Open your eyes fully and look at the camera.",
         "expression": "Relax — neutral face, mouth closed, no smile.",
         "headLevel": "Straighten your head so it isn't tilted.",
-        "facingForward": "Face the camera straight on."
+        "facingForward": "Face the camera straight on.",
+        "position": "Center your head and keep the whole head (crown to chin) inside the frame."
       }
     },
     "framing": {
@@ -289,7 +291,9 @@
     "printTip": {
       "title": "Printing at home?",
       "body": "Print the 4×6 sheet at actual size (turn off 'fit to page' / scaling) on photo paper — or take the file to any pharmacy photo kiosk."
-    }
+    },
+    "download": "Download",
+    "downloadN": "Download {count} files"
   },
   "footer": {
     "productHeading": "Product",

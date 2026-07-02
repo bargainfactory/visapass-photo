@@ -183,14 +183,16 @@
         "eyesOpen": "Ojos abiertos y visibles",
         "expression": "Expresión neutra, boca cerrada",
         "headLevel": "Cabeza recta, sin inclinación",
-        "facingForward": "Mirando a la cámara"
+        "facingForward": "Mirando a la cámara",
+        "position": "Cabeza centrada en el encuadre"
       },
       "hints": {
         "headSize": "Aléjate o usa una foto de mayor resolución para que la cabeza encaje.",
         "eyesOpen": "Abre bien los ojos y mira a la cámara.",
         "expression": "Relájate: cara neutra, boca cerrada, sin sonreír.",
         "headLevel": "Endereza la cabeza para que no quede inclinada.",
-        "facingForward": "Mira de frente a la cámara."
+        "facingForward": "Mira de frente a la cámara.",
+        "position": "Centra la cabeza y mantén toda la cabeza (de la coronilla al mentón) dentro del encuadre."
       }
     },
     "framing": {
@@ -289,7 +291,9 @@
     "printTip": {
       "title": "¿Imprimir en casa?",
       "body": "Imprime la hoja de 4×6 a tamaño real (desactiva 'ajustar a la página' / escalado) en papel fotográfico, o lleva el archivo a cualquier kiosco de fotos."
-    }
+    },
+    "download": "Descargar",
+    "downloadN": "Descargar {count} archivos"
   },
   "footer": {
     "productHeading": "Producto",

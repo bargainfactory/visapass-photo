@@ -4,13 +4,14 @@ import * as React from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
-import { Brain, Cpu, Globe2, Lock, Sparkles, Zap } from 'lucide-react';
+import { Brain, Cpu, Globe2, Loader2, Lock, Sparkles, Zap } from 'lucide-react';
 import { useRouter } from '@/i18n/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { UploadDropzone } from '@/components/upload-dropzone';
 import { CameraCapture } from '@/components/camera-capture';
 import { newRenderToken, usePhotoStore } from '@/lib/store';
+import { toDecodableImage } from '@/lib/heic';
 
 export function Hero() {
   const t = useTranslations();
@@ -19,10 +20,22 @@ export function Hero() {
   const setStep = usePhotoStore((s) => s.setStep);
   const setRenderToken = usePhotoStore((s) => s.setRenderToken);
   const [cameraOpen, setCameraOpen] = React.useState(false);
+  const [converting, setConverting] = React.useState(false);
 
-  const handleFile = (file: File) => {
-    const url = URL.createObjectURL(file);
-    setSource(url, file.type);
+  const handleFile = async (file: File) => {
+    // Transcode iPhone HEIC/HEIF here too — the hero dropzone is the primary
+    // CTA, so skipping it would leave the biggest upload path broken.
+    let f = file;
+    try {
+      setConverting(true);
+      f = await toDecodableImage(file);
+    } catch {
+      /* decode failed — fall through; the editor pipeline surfaces the error */
+    } finally {
+      setConverting(false);
+    }
+    const url = URL.createObjectURL(f);
+    setSource(url, f.type);
     // Fresh upload → fresh render token so any earlier paid order does
     // NOT carry over to this new photo. See lib/store.ts comments.
     setRenderToken(newRenderToken());
@@ -107,7 +120,14 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.15 }}
           className="mt-12 w-full max-w-md md:mt-auto md:pt-16"
         >
-          <UploadDropzone onAccept={handleFile} onOpenCamera={() => setCameraOpen(true)} />
+          {converting ? (
+            <div className="grid place-items-center gap-3 rounded-2xl border bg-card/60 py-16 text-sm text-muted-foreground backdrop-blur">
+              <Loader2 className="size-6 animate-spin" />
+              <span>{t('editorPage.converting')}</span>
+            </div>
+          ) : (
+            <UploadDropzone onAccept={handleFile} onOpenCamera={() => setCameraOpen(true)} />
+          )}
           <CameraCapture open={cameraOpen} onOpenChange={setCameraOpen} onCapture={handleFile} />
           <div className="mt-4 flex">
             <Button variant="link" size="sm" asChild className="ps-0">

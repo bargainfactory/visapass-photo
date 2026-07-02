@@ -182,14 +182,20 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
         resizeHeight: img.naturalHeight,
         resizeQuality: 'high',
       });
+      // Read the color adjustments fresh from the store: runPipeline is a
+      // useCallback keyed only on [sourceUrl, documentId], so its closure
+      // captured brightness/contrast/shadow at mount. Without this, clicking
+      // "Re-run pipeline" after moving a slider would compose with stale
+      // (mount-time) values while the sliders show the new ones.
+      const adj = usePhotoStore.getState();
       const out = await composeFinal({
         source: img,
         cutout: cutoutBitmapRef.current,
         doc: docPair.doc,
         crop,
-        brightness,
-        contrast,
-        shadow,
+        brightness: adj.brightness,
+        contrast: adj.contrast,
+        shadow: adj.shadow,
       });
       setResult(out.dataUrl, out.printSheetDataUrl, out.printSheetBackDataUrl);
       setPreviewUrl(out.dataUrl);
@@ -239,6 +245,12 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
   // off to the results panel — ensures whatever slider values the user
   // ended on are reflected in the downloadable print files.
   const handleContinue = React.useCallback(async () => {
+    // Cancel any pending/in-flight digitalOnly recompose so it can't land
+    // AFTER this full compose and null the print sheets back out (setResult
+    // preserves undefined sheets, but a stale recompose would still overwrite
+    // the digital URL with an older frame).
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    recomposeSeqRef.current++;
     if (!docPair || !state.imageEl || !effectiveCrop) {
       onComplete();
       return;
@@ -496,6 +508,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
               <div className="space-y-2">
                 <Label className="text-xs">{t('framing.zoom')}</Label>
                 <Slider
+                  aria-label={t('framing.zoom')}
                   value={[cropAdjust.zoom]}
                   onValueChange={([v]) => setCropAdjust((a) => ({ ...a, zoom: v }))}
                   min={0.85}
@@ -506,6 +519,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
               <div className="space-y-2">
                 <Label className="text-xs">{t('framing.horizontal')}</Label>
                 <Slider
+                  aria-label={t('framing.horizontal')}
                   value={[cropAdjust.x]}
                   onValueChange={([v]) => setCropAdjust((a) => ({ ...a, x: v }))}
                   min={-0.25}
@@ -516,6 +530,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
               <div className="space-y-2">
                 <Label className="text-xs">{t('framing.vertical')}</Label>
                 <Slider
+                  aria-label={t('framing.vertical')}
                   value={[cropAdjust.y]}
                   onValueChange={([v]) => setCropAdjust((a) => ({ ...a, y: v }))}
                   min={-0.25}
@@ -546,6 +561,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
                 <span className="tabular-nums text-muted-foreground">{brightness}</span>
               </div>
               <Slider
+                aria-label={t('brightness')}
                 value={[brightness]}
                 onValueChange={([v]) => setAdjustments(v, contrast, shadow)}
                 min={-50}
@@ -559,6 +575,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
                 <span className="tabular-nums text-muted-foreground">{contrast}</span>
               </div>
               <Slider
+                aria-label={t('contrast')}
                 value={[contrast]}
                 onValueChange={([v]) => setAdjustments(brightness, v, shadow)}
                 min={-50}
@@ -574,6 +591,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
                 <span className="tabular-nums text-muted-foreground">{shadow}</span>
               </div>
               <Slider
+                aria-label={t('shadow')}
                 value={[shadow]}
                 onValueChange={([v]) => setAdjustments(brightness, contrast, v)}
                 min={-50}

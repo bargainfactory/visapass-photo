@@ -183,14 +183,16 @@
         "eyesOpen": "Ogen open en zichtbaar",
         "expression": "Neutrale uitdrukking, mond dicht",
         "headLevel": "Hoofd recht, niet gekanteld",
-        "facingForward": "Recht in de camera kijkend"
+        "facingForward": "Recht in de camera kijkend",
+        "position": "Hoofd gecentreerd in beeld"
       },
       "hints": {
         "headSize": "Ga verder weg staan of gebruik een foto met hogere resolutie zodat het hoofd past.",
         "eyesOpen": "Open je ogen volledig en kijk in de camera.",
         "expression": "Ontspan: neutraal gezicht, mond dicht, niet lachen.",
         "headLevel": "Zet je hoofd recht zodat het niet gekanteld is.",
-        "facingForward": "Kijk recht in de camera."
+        "facingForward": "Kijk recht in de camera.",
+        "position": "Centreer je hoofd en houd het hele hoofd (kruin tot kin) binnen het kader."
       }
     },
     "framing": {
@@ -289,7 +291,9 @@
     "printTip": {
       "title": "Thuis afdrukken?",
       "body": "Druk het 4×6-vel op ware grootte af (schaal / 'passend maken' uit) op fotopapier, of neem het bestand mee naar een fotokiosk."
-    }
+    },
+    "download": "Downloaden",
+    "downloadN": "{count} bestanden downloaden"
   },
   "footer": {
     "productHeading": "Product",

@@ -87,8 +87,13 @@ function SuccessContent() {
     (async () => {
       try {
         const record = await loadRecord(sessionId);
-        // No ciphertext on this device (e.g. opened the success link elsewhere).
-        if (!record) return;
+        // No ciphertext on this device (e.g. opened the success link in a
+        // different browser than the one used to create the photo). Surface the
+        // "reopen in the original browser" message instead of spinning forever.
+        if (!record) {
+          if (!cancelled) setDeliveryError(true);
+          return;
+        }
 
         let dekB64: string | null = null;
         if (sessionId.startsWith('cs_demo_')) {
@@ -332,6 +337,7 @@ function DownloadGrid({ stashed, packageId, tResults }: DownloadGridProps) {
 }
 
 function DownloadCard({ entry, format }: { entry: DownloadEntry; format: 'jpeg' | 'png' }) {
+  const t = useTranslations('success');
   // The decrypted deliverables are JPEG object URLs. For a JPEG export we hand
   // them straight to the browser; for PNG we round-trip each through a canvas
   // first. All triggered from one user gesture so multi-file downloads work.
@@ -361,9 +367,7 @@ function DownloadCard({ entry, format }: { entry: DownloadEntry; format: 'jpeg' 
       <p className="text-center text-sm font-semibold leading-tight">{entry.title}</p>
       <Button variant="brand" size="lg" className="w-full" onClick={downloadAll}>
         <Download className="size-4" />
-        {entry.files.length > 1
-          ? `Download ${entry.files.length} files`
-          : 'Download'}
+        {entry.files.length > 1 ? t('downloadN', { count: entry.files.length }) : t('download')}
       </Button>
     </div>
   );

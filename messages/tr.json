@@ -183,14 +183,16 @@
         "eyesOpen": "Gözler açık ve görünür",
         "expression": "Nötr ifade, ağız kapalı",
         "headLevel": "Baş düz, eğik değil",
-        "facingForward": "Kameraya bakıyor"
+        "facingForward": "Kameraya bakıyor",
+        "position": "Baş çerçevede ortalanmış"
       },
       "hints": {
         "headSize": "Başın kadraja sığması için geri çekilin veya daha yüksek çözünürlüklü bir fotoğraf kullanın.",
         "eyesOpen": "Gözlerinizi tam açın ve kameraya bakın.",
         "expression": "Rahatlayın: nötr yüz, ağız kapalı, gülümseme yok.",
         "headLevel": "Başınızı düz tutun, eğik olmasın.",
-        "facingForward": "Doğrudan kameraya bakın."
+        "facingForward": "Doğrudan kameraya bakın.",
+        "position": "Başınızı ortalayın ve tüm başı (tepeden çeneye) çerçeve içinde tutun."
       }
     },
     "framing": {
@@ -289,7 +291,9 @@
     "printTip": {
       "title": "Evde mi yazdıracaksınız?",
       "body": "4×6 sayfayı gerçek boyutta ('sayfaya sığdır' / ölçekleme kapalı) fotoğraf kağıdına yazdırın veya dosyayı bir fotoğraf kioskuna götürün."
-    }
+    },
+    "download": "İndir",
+    "downloadN": "{count} dosya indir"
   },
   "footer": {
     "productHeading": "Ürün",

@@ -103,11 +103,17 @@ export const usePhotoStore = create<PhotoState>()(
         }),
       setDocument: (documentId) => set({ documentId }),
       setResult: (resultDataUrl, sheetUrl, sheetBackUrl) =>
-        set({
+        // `undefined` means "leave the cached print sheets untouched" (used by
+        // the digitalOnly slider recomposes). Passing `null` explicitly clears
+        // them. Previously `?? null` wiped the sheets on every recompose, which
+        // could deliver a paid print/bundle order with no print file if a
+        // recompose landed after the full compose. See editor-studio recompose.
+        set((s) => ({
           resultDataUrl,
-          printSheetDataUrl: sheetUrl ?? null,
-          printSheetBackDataUrl: sheetBackUrl ?? null,
-        }),
+          printSheetDataUrl: sheetUrl === undefined ? s.printSheetDataUrl : sheetUrl,
+          printSheetBackDataUrl:
+            sheetBackUrl === undefined ? s.printSheetBackDataUrl : sheetBackUrl,
+        })),
       setAdjustments: (brightness, contrast, shadow) => set({ brightness, contrast, shadow }),
       setFaceConfidence: (faceConfidence) => set({ faceConfidence }),
       setCompliance: (compliance) => set({ compliance }),

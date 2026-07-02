@@ -183,14 +183,16 @@
         "eyesOpen": "双眼睁开且清晰可见",
         "expression": "表情自然，嘴巴闭合",
         "headLevel": "头部端正，没有倾斜",
-        "facingForward": "正对镜头"
+        "facingForward": "正对镜头",
+        "position": "头部在画面中居中"
       },
       "hints": {
         "headSize": "请后退一些或使用更高分辨率的照片，让头部适合画面。",
         "eyesOpen": "完全睁开双眼并注视镜头。",
         "expression": "放松：表情自然，闭嘴，不要微笑。",
         "headLevel": "把头摆正，不要倾斜。",
-        "facingForward": "正对镜头。"
+        "facingForward": "正对镜头。",
+        "position": "将头部居中，并让整个头部（从头顶到下巴）都在画面内。"
       }
     },
     "framing": {
@@ -289,7 +291,9 @@
     "printTip": {
       "title": "在家打印？",
       "body": "以实际尺寸打印 4×6 相纸（关闭“适合页面”/缩放），或将文件带到任意照片自助机打印。"
-    }
+    },
+    "download": "下载",
+    "downloadN": "下载 {count} 个文件"
   },
   "footer": {
     "productHeading": "产品",

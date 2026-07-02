@@ -4,6 +4,7 @@ import { Inter, Sora, JetBrains_Mono } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
+import { DirectionProvider } from '@/components/direction-provider';
 import { ThemeProvider } from '@/components/theme-provider';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
@@ -84,6 +85,9 @@ export default async function LocaleLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <NextIntlClientProvider messages={messages}>
+            {/* Give Radix primitives (sliders, switches, etc.) the correct
+                reading direction so they mirror properly in RTL locales (ar). */}
+            <DirectionProvider dir={dir}>
             <TooltipProvider delayDuration={150}>
               <a
                 href="#main"
@@ -97,6 +101,7 @@ export default async function LocaleLayout({
               </main>
               <SiteFooter />
             </TooltipProvider>
+            </DirectionProvider>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

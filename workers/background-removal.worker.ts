@@ -29,6 +29,12 @@ ctx.onmessage = async (e: MessageEvent) => {
     output: { format: 'image/webp', quality: 0.92 },
     model: 'isnet_quint8',
     device,
+    // Set the model/wasm host EXPLICITLY. imgly's default publicPath is built
+    // from a version constant that isn't injected into our worker bundle, so it
+    // resolves to `undefined` and `new URL('resources.json', undefined)` throws
+    // "Failed to construct 'URL': Invalid URL" at ~35%. Keep this version in
+    // sync with the pinned @imgly/background-removal in package.json.
+    publicPath: 'https://staticimgly.com/@imgly/background-removal-data/1.7.0/dist/',
     // We are ALREADY inside a dedicated worker — imgly's default
     // `proxyToWorker: true` would spin up a second nested worker
     // (postMessage round-trip + another module bootstrap) on every

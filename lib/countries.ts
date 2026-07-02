@@ -423,6 +423,24 @@ export const COUNTRIES: CountrySpec[] = [
         expression: 'neutral',
         dpi: 300,
       },
+      {
+        // Alternative 1.4×2 in (35.56 × 50.8 mm) format. Same standard ~34 mm
+        // head (crown-anchored) as the 35×45 mm passport, in a slightly taller
+        // 2-inch frame.
+        id: 'jp-passport-1-4x2',
+        type: 'passport',
+        label: 'Japan Passport (1.4×2 in)',
+        widthMm: 35.56,
+        heightMm: 50.8,
+        headHeightRatio: [0.6, 0.7],
+        eyeLineFromBottom: [0.55, 0.7],
+        headHeightMm: 34,
+        crownFromTopMm: 4,
+        background: '#FFFFFF',
+        glasses: 'forbidden',
+        expression: 'neutral',
+        dpi: 300,
+      },
     ],
   },
   {

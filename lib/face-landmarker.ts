@@ -122,14 +122,16 @@ export function analyseFace(
   // of "head height" is chin → crown (top of head INCLUDING hair), so we lift
   // the crown estimate above the forehead landmark by an anthropometric ratio.
   //
-  // Face span (forehead-landmark → chin) is ~70% of the full head height for
-  // an average adult with typical hair, giving a 1/0.70 ≈ 1.43 head-to-face
-  // ratio. We use a 0.45 lift (head-to-face = 1.45) which sits between bald
-  // and voluminous hair and keeps the crown above the visible hair for the
-  // overwhelming majority of inputs. Note: image coordinates increase downward
-  // so the lift is a NEGATIVE delta on top of forehead.y.
+  // Face span here is forehead-landmark (≈ hairline) → chin. Anthropometrically
+  // the crown (vertex) sits ~0.33× of that span above the hairline for an
+  // average adult with typical hair (head-to-face ≈ 1.33). The previous 0.45
+  // lift over-estimated the crown for short-haired / balding subjects, leaving
+  // an obvious band of empty space above the head. 0.33 tracks the real hair
+  // top much more closely; the manual "Framing" controls cover unusually tall
+  // hairstyles. Image coords increase downward, so the lift is a NEGATIVE
+  // delta on top of forehead.y.
   const faceSpan = chin.y - forehead.y; // > 0 in image coords
-  const crownLift = faceSpan * 0.45;
+  const crownLift = faceSpan * 0.33;
   const crown = { x: forehead.x, y: forehead.y - crownLift };
 
   const leftEye = px[LEFT_EYE_INDEX];

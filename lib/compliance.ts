@@ -97,10 +97,11 @@ export function checkCompliance(
     status: blink > 0.55 ? 'fail' : blink > 0.4 ? 'warn' : 'pass',
   });
 
-  // 3) EXPRESSION — always flag an open mouth (jawOpen). A smile is only flagged
-  // where the spec requires a strictly neutral expression; specs that allow a
-  // natural smile (doc.expression === 'neutral_or_natural_smile', e.g. US) don't
-  // penalise smiling.
+  // 3) EXPRESSION — only flag an OBVIOUS smile or an open mouth / visible teeth;
+  // a near-neutral face with the faintest hint of expression should pass rather
+  // than nag. A smile is only considered where the spec requires a strictly
+  // neutral expression; specs that allow a natural smile
+  // (doc.expression === 'neutral_or_natural_smile', e.g. US) ignore it entirely.
   const smile = Math.max(bs(face, 'mouthSmileLeft'), bs(face, 'mouthSmileRight'));
   const expr =
     doc.expression === 'neutral_or_natural_smile'
@@ -108,7 +109,7 @@ export function checkCompliance(
       : Math.max(bs(face, 'jawOpen'), smile);
   checks.push({
     id: 'expression',
-    status: expr > 0.55 ? 'fail' : expr > 0.35 ? 'warn' : 'pass',
+    status: expr > 0.7 ? 'fail' : expr > 0.5 ? 'warn' : 'pass',
   });
 
   // 4) HEAD LEVEL — roll angle from the eye line vs horizontal. Normalized to a

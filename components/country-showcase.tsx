@@ -2,7 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { COUNTRIES } from '@/lib/countries';
+import { COUNTRIES, countrySlug } from '@/lib/countries';
+import { Link } from '@/i18n/navigation';
 import { Badge } from '@/components/ui/badge';
 
 export function CountryShowcase() {
@@ -24,8 +25,14 @@ export function CountryShowcase() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-100px' }}
               transition={{ duration: 0.3, delay: (i % 8) * 0.03 }}
-              className="group relative overflow-hidden rounded-2xl border bg-card/60 p-4 transition-all hover:-translate-y-0.5 hover:shadow-lg"
+              className="group relative overflow-hidden rounded-2xl border bg-card/60 p-4 transition-all hover:-translate-y-0.5 hover:border-brand-500/40 hover:shadow-lg"
             >
+              {/* Whole card links to the country's SEO landing page. */}
+              <Link
+                href={`/photo/${countrySlug(c)}`}
+                aria-label={c.name}
+                className="absolute inset-0 z-10"
+              />
               <div className="flex items-center gap-2">
                 <span className="text-3xl leading-none">{c.flag}</span>
                 <div className="min-w-0">

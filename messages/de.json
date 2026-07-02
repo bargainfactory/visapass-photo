@@ -338,5 +338,48 @@
       "lastUpdated": "Zuletzt aktualisiert: 20.05.2026",
       "body": "## Kurzfassung\n\n- **Fehlerhafte Dateien: volle Rückerstattung.** Wenn das gerenderte Foto sich nicht herunterladen lässt, beschädigt ist oder gegen die von uns veröffentlichten Länder­spezifikationen verstößt, erstatten wir den vollen Betrag. Innerhalb von 14 Tagen nach dem Kauf ohne Rückfragen.\n- **Die Akzeptanz durch eine ausstellende Behörde garantieren wir nicht.** Wenn eine Behörde ein Foto aus Gründen außerhalb unserer veröffentlichten Spezifikationen ablehnt (Beleuchtung, Mimik, Brille, Haare, Kleidung, biometrische Bewertung usw.), ist das allein kein Erstattungs­grund.\n- **Für eine Rückerstattung** schreibe an support@visapassphoto.com unter Angabe deiner Stripe-Sitzungs-ID. Rückerstattungen werden über Stripe ausgezahlt und erscheinen in der Regel innerhalb von 5 bis 10 Werktagen.\n\n## 1. Was du erwirbst\n\nJeder Kauf ist eine einmalige Lizenz zum Herunterladen eines bestimmten Renderings — ein einzelnes konformes JPEG/PNG (Digitaler Download), ein 4×6-Zoll-Mehrfach­druckbogen (Druckbogen) oder beides (Paketangebot). Das Rendering wird von deinem eigenen Gerät erzeugt; wir stellen die Software und das Recht zum Download der fertigen Datei bereit.\n\n## 2. Erstattungs­fähige Fälle\n\nWir erstatten in folgenden Situationen vollständig:\n\n- **Download-Fehler.** Die Zahlung war erfolgreich, aber der Download-Link wurde nicht innerhalb von 24 Stunden nach Bestätigung freigeschaltet.\n- **Fehlerhafte Ausgabe.** Die gerenderte Datei ist beschädigt, leer oder weicht messbar von den im Studio veröffentlichten Spezifikationen ab (falsche Maße, Kopfhöhe oder Hintergrundfarbe).\n- **Doppel­belastung.** Stripe hat dich versehentlich zweimal für dasselbe Rendering belastet.\n- **Innerhalb von 14 Tagen, Datei nicht herunter­geladen.** Wenn du noch keine Lieferposition aus der Bestellung herunter­geladen hast, kannst du innerhalb von 14 Tagen nach dem Kauf aus beliebigem Grund stornieren.\n- **Zwingendes Verbraucher­schutz­recht.** Wenn dir das lokale Recht (z. B. EU-Richtlinie 2011/83/EU) ein weitergehendes Widerrufsrecht einräumt, gilt dieses.\n\n## 3. Nicht erstattungs­fähige Fälle\n\nWir können in folgenden Situationen keine Rückerstattung anbieten:\n\n- **Ablehnung durch die Behörde** aus Gründen, die nicht unserem Rendering zuzurechnen sind — z. B. schlechte Beleuchtung deines Ausgangsbildes, unpassende Mimik, Brille oder Accessoires, die das Gesicht verdecken, Haare im Gesicht, Änderungen der Spezifikationen nach deinem Kauf oder biometrische Bewertungen außerhalb unserer Kontrolle.\n- **Meinungs­änderung nach dem Download.** Sobald eine Lieferposition heruntergeladen wurde, endet die Erstattungs­berechtigung dafür. Das Paketangebot gilt als ein Kauf: Der Download einer der Dateien beendet die Berechtigung für das Paket.\n- **Belastungen aufgrund von Chargeback-Missbrauch**, bei denen der Karteninhaber den Kauf tatsächlich autorisiert und abgeschlossen hat. Wir reagieren auf Chargebacks mit dem Stripe-Sitzungs­protokoll und Metadaten, die das erfolgreiche Rendering und den Download belegen.\n\n## 4. So beantragst du eine Rückerstattung\n\n1. Suche deine Stripe-Sitzungs-ID — sie erscheint auf der Erfolgs­seite nach der Zahlung und in der von Stripe gesendeten E-Mail-Quittung.\n2. Schreibe an support@visapassphoto.com mit dieser ID und einer kurzen Beschreibung des Problems. Bei fehlerhafter Datei: Datei oder Screenshot anhängen.\n3. Wir antworten in der Regel innerhalb von 2 Werktagen. Genehmigte Rückerstattungen werden über Stripe abgewickelt; der Betrag erscheint nach etwa **5 bis 10 Werktagen** wieder auf deiner ursprünglichen Zahlungsmethode, abhängig von deinem Kartenheraus­geber.\n\n## 5. Währung und Umrechnung\n\nWir berechnen in US-Dollar. Deine Bank hat den ursprünglichen Betrag möglicherweise zum Zeitpunkt der Zahlung in deine Landeswährung umgerechnet. Stripe erstattet stets den ursprünglichen USD-Betrag; der von deiner Bank zurück­gebuchte Wert kann durch Wechselkurs­schwankungen zwischen den beiden Transaktionen leicht abweichen. Die Umrechnungs­differenz erstatten wir nicht.\n\n## 6. Stornierung vor der Zahlung\n\nDu kannst die Bezahlseite jederzeit vor dem Absenden der Zahlung verlassen. Stripe belastet unvollständige Sitzungen nicht. Das Studio merkt sich dein Foto nur, solange der Browser-Tab offen bleibt — das Schließen des Tabs ohne Bezahlung beendet die Sitzung einfach.\n\n## 7. Kontakt\n\nRückerstattungs­anfragen: support@visapassphoto.com. Wir bemühen uns um eine Antwort innerhalb von 2 Werktagen."
     }
+  },
+  "seo": {
+    "title": "{country} Passfoto & Visumfoto online",
+    "description": "Erstellen Sie in Sekunden ein konformes {country} Pass- oder Visumfoto — die KI auf Ihrem Gerät schneidet auf die offizielle Größe zu, entfernt den Hintergrund und formatiert es für Digital oder Druck.",
+    "intro": "Laden Sie ein Selfie hoch und erhalten Sie in Sekunden ein voll konformes {country} Pass- oder Visumfoto. Alles läuft auf Ihrem Gerät – Ihr Foto verlässt nie den Browser.",
+    "requirements": "{country} Fotoanforderungen",
+    "labels": {
+      "size": "Fotogröße",
+      "head": "Kopfhöhe",
+      "background": "Hintergrund",
+      "glasses": "Brille",
+      "expression": "Ausdruck",
+      "dpi": "Auflösung"
+    },
+    "glasses": {
+      "forbidden": "Nicht erlaubt",
+      "allowed_no_glare": "Erlaubt, ohne Reflexe",
+      "medical_only": "Nur medizinisch"
+    },
+    "expression": {
+      "neutral": "Neutral",
+      "neutral_or_natural_smile": "Neutral oder natürliches Lächeln"
+    },
+    "howTo": "So funktioniert es",
+    "step1": "Laden Sie ein Selfie hoch oder nehmen Sie eines mit Ihrer Kamera auf.",
+    "step2": "Wir erkennen Ihr Gesicht, schneiden nach der {country}-Norm zu und entfernen den Hintergrund.",
+    "step3": "Laden Sie die digitale Datei oder einen 4×6-Druckbogen herunter.",
+    "faqHeading": "Häufige Fragen",
+    "faqQ1": "Wird mein {country} Foto akzeptiert?",
+    "faqA1": "Es entspricht der offiziellen {country}-Norm – Größe, Kopfhöhe und Hintergrund. Eine Prüfliste auf dem Gerät meldet Probleme vor der Zahlung, mit Geld-zurück-Garantie.",
+    "faqQ2": "Muss ich mein Foto auf einen Server hochladen?",
+    "faqA2": "Nein – alles läuft auf Ihrem Gerät; Ihr Foto verlässt nie den Browser.",
+    "cta": "Erstellen Sie Ihr {country} Foto",
+    "guarantee": "Behördlich akzeptiert oder Geld zurück",
+    "browseAll": "Alle unterstützten Länder"
+  },
+  "pricing": {
+    "badge": "Preise",
+    "heading": "Einfacher Einmalpreis",
+    "subtitle": "Kein Abo. Einmal pro Foto zahlen, sofort herunterladen.",
+    "save": "{amount} sparen",
+    "cta": "Foto erstellen",
+    "guarantee": "Behördlich akzeptiert oder Geld zurück"
   }
 }

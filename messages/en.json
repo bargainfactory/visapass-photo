@@ -338,5 +338,48 @@
       "lastUpdated": "Last updated: 2026-05-20",
       "body": "## The short version\n\n- **Defective files: full refund.** If the rendered photograph fails to download, is corrupted, or violates the country specifications we publish, we refund the full amount. Within 14 days of purchase, no questions asked.\n- **Acceptance by an issuing authority is not our guarantee.** A government office rejecting the photograph for reasons outside our published spec (lighting, expression, glasses, hair, attire, biometric scoring, etc.) is not by itself grounds for a refund.\n- **To request a refund**, email support@visapassphoto.com with your Stripe session ID. Refunds are issued through Stripe and typically appear in 5–10 business days.\n\n## 1. What you are buying\n\nEach purchase is a one-time license to download a specific render — either a single compliant JPEG/PNG (Digital Download), a 4×6 inch multi-up print sheet (Print Sheet), or both (Bundled Deal). The render is produced by your own device; we provide the software that drives it and the right to download the finished file.\n\n## 2. Eligible refunds\n\nWe will issue a full refund in any of the following situations:\n\n- **Download failure.** Payment succeeded but the download link did not unlock within 24 hours of payment confirmation.\n- **Defective output.** The rendered file is corrupted, blank, or has a measurable deviation from the spec we publish in the Studio (e.g., wrong dimensions, wrong head height, wrong background color).\n- **Duplicate charge.** Stripe accidentally charged you twice for the same render.\n- **Within 14 days, file not downloaded.** If you have not yet downloaded either deliverable from the order, you can cancel for any reason within 14 days of purchase.\n- **Mandatory consumer-protection law.** Where local law (e.g., EU Directive 2011/83/EU as transposed nationally) gives you a withdrawal right beyond this policy, that right prevails.\n\n## 3. Non-eligible refunds\n\nWe cannot offer a refund in the following situations:\n\n- **Issuing-authority rejection** for reasons not attributable to our render — including but not limited to: poor lighting in your source photo, an expression considered unsuitable, glasses or accessories obscuring the face, hair covering parts of the face, changes to the authority's published specifications after your purchase, or any biometric scoring outside our control.\n- **Change of mind after download.** Once a deliverable in your order has been downloaded, refund eligibility ends for that deliverable. The Bundled Deal is treated as one purchase: downloading either file ends eligibility for the bundle.\n- **Charges initiated by chargeback abuse**, where the cardholder did in fact authorize and complete the purchase. We will respond to chargebacks with the Stripe session log and metadata showing the successful render and download.\n\n## 4. How to request a refund\n\n1. Find your Stripe session ID — it appears on the success page after payment and in the email receipt Stripe sent you.\n2. Email support@visapassphoto.com with that session ID and a brief description of the issue. If the problem is a defective file, attach the file or a screenshot.\n3. We typically respond within 2 business days. Approved refunds are processed via Stripe; the amount will appear back on your original payment method in roughly **5 to 10 business days**, depending on your card issuer.\n\n## 5. Currency and conversion\n\nWe charge in U.S. Dollars. Your bank may have converted the original charge into your local currency at the time of payment. Stripe always refunds the original USD amount; the value your bank credits back may differ slightly due to exchange-rate movement between the two transactions. We cannot reimburse the conversion difference.\n\n## 6. Cancellation before payment\n\nYou can leave the embedded checkout page at any time before submitting payment. Stripe does not charge incomplete sessions. The Studio remembers your photo only while the browser tab stays open — closing the tab without paying simply ends the session.\n\n## 7. Contact\n\nRefund requests: support@visapassphoto.com. We aim to answer within 2 business days."
     }
+  },
+  "seo": {
+    "title": "{country} Passport & Visa Photo Online",
+    "description": "Make a compliant {country} passport or visa photo online in seconds — on-device AI crops to the official size, removes the background and formats it for digital or print.",
+    "intro": "Upload a selfie and get a fully compliant {country} passport or visa photo in seconds. Everything runs on your device — your photo never leaves your browser.",
+    "requirements": "{country} photo requirements",
+    "labels": {
+      "size": "Photo size",
+      "head": "Head height",
+      "background": "Background",
+      "glasses": "Glasses",
+      "expression": "Expression",
+      "dpi": "Resolution"
+    },
+    "glasses": {
+      "forbidden": "Not allowed",
+      "allowed_no_glare": "Allowed, no glare",
+      "medical_only": "Medical only"
+    },
+    "expression": {
+      "neutral": "Neutral",
+      "neutral_or_natural_smile": "Neutral or natural smile"
+    },
+    "howTo": "How it works",
+    "step1": "Upload a selfie or take one with your camera.",
+    "step2": "We detect your face, crop to the {country} spec and remove the background.",
+    "step3": "Download the digital file or a 4×6 print sheet.",
+    "faqHeading": "Frequently asked questions",
+    "faqQ1": "Will my {country} photo be accepted?",
+    "faqA1": "It's formatted to the official {country} spec — size, head height and background. An on-device checklist flags issues before you pay, backed by a money-back guarantee.",
+    "faqQ2": "Do I have to upload my photo to a server?",
+    "faqA2": "No — all processing runs on your device; your photo never leaves your browser.",
+    "cta": "Create your {country} photo",
+    "guarantee": "Government-accepted or your money back",
+    "browseAll": "All supported countries"
+  },
+  "pricing": {
+    "badge": "Pricing",
+    "heading": "Simple, one-time pricing",
+    "subtitle": "No subscription. Pay once per photo, download instantly.",
+    "save": "Save {amount}",
+    "cta": "Make your photo",
+    "guarantee": "Government-accepted or your money back"
   }
 }

@@ -3,6 +3,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { Hero } from '@/components/hero';
 import { FeatureGrid } from '@/components/feature-grid';
 import { CountryShowcase } from '@/components/country-showcase';
+import { PricingSection } from '@/components/pricing-section';
 import { buildAlternates } from '@/i18n/metadata';
 
 export async function generateMetadata({
@@ -24,6 +25,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     <>
       <Hero />
       <FeatureGrid />
+      <PricingSection />
       <CountryShowcase />
     </>
   );

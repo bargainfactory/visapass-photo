@@ -338,5 +338,48 @@
       "lastUpdated": "Son güncelleme: 20.05.2026",
       "body": "## Özet\n\n- **Hatalı dosyalar: tam iade.** Render edilen fotoğraf indirilemezse, bozuksa veya yayımladığımız ülke şartlarını ihlal ederse tam iade yaparız. Satın alma tarihinden itibaren 14 gün içinde, sorgusuz sualsiz.\n- **İhraç makamının kabulü garantimiz değildir.** Yayımladığımız şartların dışındaki nedenlerle (aydınlatma, ifade, gözlük, saç, kıyafet, biyometrik puanlama vb.) bir resmi kurumun fotoğrafı reddetmesi tek başına iade gerekçesi değildir.\n- **İade talep etmek için**, Stripe oturum kimliğinizle support@visapassphoto.com adresine e-posta gönderin. İadeler Stripe üzerinden verilir ve genellikle 5–10 iş günü içinde görünür.\n\n## 1. Ne Satın Alıyorsunuz\n\nHer satın alma, belirli bir render'i indirmek için tek seferlik bir lisanstır — tek bir uyumlu JPEG/PNG (Dijital İndirme), 4×6 inç çok fotoğraflı baskı sayfası (Baskı Sayfası) veya her ikisi (Paket İndirim). Render kendi cihazınızda üretilir; biz onu çalıştıran yazılımı ve tamamlanmış dosyayı indirme hakkını sağlarız.\n\n## 2. İade Edilebilir Durumlar\n\nAşağıdaki durumlarda tam iade yaparız:\n\n- **İndirme hatası.** Ödeme başarılı oldu ancak indirme bağlantısı onaydan sonra 24 saat içinde açılmadı.\n- **Hatalı çıktı.** Render edilen dosya bozuk, boş veya Studio'da yayımladığımız şartlardan ölçülebilir bir sapma içeriyor (yanlış boyutlar, baş yüksekliği veya arka plan rengi).\n- **Çift tahsilat.** Stripe aynı render için yanlışlıkla sizden iki kez ücret aldı.\n- **14 gün içinde, dosya indirilmedi.** Sipariş içindeki herhangi bir teslim ediliri henüz indirmediyseniz, satın almadan sonraki 14 gün içinde herhangi bir nedenle iptal edebilirsiniz.\n- **Emredici tüketici koruma yasası.** Yerel hukuk (örn. AB Direktifi 2011/83/AB) size bu politikanın ötesinde bir cayma hakkı tanıdığı durumda, o hak öncelik kazanır.\n\n## 3. İade Edilmeyen Durumlar\n\nAşağıdaki durumlarda iade sağlayamayız:\n\n- **İhraç makamının reddi**, render'imize atfedilemeyen nedenlere dayanıyorsa — kaynak fotoğrafınızda kötü aydınlatma, uygunsuz görülen ifade, yüzü kapatan gözlük veya aksesuarlar, yüzü kapatan saç, satın alımınızdan sonra makamın şartlarındaki değişiklikler veya kontrolümüz dışındaki biyometrik puanlama dahil.\n- **İndirmeden sonra fikir değiştirme.** Siparişteki bir teslim ediliri indirdikten sonra, o teslim edilir için iade uygunluğu sona erer. Paket İndirim tek bir satın alma olarak ele alınır: dosyalardan birinin indirilmesi paket için uygunluğu sona erdirir.\n- **Chargeback kötüye kullanımıyla başlatılan ücretler**, kart sahibinin satın almayı gerçekten yetkilendirip tamamladığı durumda. Chargeback'lere Stripe oturum günlüğü ve başarılı render ile indirmeyi gösteren meta verilerle yanıt veririz.\n\n## 4. İade Nasıl Talep Edilir\n\n1. Stripe oturum kimliğinizi bulun — ödeme sonrasındaki başarı sayfasında ve Stripe'ın size gönderdiği e-posta makbuzunda görünür.\n2. Bu kimlik ve sorunun kısa bir açıklamasıyla support@visapassphoto.com adresine e-posta gönderin. Hatalı bir dosya söz konusuysa dosyayı veya bir ekran görüntüsünü ekleyin.\n3. Genellikle 2 iş günü içinde yanıt veririz. Onaylanan iadeler Stripe üzerinden işlenir; tutar, kart düzenleyicinize bağlı olarak yaklaşık **5 ila 10 iş günü** içinde orijinal ödeme yönteminize geri yansır.\n\n## 5. Para Birimi ve Dönüşüm\n\nABD Doları cinsinden tahsilat yaparız. Bankanız, ödeme sırasında orijinal tutarı yerel para birimine çevirmiş olabilir. Stripe her zaman orijinal USD tutarını iade eder; iki işlem arasındaki kur hareketleri nedeniyle bankanızın yansıttığı tutar biraz farklı olabilir. Dönüşüm farkını karşılayamayız.\n\n## 6. Ödemeden Önce İptal\n\nÖdemeyi göndermeden önce ödeme sayfasını istediğiniz zaman terk edebilirsiniz. Stripe tamamlanmamış oturumlar için ücret almaz. Studio fotoğrafınızı yalnızca tarayıcı sekmesi açık kaldığı sürece hatırlar — ödeme yapmadan sekmeyi kapatmak oturumu sonlandırır.\n\n## 7. İletişim\n\nİade talepleri: support@visapassphoto.com. 2 iş günü içinde yanıtlamayı hedefliyoruz."
     }
+  },
+  "seo": {
+    "title": "{country} Pasaport ve Vize Fotoğrafı Online",
+    "description": "Uyumlu bir {country} pasaport veya vize fotoğrafını saniyeler içinde oluşturun — cihazınızdaki yapay zekâ resmi boyuta kırpar, arka planı kaldırır ve dijital veya baskı için biçimlendirir.",
+    "intro": "Bir selfie yükleyin, saniyeler içinde tamamen uyumlu bir {country} pasaport veya vize fotoğrafı alın. Her şey cihazınızda işlenir — fotoğrafınız tarayıcınızdan hiç çıkmaz.",
+    "requirements": "{country} fotoğraf gereksinimleri",
+    "labels": {
+      "size": "Fotoğraf boyutu",
+      "head": "Baş yüksekliği",
+      "background": "Arka plan",
+      "glasses": "Gözlük",
+      "expression": "İfade",
+      "dpi": "Çözünürlük"
+    },
+    "glasses": {
+      "forbidden": "İzin verilmez",
+      "allowed_no_glare": "İzinli, parlama yok",
+      "medical_only": "Yalnızca tıbbi"
+    },
+    "expression": {
+      "neutral": "Nötr",
+      "neutral_or_natural_smile": "Nötr veya doğal gülümseme"
+    },
+    "howTo": "Nasıl çalışır",
+    "step1": "Bir selfie yükleyin veya kameranızla çekin.",
+    "step2": "Yüzünüzü algılar, {country} standardına göre kırpar ve arka planı kaldırırız.",
+    "step3": "Dijital dosyayı veya 4×6 baskı sayfasını indirin.",
+    "faqHeading": "Sık sorulan sorular",
+    "faqQ1": "{country} fotoğrafım kabul edilir mi?",
+    "faqA1": "{country} resmi standardına göre biçimlendirilir — boyut, baş yüksekliği ve arka plan. Cihazdaki bir kontrol listesi ödeme öncesi sorunları işaretler; para iade garantisiyle.",
+    "faqQ2": "Fotoğrafımı bir sunucuya yüklemem gerekir mi?",
+    "faqA2": "Hayır — her şey cihazınızda işlenir; fotoğrafınız tarayıcınızdan hiç çıkmaz.",
+    "cta": "{country} fotoğrafınızı oluşturun",
+    "guarantee": "Resmî olarak kabul edilir veya paranız iade edilir",
+    "browseAll": "Desteklenen tüm ülkeler"
+  },
+  "pricing": {
+    "badge": "Fiyatlandırma",
+    "heading": "Basit, tek seferlik fiyat",
+    "subtitle": "Abonelik yok. Fotoğraf başına bir kez ödeyin, hemen indirin.",
+    "save": "{amount} tasarruf",
+    "cta": "Fotoğrafını oluştur",
+    "guarantee": "Resmî olarak kabul edilir veya paranız iade edilir"
   }
 }

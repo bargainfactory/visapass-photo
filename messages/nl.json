@@ -338,5 +338,48 @@
       "lastUpdated": "Laatst bijgewerkt: 20-05-2026",
       "body": "## Samenvatting\n\n- **Defecte bestanden: volledige terugbetaling.** Als de gerenderde foto niet kan worden gedownload, beschadigd is of niet voldoet aan de landspecificaties die we publiceren, betalen we het volledige bedrag terug. Binnen 14 dagen na aankoop, zonder vragen.\n- **Acceptatie door een uitgevende autoriteit is niet onze garantie.** Een overheidskantoor dat de foto afwijst om redenen buiten onze gepubliceerde specificaties (verlichting, expressie, bril, haar, kleding, biometrische score, enz.) is op zichzelf geen grond voor restitutie.\n- **Om restitutie aan te vragen**, mail support@visapassphoto.com met je Stripe-sessie-ID. Restituties worden via Stripe uitgegeven en verschijnen doorgaans binnen 5–10 werkdagen.\n\n## 1. Wat je koopt\n\nElke aankoop is een eenmalige licentie om een specifieke render te downloaden: een enkele conforme JPEG/PNG (Digitale download), een 4×6 inch multi-foto-printvel (Printvel), of beide (Pakketdeal). De render wordt gemaakt door je eigen apparaat; wij leveren de software en het recht om het uiteindelijke bestand te downloaden.\n\n## 2. In aanmerking komende restituties\n\nWe verlenen een volledige restitutie in de volgende situaties:\n\n- **Mislukte download.** Betaling is geslaagd maar de downloadlink is niet binnen 24 uur na bevestiging vrijgegeven.\n- **Defecte output.** Het gerenderde bestand is beschadigd, leeg of vertoont een meetbare afwijking ten opzichte van de in de Studio gepubliceerde specificaties (verkeerde afmetingen, hoofdhoogte of achtergrondkleur).\n- **Dubbele afschrijving.** Stripe heeft je per ongeluk twee keer afgeschreven voor dezelfde render.\n- **Binnen 14 dagen, niet gedownload.** Als je nog geen enkel onderdeel uit de bestelling hebt gedownload, kun je om welke reden dan ook annuleren binnen 14 dagen na aankoop.\n- **Dwingend consumentenrecht.** Waar lokale wetgeving (bv. EU-Richtlijn 2011/83/EU) je een ruimer herroepingsrecht geeft, prevaleert dat recht.\n\n## 3. Niet in aanmerking komende restituties\n\nWe kunnen in de volgende situaties geen restitutie aanbieden:\n\n- **Afwijzing door de uitgevende autoriteit** om redenen die niet aan onze render zijn toe te schrijven — inclusief slechte verlichting in je bronfoto, ongepaste expressie, bril of accessoires die het gezicht bedekken, haar over het gezicht, wijzigingen in de specificaties na je aankoop, of biometrische beoordelingen buiten onze invloed.\n- **Bedenken na het downloaden.** Zodra een onderdeel uit de bestelling is gedownload, eindigt de aanspraak voor dat onderdeel. De Pakketdeal wordt als één aankoop behandeld: het downloaden van een van de bestanden beëindigt de aanspraak voor het pakket.\n- **Afschrijvingen ten gevolge van chargeback-misbruik**, wanneer de kaarthouder de aankoop daadwerkelijk heeft geautoriseerd en voltooid. We reageren op chargebacks met het Stripe-sessielog en metadata die de geslaagde render en download aantonen.\n\n## 4. Hoe je een restitutie aanvraagt\n\n1. Zoek je Stripe-sessie-ID — die staat op de succespagina na betaling en in de e-mailbon van Stripe.\n2. Mail support@visapassphoto.com met dat ID en een korte beschrijving van het probleem. Bij een defect bestand: voeg het bestand of een screenshot toe.\n3. We reageren doorgaans binnen 2 werkdagen. Goedgekeurde restituties worden via Stripe verwerkt; het bedrag verschijnt na ongeveer **5 tot 10 werkdagen** terug op je oorspronkelijke betaalmethode, afhankelijk van je kaartuitgever.\n\n## 5. Valuta en omrekening\n\nWe brengen in Amerikaanse dollars in rekening. Je bank kan het oorspronkelijke bedrag op het moment van betaling naar je lokale valuta hebben omgerekend. Stripe restitueert altijd het oorspronkelijke USD-bedrag; het bedrag dat je bank terugboekt kan licht afwijken door koersfluctuaties tussen beide transacties. We vergoeden het verschil niet.\n\n## 6. Annuleren vóór betaling\n\nJe kunt de afrekenpagina op elk moment verlaten voordat je de betaling indient. Stripe brengt niet-voltooide sessies niet in rekening. De Studio onthoudt je foto alleen zolang het browsertabblad open blijft — het tabblad sluiten zonder te betalen beëindigt simpelweg de sessie.\n\n## 7. Contact\n\nRestitutieverzoeken: support@visapassphoto.com. We streven naar antwoord binnen 2 werkdagen."
     }
+  },
+  "seo": {
+    "title": "{country} pasfoto & visumfoto online",
+    "description": "Maak in seconden een conforme {country} pasfoto of visumfoto — de AI op je apparaat snijdt bij op het officiële formaat, verwijdert de achtergrond en maakt hem klaar voor digitaal of print.",
+    "intro": "Upload een selfie en krijg in seconden een volledig conforme {country} pasfoto of visumfoto. Alles wordt op je apparaat verwerkt: je foto verlaat nooit je browser.",
+    "requirements": "{country} foto-eisen",
+    "labels": {
+      "size": "Fotoformaat",
+      "head": "Hoofdhoogte",
+      "background": "Achtergrond",
+      "glasses": "Bril",
+      "expression": "Uitdrukking",
+      "dpi": "Resolutie"
+    },
+    "glasses": {
+      "forbidden": "Niet toegestaan",
+      "allowed_no_glare": "Toegestaan, geen schittering",
+      "medical_only": "Alleen medisch"
+    },
+    "expression": {
+      "neutral": "Neutraal",
+      "neutral_or_natural_smile": "Neutraal of natuurlijke glimlach"
+    },
+    "howTo": "Hoe het werkt",
+    "step1": "Upload een selfie of maak er een met je camera.",
+    "step2": "We detecteren je gezicht, snijden bij volgens de {country}-norm en verwijderen de achtergrond.",
+    "step3": "Download het digitale bestand of een 4×6 printvel.",
+    "faqHeading": "Veelgestelde vragen",
+    "faqQ1": "Wordt mijn {country} foto geaccepteerd?",
+    "faqA1": "Hij voldoet aan de officiële {country}-norm — formaat, hoofdhoogte en achtergrond. Een controlelijst op je apparaat markeert problemen vóór betaling, met geld-terug-garantie.",
+    "faqQ2": "Moet ik mijn foto naar een server uploaden?",
+    "faqA2": "Nee — alles wordt op je apparaat verwerkt; je foto verlaat nooit je browser.",
+    "cta": "Maak je {country} foto",
+    "guarantee": "Door de overheid geaccepteerd of geld terug",
+    "browseAll": "Alle ondersteunde landen"
+  },
+  "pricing": {
+    "badge": "Prijzen",
+    "heading": "Eenvoudige eenmalige prijs",
+    "subtitle": "Geen abonnement. Betaal één keer per foto en download meteen.",
+    "save": "Bespaar {amount}",
+    "cta": "Maak je foto",
+    "guarantee": "Door de overheid geaccepteerd of geld terug"
   }
 }

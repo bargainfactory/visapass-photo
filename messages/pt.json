@@ -338,5 +338,48 @@
       "lastUpdated": "Última atualização: 20/05/2026",
       "body": "## Em resumo\n\n- **Arquivos defeituosos: reembolso total.** Se a foto renderizada não for baixada, estiver corrompida ou desrespeitar as especificações do país que publicamos, reembolsamos o valor integral. Dentro de 14 dias após a compra, sem perguntas.\n- **A aceitação pela autoridade emissora não é nossa garantia.** Um órgão governamental rejeitando a foto por motivos fora das especificações publicadas (iluminação, expressão, óculos, cabelo, vestimenta, pontuação biométrica etc.) não é, por si só, motivo de reembolso.\n- **Para solicitar reembolso**, envie um e-mail para support@visapassphoto.com com seu ID de sessão Stripe. Os reembolsos são emitidos pela Stripe e geralmente aparecem em 5 a 10 dias úteis.\n\n## 1. O que você está comprando\n\nCada compra é uma licença única para baixar uma renderização específica: um único JPEG/PNG em conformidade (Download Digital), uma folha de impressão multi-foto 4×6 polegadas (Folha de Impressão), ou ambos (Combo). A renderização é produzida pelo seu próprio dispositivo; fornecemos o software que a gera e o direito de baixar o arquivo finalizado.\n\n## 2. Reembolsos elegíveis\n\nEmitiremos reembolso integral nas seguintes situações:\n\n- **Falha de download.** O pagamento foi concluído, mas o link de download não foi liberado em 24 horas após a confirmação.\n- **Saída defeituosa.** O arquivo renderizado está corrompido, em branco ou apresenta desvio mensurável em relação às especificações publicadas no Studio (dimensões, altura da cabeça ou cor de fundo incorretas).\n- **Cobrança duplicada.** A Stripe cobrou inadvertidamente duas vezes pela mesma renderização.\n- **Dentro de 14 dias, sem download.** Se ainda não baixou nenhum entregável do pedido, pode cancelar por qualquer motivo dentro de 14 dias da compra.\n- **Direito imperativo do consumidor.** Quando a legislação local (p. ex. Diretiva 2011/83/UE) lhe der direito de arrependimento mais amplo que esta política, esse direito prevalecerá.\n\n## 3. Reembolsos não elegíveis\n\nNão podemos oferecer reembolso nas seguintes situações:\n\n- **Rejeição da autoridade emissora** por motivos não atribuíveis à nossa renderização — incluindo, mas não limitado a: má iluminação na foto-fonte, expressão considerada inadequada, óculos ou acessórios obstruindo o rosto, cabelo cobrindo partes do rosto, alterações nas especificações da autoridade após sua compra, ou qualquer pontuação biométrica fora do nosso controle.\n- **Mudança de ideia após o download.** Depois de baixado um entregável, encerra-se a elegibilidade para esse entregável. O Combo é tratado como uma única compra: baixar qualquer arquivo encerra a elegibilidade do combo.\n- **Cobranças contestadas por abuso de chargeback**, quando o titular do cartão autorizou e completou a compra. Responderemos aos chargebacks com o log da sessão Stripe e metadados que comprovem a renderização e o download bem-sucedidos.\n\n## 4. Como solicitar um reembolso\n\n1. Localize seu ID de sessão Stripe — ele aparece na página de sucesso após o pagamento e no recibo por e-mail enviado pela Stripe.\n2. Envie um e-mail para support@visapassphoto.com com esse ID e uma breve descrição do problema. Se for um arquivo defeituoso, anexe o arquivo ou uma captura.\n3. Costumamos responder em até 2 dias úteis. Reembolsos aprovados são processados pela Stripe; o valor reaparecerá no seu método de pagamento original em cerca de **5 a 10 dias úteis**, dependendo da emissora.\n\n## 5. Moeda e conversão\n\nCobramos em dólares americanos. Seu banco pode ter convertido a cobrança original para sua moeda local no momento do pagamento. A Stripe sempre reembolsa o valor original em USD; o valor que seu banco credita pode variar ligeiramente devido à oscilação cambial entre as duas transações. Não reembolsamos a diferença de conversão.\n\n## 6. Cancelamento antes do pagamento\n\nVocê pode sair da página de checkout a qualquer momento antes de enviar o pagamento. A Stripe não cobra sessões incompletas. O Studio lembra sua foto apenas enquanto a aba do navegador permanecer aberta — fechar a aba sem pagar simplesmente encerra a sessão.\n\n## 7. Contato\n\nSolicitações de reembolso: support@visapassphoto.com. Procuramos responder em 2 dias úteis."
     }
+  },
+  "seo": {
+    "title": "Foto de Passaporte e Visto de {country} Online",
+    "description": "Faça em segundos uma foto de passaporte ou visto de {country} em conformidade — a IA no seu dispositivo recorta no tamanho oficial, remove o fundo e formata para digital ou impressão.",
+    "intro": "Envie uma selfie e obtenha em segundos uma foto de passaporte ou visto de {country} totalmente em conformidade. Tudo é processado no seu dispositivo: sua foto nunca sai do navegador.",
+    "requirements": "Requisitos da foto de {country}",
+    "labels": {
+      "size": "Tamanho da foto",
+      "head": "Altura da cabeça",
+      "background": "Fundo",
+      "glasses": "Óculos",
+      "expression": "Expressão",
+      "dpi": "Resolução"
+    },
+    "glasses": {
+      "forbidden": "Não permitidos",
+      "allowed_no_glare": "Permitidos, sem reflexo",
+      "medical_only": "Apenas médicos"
+    },
+    "expression": {
+      "neutral": "Neutra",
+      "neutral_or_natural_smile": "Neutra ou sorriso natural"
+    },
+    "howTo": "Como funciona",
+    "step1": "Envie uma selfie ou tire uma com sua câmera.",
+    "step2": "Detectamos seu rosto, recortamos no padrão de {country} e removemos o fundo.",
+    "step3": "Baixe o arquivo digital ou uma folha de impressão 4×6.",
+    "faqHeading": "Perguntas frequentes",
+    "faqQ1": "Minha foto de {country} será aceita?",
+    "faqA1": "Ela é formatada no padrão oficial de {country} — tamanho, altura da cabeça e fundo. Uma verificação no dispositivo sinaliza problemas antes de pagar, com garantia de reembolso.",
+    "faqQ2": "Preciso enviar minha foto para um servidor?",
+    "faqA2": "Não — todo o processamento ocorre no seu dispositivo; sua foto nunca sai do navegador.",
+    "cta": "Crie sua foto de {country}",
+    "guarantee": "Aceita pelo governo ou seu dinheiro de volta",
+    "browseAll": "Todos os países disponíveis"
+  },
+  "pricing": {
+    "badge": "Preços",
+    "heading": "Preços simples, pagamento único",
+    "subtitle": "Sem assinatura. Pague uma vez por foto e baixe na hora.",
+    "save": "Economize {amount}",
+    "cta": "Faça sua foto",
+    "guarantee": "Aceita pelo governo ou seu dinheiro de volta"
   }
 }

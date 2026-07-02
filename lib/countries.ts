@@ -628,3 +628,16 @@ export function findDocument(documentId: string) {
 export function midpoint(range: [number, number]) {
   return (range[0] + range[1]) / 2;
 }
+
+/** URL slug for a country's SEO landing page, e.g. "Germany (Schengen)" → "germany-schengen". */
+export function countrySlug(c: CountrySpec): string {
+  return c.name
+    .toLowerCase()
+    .replace(/[()]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+export function findCountryBySlug(slug: string): CountrySpec | undefined {
+  return COUNTRIES.find((c) => countrySlug(c) === slug);
+}

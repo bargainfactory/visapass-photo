@@ -338,5 +338,48 @@
       "lastUpdated": "Dernière mise à jour : 20/05/2026",
       "body": "## En bref\n\n- **Fichier défectueux : remboursement intégral.** Si la photo rendue ne se télécharge pas, est corrompue ou ne respecte pas les spécifications du pays que nous publions, nous remboursons l'intégralité du montant. Dans les 14 jours suivant l'achat, sans questions.\n- **L'acceptation par l'autorité émettrice n'est pas notre garantie.** Un service public rejetant la photo pour des raisons hors de nos spécifications publiées (éclairage, expression, lunettes, cheveux, tenue, scoring biométrique, etc.) n'est pas en soi un motif de remboursement.\n- **Pour demander un remboursement**, écrivez à support@visapassphoto.com avec votre ID de session Stripe. Les remboursements sont émis via Stripe et apparaissent généralement sous 5 à 10 jours ouvrés.\n\n## 1. Ce que vous achetez\n\nChaque achat est une licence unique pour télécharger un rendu spécifique — soit un JPEG/PNG conforme (Téléchargement numérique), une planche d'impression 4×6 pouces multi-photos (Planche d'impression), ou les deux (Offre groupée). Le rendu est produit par votre propre appareil ; nous fournissons le logiciel et le droit de télécharger le fichier finalisé.\n\n## 2. Remboursements éligibles\n\nNous rembourserons intégralement dans les situations suivantes :\n\n- **Échec du téléchargement.** Le paiement a réussi mais le lien de téléchargement ne s'est pas déverrouillé dans les 24 heures suivant la confirmation.\n- **Sortie défectueuse.** Le fichier rendu est corrompu, vide ou présente un écart mesurable par rapport aux spécifications publiées dans le Studio (dimensions, hauteur de tête ou couleur d'arrière-plan incorrectes).\n- **Double facturation.** Stripe vous a facturé deux fois par erreur pour le même rendu.\n- **Dans les 14 jours, fichier non téléchargé.** Si vous n'avez encore téléchargé aucun livrable de la commande, vous pouvez annuler pour quelque raison que ce soit dans les 14 jours suivant l'achat.\n- **Droit impératif du consommateur.** Lorsque la loi locale (p. ex. Directive 2011/83/UE) vous accorde un droit de rétractation plus étendu, ce droit prévaut.\n\n## 3. Remboursements non éligibles\n\nNous ne pouvons pas rembourser dans les situations suivantes :\n\n- **Rejet par l'autorité émettrice** pour des motifs non imputables à notre rendu — y compris : mauvais éclairage de la photo source, expression jugée inappropriée, lunettes ou accessoires masquant le visage, cheveux couvrant le visage, modifications des spécifications publiées par l'autorité après votre achat, ou tout scoring biométrique hors de notre contrôle.\n- **Changement d'avis après téléchargement.** Une fois un livrable téléchargé, l'éligibilité prend fin pour ce livrable. L'Offre groupée est traitée comme un seul achat : télécharger l'un des fichiers met fin à l'éligibilité du groupe.\n- **Frais initiés par abus de rétrofacturation**, lorsque le titulaire de la carte a effectivement autorisé et complété l'achat. Nous répondrons aux rétrofacturations avec le journal de session Stripe et les métadonnées montrant la réussite du rendu et du téléchargement.\n\n## 4. Comment demander un remboursement\n\n1. Trouvez votre ID de session Stripe — il figure sur la page de succès après le paiement et dans le reçu e-mail envoyé par Stripe.\n2. Écrivez à support@visapassphoto.com avec cet ID et une brève description du problème. S'il s'agit d'un fichier défectueux, joignez-le ou joignez une capture d'écran.\n3. Nous répondons généralement sous 2 jours ouvrés. Les remboursements approuvés sont traités via Stripe ; le montant réapparaît sur votre moyen de paiement initial en environ **5 à 10 jours ouvrés**, selon votre émetteur.\n\n## 5. Devise et conversion\n\nNous facturons en dollars américains. Votre banque peut avoir converti le débit initial dans votre devise locale au moment du paiement. Stripe rembourse toujours le montant initial en USD ; la valeur que votre banque vous recrédite peut différer légèrement en raison de la variation du taux de change entre les deux opérations. Nous ne remboursons pas la différence de conversion.\n\n## 6. Annulation avant paiement\n\nVous pouvez quitter la page de paiement à tout moment avant de soumettre le paiement. Stripe ne facture pas les sessions incomplètes. Le Studio ne se souvient de votre photo que tant que l'onglet du navigateur reste ouvert — fermer l'onglet sans payer met simplement fin à la session.\n\n## 7. Contact\n\nDemandes de remboursement : support@visapassphoto.com. Nous visons une réponse sous 2 jours ouvrés."
     }
+  },
+  "seo": {
+    "title": "Photo de passeport et visa {country} en ligne",
+    "description": "Créez en quelques secondes une photo de passeport ou visa {country} conforme — l'IA sur votre appareil recadre à la taille officielle, retire l'arrière-plan et la prépare pour le numérique ou l'impression.",
+    "intro": "Importez un selfie et obtenez en quelques secondes une photo de passeport ou visa {country} entièrement conforme. Tout est traité sur votre appareil : votre photo ne quitte jamais votre navigateur.",
+    "requirements": "Exigences de la photo {country}",
+    "labels": {
+      "size": "Taille de la photo",
+      "head": "Hauteur de la tête",
+      "background": "Arrière-plan",
+      "glasses": "Lunettes",
+      "expression": "Expression",
+      "dpi": "Résolution"
+    },
+    "glasses": {
+      "forbidden": "Non autorisées",
+      "allowed_no_glare": "Autorisées, sans reflet",
+      "medical_only": "Médicales uniquement"
+    },
+    "expression": {
+      "neutral": "Neutre",
+      "neutral_or_natural_smile": "Neutre ou sourire naturel"
+    },
+    "howTo": "Comment ça marche",
+    "step1": "Importez un selfie ou prenez-en un avec votre caméra.",
+    "step2": "Nous détectons votre visage, recadrons selon la norme {country} et retirons l’arrière-plan.",
+    "step3": "Téléchargez le fichier numérique ou une planche 4×6.",
+    "faqHeading": "Questions fréquentes",
+    "faqQ1": "Ma photo {country} sera-t-elle acceptée ?",
+    "faqA1": "Elle est conforme à la norme officielle {country} — taille, hauteur de la tête et arrière-plan. Une liste de contrôle sur l'appareil signale les problèmes avant paiement, avec garantie de remboursement.",
+    "faqQ2": "Dois-je téléverser ma photo sur un serveur ?",
+    "faqA2": "Non : tout est traité sur votre appareil ; votre photo ne quitte jamais votre navigateur.",
+    "cta": "Créez votre photo {country}",
+    "guarantee": "Acceptée par l'administration ou remboursée",
+    "browseAll": "Tous les pays pris en charge"
+  },
+  "pricing": {
+    "badge": "Tarifs",
+    "heading": "Tarif simple, paiement unique",
+    "subtitle": "Sans abonnement. Payez une fois par photo et téléchargez aussitôt.",
+    "save": "Économisez {amount}",
+    "cta": "Créez votre photo",
+    "guarantee": "Acceptée par l'administration ou remboursée"
   }
 }

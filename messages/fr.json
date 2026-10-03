@@ -207,7 +207,9 @@
       "zoom": "Zoom",
       "horizontal": "Horizontal",
       "vertical": "Vertical"
-    }
+    },
+    "enhance": "Amélioration auto",
+    "enhanceHelp": "Équilibre la lumière et les couleurs du visage, puis accentue la netteté. Volontairement subtil."
   },
   "results": {
     "compliant": "Conforme",

@@ -207,7 +207,9 @@
       "zoom": "Zoom",
       "horizontal": "Horizontal",
       "vertical": "Vertical"
-    }
+    },
+    "enhance": "Mejora automática",
+    "enhanceHelp": "Equilibra la luz y el color del rostro y añade nitidez. Sutil a propósito."
   },
   "results": {
     "compliant": "Conforme",

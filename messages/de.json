@@ -207,7 +207,9 @@
       "zoom": "Zoom",
       "horizontal": "Horizontal",
       "vertical": "Vertikal"
-    }
+    },
+    "enhance": "Auto-Optimierung",
+    "enhanceHelp": "Gleicht Licht und Farbe im Gesicht aus und schärft dezent. Bewusst zurückhaltend."
   },
   "results": {
     "compliant": "Konform",

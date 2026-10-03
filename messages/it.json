@@ -207,7 +207,9 @@
       "zoom": "Zoom",
       "horizontal": "Orizzontale",
       "vertical": "Verticale"
-    }
+    },
+    "enhance": "Miglioramento automatico",
+    "enhanceHelp": "Bilancia luce e colore sul viso, poi aumenta la nitidezza. Volutamente discreto."
   },
   "results": {
     "compliant": "Conforme",

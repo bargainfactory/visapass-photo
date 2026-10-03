@@ -207,7 +207,9 @@
       "zoom": "Yakınlaştırma",
       "horizontal": "Yatay",
       "vertical": "Dikey"
-    }
+    },
+    "enhance": "Otomatik iyileştirme",
+    "enhanceHelp": "Yüzdeki ışığı ve rengi dengeler, ardından hafifçe keskinleştirir. Bilerek ölçülü."
   },
   "results": {
     "compliant": "Uyumlu",

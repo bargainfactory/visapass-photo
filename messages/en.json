@@ -207,7 +207,9 @@
       "zoom": "Zoom",
       "horizontal": "Horizontal",
       "vertical": "Vertical"
-    }
+    },
+    "enhance": "Auto enhance",
+    "enhanceHelp": "Balance light and colour on the face, then sharpen. Subtle by design."
   },
   "results": {
     "compliant": "Compliant",

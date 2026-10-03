@@ -207,7 +207,9 @@
       "zoom": "缩放",
       "horizontal": "水平",
       "vertical": "垂直"
-    }
+    },
+    "enhance": "自动优化",
+    "enhanceHelp": "平衡面部光线与色彩并适度锐化。效果刻意保持自然。"
   },
   "results": {
     "compliant": "合规",

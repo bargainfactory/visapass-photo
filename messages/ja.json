@@ -207,7 +207,9 @@
       "zoom": "ズーム",
       "horizontal": "水平",
       "vertical": "垂直"
-    }
+    },
+    "enhance": "自動補正",
+    "enhanceHelp": "顔の明るさと色味を整え、軽くシャープにします。控えめな仕上がりです。"
   },
   "results": {
     "compliant": "準拠",

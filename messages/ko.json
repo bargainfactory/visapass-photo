@@ -207,7 +207,9 @@
       "zoom": "확대",
       "horizontal": "수평",
       "vertical": "수직"
-    }
+    },
+    "enhance": "자동 보정",
+    "enhanceHelp": "얼굴의 빛과 색을 균형 있게 맞추고 선명도를 살짝 높입니다. 의도적으로 은은하게 적용됩니다."
   },
   "results": {
     "compliant": "준수",

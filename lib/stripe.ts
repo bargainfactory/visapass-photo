@@ -19,7 +19,7 @@ export const PRINT_PACKAGES = [
     id: 'digital',
     name: 'Digital Download',
     description: 'High-resolution JPEG · online submission ready',
-    priceCents: 599,
+    priceCents: 999,
     envKey: 'STRIPE_PRICE_DIGITAL',
   },
   {
@@ -33,7 +33,7 @@ export const PRINT_PACKAGES = [
     id: 'bundle',
     name: 'Bundled Deal',
     description: 'Digital download + 4×6" print sheet · best value',
-    priceCents: 999,
+    priceCents: 1499,
     envKey: 'STRIPE_PRICE_BUNDLE',
   },
 ] as const;

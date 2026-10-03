@@ -13,6 +13,7 @@
 import { mmToPx } from './utils';
 import type { CropRect } from './crop-calculator';
 import type { DocumentSpec } from './countries';
+import { applyAutoEnhance, meteringRects, type FaceMetering } from './enhance';
 
 export interface CompositeOptions {
   /** Source photo as ImageBitmap (full resolution). */
@@ -52,6 +53,14 @@ export interface CompositeOptions {
    * acts on the already-tone-adjusted image.
    */
   shadow?: number;
+  /**
+   * One-click auto-enhance (lib/enhance.ts): skin-anchored white balance,
+   * windowed exposure + left/right light balance, luminance sharpening. Runs
+   * on the subject layer only, after the downscale and before the shadow curve.
+   */
+  enhance?: boolean;
+  /** Face geometry in source pixels — meters the enhance passes on skin. */
+  face?: FaceMetering | null;
   /** Force background hex (overrides doc.background). */
   backgroundHex?: string;
 }
@@ -146,6 +155,8 @@ export async function composeFinal({
   brightness = 0,
   contrast = 0,
   shadow = 0,
+  enhance = false,
+  face = null,
   backgroundHex,
 }: CompositeOptions): Promise<CompositeResult> {
   const bg = backgroundHex ?? doc.background;
@@ -165,19 +176,24 @@ export async function composeFinal({
   octx.fillStyle = bg;
   octx.fillRect(0, 0, outW, outH);
 
-  // CSS filter applies to subsequent draws — the background fill above
-  // stays unfiltered, only the subject picks up the brightness/contrast.
-  applyFilters(octx, brightness, contrast);
-
   // Prefer the caller-supplied (cached) cutout bitmap. Fall back to decoding
   // the blob, then to the raw source if no background removal was performed.
   let subject: ImageBitmap | HTMLImageElement | null = cutout ?? null;
   if (!subject && cutoutBlob) subject = await blobToImageBitmap(cutoutBlob);
   if (!subject) subject = source;
 
-  octx.imageSmoothingEnabled = true;
-  octx.imageSmoothingQuality = 'high';
-  octx.drawImage(
+  // The subject is drawn onto its own transparent layer at output size. The
+  // brightness/contrast CSS filter applies here (so the background fill stays
+  // the exact spec colour), and the optional auto-enhance runs on this layer
+  // too — it meters on the face and must never touch the background.
+  const layer = document.createElement('canvas');
+  layer.width = outW;
+  layer.height = outH;
+  const lctx = layer.getContext('2d', { willReadFrequently: enhance })!;
+  applyFilters(lctx, brightness, contrast);
+  lctx.imageSmoothingEnabled = true;
+  lctx.imageSmoothingQuality = 'high';
+  lctx.drawImage(
     subject,
     crop.x,
     crop.y,
@@ -188,7 +204,13 @@ export async function composeFinal({
     outW,
     outH
   );
-  octx.filter = 'none';
+  lctx.filter = 'none';
+
+  if (enhance) {
+    applyAutoEnhance(layer, meteringRects(face, crop, outW, outH));
+  }
+
+  octx.drawImage(layer, 0, 0);
 
   // Photoshop-inspired shadow tone curve, run on the downscaled output so
   // the per-pixel cost is bounded (≈ 360k pixels at 51×51 mm @ 300 DPI).

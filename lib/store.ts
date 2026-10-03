@@ -47,6 +47,12 @@ interface PhotoState {
    * CSS-filter brightness/contrast pass.
    */
   shadow: number;
+  /**
+   * One-click auto-enhance (face-metered white balance, exposure and
+   * left/right light balance, luminance sharpening — see lib/enhance.ts).
+   * Off by default; the editor exposes it as an opt-in toggle.
+   */
+  enhance: boolean;
   /** Recently completed Stripe orders for the current user (kept lightweight). */
   orders: OrderRecord[];
   /** Last face detection confidence (0–1). */
@@ -68,6 +74,7 @@ interface PhotoState {
     sheetBackUrl?: string | null
   ) => void;
   setAdjustments: (b: number, c: number, s: number) => void;
+  setEnhance: (on: boolean) => void;
   setFaceConfidence: (c: number | null) => void;
   setCompliance: (c: ComplianceReport | null) => void;
   setRenderToken: (token: string | null) => void;
@@ -89,6 +96,7 @@ export const usePhotoStore = create<PhotoState>()(
       brightness: 0,
       contrast: 0,
       shadow: 0,
+      enhance: false,
       orders: [],
       faceConfidence: null,
       compliance: null,
@@ -115,6 +123,7 @@ export const usePhotoStore = create<PhotoState>()(
             sheetBackUrl === undefined ? s.printSheetBackDataUrl : sheetBackUrl,
         })),
       setAdjustments: (brightness, contrast, shadow) => set({ brightness, contrast, shadow }),
+      setEnhance: (enhance) => set({ enhance }),
       setFaceConfidence: (faceConfidence) => set({ faceConfidence }),
       setCompliance: (compliance) => set({ compliance }),
       setRenderToken: (currentRenderToken) => set({ currentRenderToken }),
@@ -135,6 +144,7 @@ export const usePhotoStore = create<PhotoState>()(
           brightness: 0,
           contrast: 0,
           shadow: 0,
+          enhance: false,
           faceConfidence: null,
           compliance: null,
           currentRenderToken: null,

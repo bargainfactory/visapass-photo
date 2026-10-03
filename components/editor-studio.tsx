@@ -13,6 +13,7 @@ import {
   RefreshCw,
   ScanFace,
   ShieldCheck,
+  Sparkles,
   Wand2,
   XCircle,
 } from 'lucide-react';
@@ -80,6 +81,8 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
   const contrast = usePhotoStore((s) => s.contrast);
   const shadow = usePhotoStore((s) => s.shadow);
   const setAdjustments = usePhotoStore((s) => s.setAdjustments);
+  const enhance = usePhotoStore((s) => s.enhance);
+  const setEnhance = usePhotoStore((s) => s.setEnhance);
   const setFaceConfidence = usePhotoStore((s) => s.setFaceConfidence);
   const setCompliance = usePhotoStore((s) => s.setCompliance);
 
@@ -196,6 +199,8 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
         brightness: adj.brightness,
         contrast: adj.contrast,
         shadow: adj.shadow,
+        enhance: adj.enhance,
+        face,
       });
       setResult(out.dataUrl, out.printSheetDataUrl, out.printSheetBackDataUrl);
       setPreviewUrl(out.dataUrl);
@@ -231,6 +236,8 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
       brightness,
       contrast,
       shadow,
+      enhance,
+      face: state.face,
     });
     // Drop the result if a newer recompose has started — avoids flicker when
     // multiple slider ticks are in flight at once.
@@ -239,7 +246,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
     // cached values from the last full compose.
     setResult(out.dataUrl);
     setPreviewUrl(out.dataUrl);
-  }, [docPair, state.imageEl, effectiveCrop, state.cutoutBlob, brightness, contrast, shadow, setResult]);
+  }, [docPair, state.imageEl, effectiveCrop, state.cutoutBlob, brightness, contrast, shadow, enhance, state.face, setResult]);
 
   // Final FULL compose with the print sheet + back template before handing
   // off to the results panel — ensures whatever slider values the user
@@ -265,13 +272,15 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
         brightness,
         contrast,
         shadow,
+        enhance,
+        face: state.face,
       });
       setResult(out.dataUrl, out.printSheetDataUrl, out.printSheetBackDataUrl);
     } catch {
       /* fall through to onComplete with whatever we last cached */
     }
     onComplete();
-  }, [docPair, state.imageEl, effectiveCrop, state.cutoutBlob, brightness, contrast, shadow, setResult, onComplete]);
+  }, [docPair, state.imageEl, effectiveCrop, state.cutoutBlob, brightness, contrast, shadow, enhance, state.face, setResult, onComplete]);
 
   // Debounce slider-driven recomposes so dragging at full speed doesn't queue
   // a recompose per tick. ~110 ms is below the perceptual delay threshold but
@@ -286,7 +295,7 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [brightness, contrast, shadow, cropAdjust]);
+  }, [brightness, contrast, shadow, enhance, cropAdjust]);
 
   // Re-run the compliance check whenever the framing changes — head size,
   // centring and level all move with the crop.
@@ -550,12 +559,47 @@ export function EditorStudio({ sourceUrl, documentId, onComplete }: EditorStudio
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setAdjustments(0, 0, 0)}
-                disabled={brightness === 0 && contrast === 0 && shadow === 0}
+                onClick={() => {
+                  setAdjustments(0, 0, 0);
+                  setEnhance(false);
+                }}
+                disabled={brightness === 0 && contrast === 0 && shadow === 0 && !enhance}
               >
                 <RefreshCw className="size-3" /> {tCommon('reset')}
               </Button>
             </div>
+            {/* One-click auto-enhance: face-metered white balance, exposure and
+                left/right light balance, plus luminance sharpening — all done in
+                the compositor on the subject layer (lib/enhance.ts). Opt-in so
+                the default output stays a faithful, unprocessed photo. */}
+            <button
+              type="button"
+              role="switch"
+              aria-checked={enhance}
+              onClick={() => setEnhance(!enhance)}
+              className={cn(
+                'flex w-full items-center justify-between gap-3 rounded-xl border px-3 py-2.5 text-start transition-colors',
+                enhance
+                  ? 'border-brand-500/50 bg-brand-500/10'
+                  : 'border-border bg-muted/30 hover:bg-muted/60'
+              )}
+            >
+              <span className="flex items-center gap-2.5">
+                <span
+                  className={cn(
+                    'grid size-8 shrink-0 place-items-center rounded-lg',
+                    enhance ? 'bg-brand-500 text-white' : 'bg-background text-muted-foreground'
+                  )}
+                >
+                  <Sparkles className="size-4" />
+                </span>
+                <span className="flex flex-col">
+                  <span className="text-sm font-semibold">{t('enhance')}</span>
+                  <span className="text-xs text-muted-foreground">{t('enhanceHelp')}</span>
+                </span>
+              </span>
+              <Switch checked={enhance} tabIndex={-1} aria-hidden className="pointer-events-none" />
+            </button>
             <div className="space-y-2">
               <div className="flex justify-between text-xs">
                 <Label>{t('brightness')}</Label>

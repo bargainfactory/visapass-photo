@@ -207,7 +207,9 @@
       "zoom": "Zoom",
       "horizontal": "Horizontaal",
       "vertical": "Verticaal"
-    }
+    },
+    "enhance": "Automatisch verbeteren",
+    "enhanceHelp": "Balanceert licht en kleur op het gezicht en verscherpt subtiel. Bewust ingetogen."
   },
   "results": {
     "compliant": "Conform",

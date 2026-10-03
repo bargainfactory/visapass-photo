@@ -6,5 +6,6 @@ Disallow: /*/editor
 Disallow: /*/checkout
 Disallow: /*/success
 Disallow: /*/account
+Disallow: /*/operator
 
 Sitemap: https://www.visapassphoto.com/sitemap.xml

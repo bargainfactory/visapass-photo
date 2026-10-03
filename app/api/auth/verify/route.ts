@@ -10,6 +10,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { hasLocale } from 'next-intl';
 import { routing } from '@/i18n/routing';
 import {
+  OPERATOR_HINT_COOKIE,
   SESSION_COOKIE,
   SESSION_HINT_COOKIE,
   createSessionToken,
@@ -17,6 +18,7 @@ import {
   sessionCookieOptions,
   verifyLoginToken,
 } from '@/lib/auth';
+import { isOperator } from '@/lib/operator';
 import { rateLimit, clientIp } from '@/lib/rate-limit';
 
 export const runtime = 'nodejs';
@@ -44,8 +46,16 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(account, { status: 303 });
   }
 
-  const res = NextResponse.redirect(account, { status: 303 });
+  // Operators land on the console; everyone else on their orders.
+  const operator = isOperator(email);
+  const dest = operator ? new URL(`/${locale}/operator`, req.nextUrl.origin) : account;
+  const res = NextResponse.redirect(dest, { status: 303 });
   res.cookies.set(SESSION_COOKIE, createSessionToken(email), sessionCookieOptions());
   res.cookies.set(SESSION_HINT_COOKIE, '1', hintCookieOptions());
+  if (operator) {
+    res.cookies.set(OPERATOR_HINT_COOKIE, '1', hintCookieOptions());
+  } else {
+    res.cookies.set(OPERATOR_HINT_COOKIE, '', { httpOnly: false, path: '/', maxAge: 0 });
+  }
   return res;
 }

@@ -159,7 +159,20 @@ them local dev shows the link on screen and production returns "not configured".
 
 ---
 
-## 8. Notes
+## 8. Operator console (back office)
+
+`/operator` is the internal back office, gated by the `OPERATOR_EMAILS` allow-list: an operator
+signs in with the same magic link as a customer, and if their email is on the list they land on
+the console (and the header button reads "Operator"). It reads live from Stripe — revenue today /
+7d / 30d in USD, order list with search, per-package and per-country breakdowns, refund state —
+and shows a **go-live checklist** derived from this deployment's environment (Stripe mode, webhook
+secret, AUTH_SECRET, Resend, site URL, operators). The only write is a confirm-first **full
+refund** per order (`/api/operator/refund`, operator-checked server-side, idempotent per session).
+Internal tool: English only, `noindex`, disallowed in robots.
+
+---
+
+## 9. Notes
 
 - **Not-yet-durable:** the webhook order store is in-memory (fine — status reads Stripe
   directly). Wire a real DB + `event.id` dedupe before relying on webhook side-effects.

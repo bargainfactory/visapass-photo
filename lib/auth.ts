@@ -32,6 +32,8 @@ export const SESSION_COOKIE = 'vp_session';
  * without forcing statically generated pages to read cookies on the server.
  */
 export const SESSION_HINT_COOKIE = 'vp_signed_in';
+/** Same idea for operators ("1" when the signed-in email is on OPERATOR_EMAILS). Display only. */
+export const OPERATOR_HINT_COOKIE = 'vp_operator';
 const LOGIN_TTL_MS = 15 * 60 * 1000; // 15 minutes
 const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 const DEV_FALLBACK = 'dev-only-auth-secret-change-me';

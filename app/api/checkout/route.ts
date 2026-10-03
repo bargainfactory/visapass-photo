@@ -81,6 +81,16 @@ export async function POST(req: NextRequest) {
         },
       ],
       automatic_tax: { enabled: false },
+      // Prices are defined in USD (lib/stripe.ts). Adaptive Pricing lets Stripe
+      // present and charge the shopper in their local currency at Stripe's
+      // exchange rate for the SAME dollar amount — e.g. a €-card buyer sees the
+      // euro equivalent of $9.99 and we still settle $9.99 (less FX fee). Without
+      // it, foreign cards are charged in USD and the card issuer converts, often
+      // with a worse rate + a foreign-transaction fee. The session then carries
+      // `currency_conversion` with the USD source amounts, which order-status and
+      // the account page read so the UI keeps reporting the listed dollar price.
+      // (Also needs Adaptive Pricing enabled in Dashboard → Settings → Checkout.)
+      adaptive_pricing: { enabled: true },
       metadata: {
         packageId: pkg.id,
         documentId: docPair.doc.id,

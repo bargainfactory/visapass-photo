@@ -125,6 +125,14 @@ Deploys continuously to **Vercel** from `main`. To go live with real payments: a
 Stripe live account, swap the three Stripe vars to `sk_live_`/`pk_live_` + a live webhook
 secret, and redeploy.
 
+**Pricing & currency.** All prices are USD and defined once in `lib/stripe.ts` (digital $9.99,
+print sheet $9.99, bundle $14.99). Checkout enables **Stripe Adaptive Pricing**, so a shopper
+with a non-USD card is shown and charged the local-currency equivalent of the listed dollar price
+at Stripe's rate; the session's `currency_conversion` carries the USD source amount, which
+`/api/order-status` and `/account` report so the UI always shows the dollar price. Make sure
+Adaptive Pricing is also switched on in the Stripe Dashboard (Settings → Checkout) for the live
+account.
+
 **Security headers / CSP** live in `next.config.mjs` (`frame-ancestors`, HSTS, nosniff,
 Permissions-Policy, and a scoped CSP). COOP/COEP are intentionally **not** set — enabling
 `crossOriginIsolated` switches onnxruntime-web to a threaded build that crashes here, and the

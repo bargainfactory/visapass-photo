@@ -69,9 +69,13 @@ export async function GET(req: NextRequest) {
     // The buyer's email is intentionally NOT returned here — Stripe already
     // emails the receipt, and exposing it would let anyone holding a session_id
     // read the customer's address.
+    // With Adaptive Pricing the session's amount_total/currency are in the
+    // shopper's LOCAL currency; `currency_conversion` carries the USD source
+    // amount. The success page renders a "$" figure, so always report USD.
+    const usdCents = session.currency_conversion?.amount_total ?? session.amount_total ?? null;
     return NextResponse.json({
       status,
-      amountCents: session.amount_total ?? null,
+      amountCents: usdCents,
       documentId: (session.metadata?.documentId as string | undefined) ?? null,
       // packageId comes from the checkout-session metadata we set in
       // /api/checkout. The success page uses it to gate which download

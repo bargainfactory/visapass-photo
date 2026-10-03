@@ -14,8 +14,15 @@ export interface CustomerOrder {
   /** Stripe Checkout Session id — also the key of the on-device ciphertext. */
   sessionId: string;
   createdAt: Date;
+  /** Price of record in USD cents (the listed price), even when the card was charged in another currency. */
   amountCents: number;
   currency: string;
+  /**
+   * What the shopper's card was actually charged when Stripe Adaptive Pricing
+   * presented a local currency; null when they paid in USD.
+   */
+  chargedAmountCents: number | null;
+  chargedCurrency: string | null;
   packageId: string | null;
   packageName: string | null;
   documentId: string | null;
@@ -54,11 +61,18 @@ export async function listOrdersForEmail(email: string): Promise<OrdersResult> {
       const documentId = (s.metadata?.documentId as string | undefined) ?? null;
       const pkg = packageId ? findPackage(packageId) : undefined;
       const docPair = documentId ? findDocument(documentId) : null;
+      // Adaptive Pricing: amount_total/currency are the LOCAL charge and
+      // currency_conversion holds the USD source. Report USD as the price of
+      // record and keep the local charge for display.
+      const conv = s.currency_conversion;
+      const localCurrency = (s.currency ?? 'usd').toUpperCase();
       return {
         sessionId: s.id,
         createdAt: new Date(s.created * 1000),
-        amountCents: s.amount_total ?? 0,
-        currency: (s.currency ?? 'usd').toUpperCase(),
+        amountCents: conv?.amount_total ?? s.amount_total ?? 0,
+        currency: (conv?.source_currency ?? s.currency ?? 'usd').toUpperCase(),
+        chargedAmountCents: conv ? (s.amount_total ?? null) : null,
+        chargedCurrency: conv ? localCurrency : null,
         packageId,
         packageName: pkg?.name ?? null,
         documentId,

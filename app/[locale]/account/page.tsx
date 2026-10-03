@@ -113,6 +113,11 @@ export default async function AccountPage({
               order={o}
               date={fmtDate.format(o.createdAt)}
               amount={fmtMoney(o.amountCents, o.currency)}
+              charged={
+                o.chargedAmountCents != null && o.chargedCurrency && o.chargedCurrency !== o.currency
+                  ? fmtMoney(o.chargedAmountCents, o.chargedCurrency)
+                  : null
+              }
               labels={{ paid: t('paid'), reopen: t('reopenDownloads'), receipt: t('receipt') }}
             />
           ))}
@@ -150,11 +155,15 @@ function OrderRow({
   order,
   date,
   amount,
+  charged,
   labels,
 }: {
   order: CustomerOrder;
   date: string;
+  /** Listed USD price. */
   amount: string;
+  /** Local-currency amount the card was charged (Adaptive Pricing), or null. */
+  charged: string | null;
   labels: { paid: string; reopen: string; receipt: string };
 }) {
   return (
@@ -172,6 +181,7 @@ function OrderRow({
           ) : null}
           <p className="text-xs text-muted-foreground">
             {date} · {amount}
+            {charged ? ` (${charged})` : ''}
           </p>
         </div>
         <div className="flex shrink-0 flex-wrap gap-2">

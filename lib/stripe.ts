@@ -11,6 +11,13 @@
  * keys. The /api/checkout route falls back to inline `price_data` when no
  * STRIPE_PRICE_* is set, so the demo flow works without pre-configured
  * products.
+ *
+ * CURRENCY. Every price here is USD and is the price of record. Checkout
+ * enables Stripe Adaptive Pricing, so a shopper with a non-USD card is shown
+ * and charged the local-currency equivalent of this exact dollar amount at
+ * Stripe's rate, and the order still reports the USD figure (see
+ * `currency_conversion` handling in /api/order-status and lib/orders.ts).
+ * Change a price in ONE place — here — and every surface follows.
  */
 import Stripe from 'stripe';
 
@@ -26,7 +33,7 @@ export const PRINT_PACKAGES = [
     id: 'print-sheet',
     name: '4×6" Print Sheet',
     description: 'Multi-up print sheet · home or lab printing',
-    priceCents: 599,
+    priceCents: 999,
     envKey: 'STRIPE_PRICE_PRINT_SHEET',
   },
   {

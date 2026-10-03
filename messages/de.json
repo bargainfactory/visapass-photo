@@ -19,7 +19,8 @@
   "nav": {
     "countries": "Länder",
     "pricing": "Preise",
-    "editor": "Editor"
+    "editor": "Editor",
+    "account": "Meine Bestellungen"
   },
   "languageSwitcher": {
     "label": "Sprache",
@@ -298,7 +299,9 @@
       "body": "Drucken Sie den 4×6-Bogen in Originalgröße (Skalierung / 'an Seite anpassen' aus) auf Fotopapier – oder bringen Sie die Datei zu einem Foto-Kiosk."
     },
     "download": "Herunterladen",
-    "downloadN": "{count} Dateien herunterladen"
+    "downloadN": "{count} Dateien herunterladen",
+    "findLater": "Diese Bestellung später wiederfinden? Melden Sie sich jederzeit mit Ihrer Bestell-E-Mail an.",
+    "findLaterCta": "Meine Bestellungen ansehen"
   },
   "footer": {
     "productHeading": "Produkt",
@@ -381,5 +384,39 @@
     "save": "{amount} sparen",
     "cta": "Foto erstellen",
     "guarantee": "Behördlich akzeptiert oder Geld zurück"
+  },
+  "account": {
+    "title": "Ihre Bestellungen",
+    "subtitle": "Geben Sie die beim Bezahlen verwendete E-Mail-Adresse ein – wir senden Ihnen einen einmaligen Anmeldelink. Kein Passwort, kein Konto nötig.",
+    "guestNote": "Zum Bestellen brauchen Sie nie ein Konto. Die Anmeldung dient nur dazu, Belege zu finden und Downloads später erneut zu öffnen.",
+    "backToHome": "Zur Startseite",
+    "emailLabel": "E-Mail-Adresse",
+    "emailPlaceholder": "sie@beispiel.de",
+    "sendLink": "Anmeldelink per E-Mail senden",
+    "sending": "Wird gesendet…",
+    "linkSent": "Prüfen Sie Ihren Posteingang – wir haben einen Anmeldelink an {email} gesendet. Er läuft in 15 Minuten ab.",
+    "devLink": "E-Mail ist in dieser Umgebung nicht konfiguriert; hier ist Ihr Link direkt:",
+    "devLinkCta": "Anmeldelink öffnen",
+    "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "tooMany": "Zu viele Versuche. Bitte warten Sie einige Minuten und versuchen Sie es erneut.",
+    "sendFailed": "Der Link konnte nicht gesendet werden. Bitte erneut versuchen.",
+    "authUnavailable": "Die Anmeldung ist in dieser Umgebung nicht verfügbar.",
+    "linkInvalid": "Dieser Anmeldelink ist ungültig oder abgelaufen. Fordern Sie unten einen neuen an.",
+    "signedInAs": "Angemeldet als {email}",
+    "signOut": "Abmelden",
+    "signingOut": "Abmeldung…",
+    "noOrders": "Für diese E-Mail-Adresse gibt es noch keine abgeschlossenen Bestellungen.",
+    "noOrdersHint": "Bestellungen erscheinen hier, sobald die Zahlung bestätigt ist. Verwenden Sie dieselbe E-Mail wie beim Bezahlen.",
+    "startPhoto": "Foto erstellen",
+    "paid": "Bezahlt",
+    "reopenDownloads": "Downloads öffnen",
+    "receipt": "Beleg",
+    "deviceNote": "Ihre Fotos verlassen nie Ihr Gerät – Downloads lassen sich daher nur in dem Browser erneut öffnen, in dem sie erstellt wurden.",
+    "notConfigured": "Der Bestellverlauf ist im Demomodus nicht verfügbar (Stripe nicht konfiguriert).",
+    "loadFailed": "Ihre Bestellungen konnten gerade nicht geladen werden. Bitte versuchen Sie es gleich noch einmal.",
+    "emailSubject": "Ihr {brand}-Anmeldelink",
+    "emailIntro": "Klicken Sie auf die Schaltfläche, um sich anzumelden und Ihre Bestellungen zu sehen. Kein Passwort nötig.",
+    "emailCta": "Bei VisaPass Photo anmelden",
+    "emailFootnote": "Dieser Link läuft in 15 Minuten ab und gilt nur für diese E-Mail-Adresse. Falls Sie ihn nicht angefordert haben, ignorieren Sie diese Nachricht."
   }
 }

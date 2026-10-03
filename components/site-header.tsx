@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, UserRound } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageSwitcher } from '@/components/language-switcher';
@@ -36,6 +36,15 @@ export function SiteHeader() {
             className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground sm:inline"
           >
             {t('nav.editor')}
+          </Link>
+          <Link
+            href="/account"
+            aria-label={t('nav.account')}
+            title={t('nav.account')}
+            className="inline-flex h-9 items-center gap-1.5 rounded-xl px-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            <UserRound className="size-4" />
+            <span className="hidden md:inline">{t('nav.account')}</span>
           </Link>
           <LanguageSwitcher />
           <ThemeToggle />

@@ -19,7 +19,8 @@
   "nav": {
     "countries": "Países",
     "pricing": "Precios",
-    "editor": "Editor"
+    "editor": "Editor",
+    "account": "Mis pedidos"
   },
   "languageSwitcher": {
     "label": "Idioma",
@@ -298,7 +299,9 @@
       "body": "Imprime la hoja de 4×6 a tamaño real (desactiva 'ajustar a la página' / escalado) en papel fotográfico, o lleva el archivo a cualquier kiosco de fotos."
     },
     "download": "Descargar",
-    "downloadN": "Descargar {count} archivos"
+    "downloadN": "Descargar {count} archivos",
+    "findLater": "¿Necesitas este pedido más adelante? Inicia sesión con el correo de tu compra cuando quieras.",
+    "findLaterCta": "Ver mis pedidos"
   },
   "footer": {
     "productHeading": "Producto",
@@ -381,5 +384,39 @@
     "save": "Ahorra {amount}",
     "cta": "Crea tu foto",
     "guarantee": "Aceptada por el gobierno o te devolvemos tu dinero"
+  },
+  "account": {
+    "title": "Tus pedidos",
+    "subtitle": "Introduce el correo que usaste al pagar y te enviaremos un enlace de acceso de un solo uso: sin contraseña ni cuenta que crear.",
+    "guestNote": "Nunca necesitas una cuenta para comprar. El acceso solo sirve para encontrar recibos y volver a abrir tus descargas.",
+    "backToHome": "Volver al inicio",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "tu@ejemplo.com",
+    "sendLink": "Enviarme un enlace de acceso",
+    "sending": "Enviando…",
+    "linkSent": "Revisa tu bandeja de entrada: enviamos un enlace de acceso a {email}. Caduca en 15 minutos.",
+    "devLink": "El correo no está configurado en este entorno; aquí tienes tu enlace directamente:",
+    "devLinkCta": "Abrir enlace de acceso",
+    "invalidEmail": "Introduce una dirección de correo válida.",
+    "tooMany": "Demasiados intentos. Espera unos minutos e inténtalo de nuevo.",
+    "sendFailed": "No pudimos enviar el enlace. Inténtalo de nuevo.",
+    "authUnavailable": "El acceso no está disponible en este entorno.",
+    "linkInvalid": "Ese enlace de acceso no es válido o ha caducado. Solicita uno nuevo abajo.",
+    "signedInAs": "Sesión iniciada como {email}",
+    "signOut": "Cerrar sesión",
+    "signingOut": "Cerrando sesión…",
+    "noOrders": "Aún no hay pedidos completados para este correo.",
+    "noOrdersHint": "Los pedidos aparecen aquí cuando se confirma el pago. Asegúrate de usar el mismo correo que al pagar.",
+    "startPhoto": "Crear una foto",
+    "paid": "Pagado",
+    "reopenDownloads": "Abrir descargas",
+    "receipt": "Recibo",
+    "deviceNote": "Tus fotos nunca salen de tu dispositivo, así que las descargas solo pueden reabrirse en el navegador donde las creaste.",
+    "notConfigured": "El historial de pedidos no está disponible en modo demo (Stripe no está configurado).",
+    "loadFailed": "No pudimos cargar tus pedidos ahora mismo. Inténtalo de nuevo en un momento.",
+    "emailSubject": "Tu enlace de acceso a {brand}",
+    "emailIntro": "Pulsa el botón para iniciar sesión y ver tus pedidos. Sin contraseña.",
+    "emailCta": "Iniciar sesión en VisaPass Photo",
+    "emailFootnote": "Este enlace caduca en 15 minutos y solo sirve para este correo. Si no lo solicitaste, puedes ignorar este mensaje."
   }
 }

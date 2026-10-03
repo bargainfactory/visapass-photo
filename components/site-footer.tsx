@@ -36,6 +36,11 @@ export function SiteFooter() {
                 {t('footer.pricing')}
               </Link>
             </li>
+            <li>
+              <Link href="/account" className="hover:text-foreground">
+                {t('nav.account')}
+              </Link>
+            </li>
           </ul>
         </div>
         <div>

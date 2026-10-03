@@ -5,5 +5,6 @@ Disallow: /api/
 Disallow: /*/editor
 Disallow: /*/checkout
 Disallow: /*/success
+Disallow: /*/account
 
 Sitemap: https://visapassphoto.com/sitemap.xml

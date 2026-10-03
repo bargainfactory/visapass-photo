@@ -19,7 +19,8 @@
   "nav": {
     "countries": "Countries",
     "pricing": "Pricing",
-    "editor": "Editor"
+    "editor": "Editor",
+    "account": "My orders"
   },
   "languageSwitcher": {
     "label": "Language",
@@ -298,7 +299,9 @@
       "body": "Print the 4×6 sheet at actual size (turn off 'fit to page' / scaling) on photo paper — or take the file to any pharmacy photo kiosk."
     },
     "download": "Download",
-    "downloadN": "Download {count} files"
+    "downloadN": "Download {count} files",
+    "findLater": "Need this order later? Sign in with your checkout email any time.",
+    "findLaterCta": "View my orders"
   },
   "footer": {
     "productHeading": "Product",
@@ -381,5 +384,39 @@
     "save": "Save {amount}",
     "cta": "Make your photo",
     "guarantee": "Government-accepted or your money back"
+  },
+  "account": {
+    "title": "Your orders",
+    "subtitle": "Enter the email you used at checkout and we’ll send you a one-time sign-in link — no password, no account to create.",
+    "guestNote": "You never need an account to order. Sign-in is only here so you can find receipts and reopen downloads later.",
+    "backToHome": "Back to home",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@example.com",
+    "sendLink": "Email me a sign-in link",
+    "sending": "Sending…",
+    "linkSent": "Check your inbox — we sent a sign-in link to {email}. It expires in 15 minutes.",
+    "devLink": "Email isn’t configured in this environment, so here is your link directly:",
+    "devLinkCta": "Open sign-in link",
+    "invalidEmail": "Please enter a valid email address.",
+    "tooMany": "Too many attempts. Please wait a few minutes and try again.",
+    "sendFailed": "We couldn’t send the link. Please try again.",
+    "authUnavailable": "Sign-in is not available in this environment.",
+    "linkInvalid": "That sign-in link is invalid or has expired. Request a new one below.",
+    "signedInAs": "Signed in as {email}",
+    "signOut": "Sign out",
+    "signingOut": "Signing out…",
+    "noOrders": "No completed orders for this email yet.",
+    "noOrdersHint": "Orders appear here once payment is confirmed. Make sure you used the same email at checkout.",
+    "startPhoto": "Create a photo",
+    "paid": "Paid",
+    "reopenDownloads": "Open downloads",
+    "receipt": "Receipt",
+    "deviceNote": "Your photos never leave your device, so downloads can only be reopened in the browser you used to create them.",
+    "notConfigured": "Order history is unavailable in demo mode (Stripe is not configured).",
+    "loadFailed": "We couldn’t load your orders right now. Please try again in a moment.",
+    "emailSubject": "Your {brand} sign-in link",
+    "emailIntro": "Click the button below to sign in and see your orders. No password needed.",
+    "emailCta": "Sign in to VisaPass Photo",
+    "emailFootnote": "This link expires in 15 minutes and can only be used from this email. If you didn’t request it, you can safely ignore this message."
   }
 }

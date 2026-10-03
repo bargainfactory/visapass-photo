@@ -19,7 +19,8 @@
   "nav": {
     "countries": "Ülkeler",
     "pricing": "Fiyatlar",
-    "editor": "Editör"
+    "editor": "Editör",
+    "account": "Siparişlerim"
   },
   "languageSwitcher": {
     "label": "Dil",
@@ -298,7 +299,9 @@
       "body": "4×6 sayfayı gerçek boyutta ('sayfaya sığdır' / ölçekleme kapalı) fotoğraf kağıdına yazdırın veya dosyayı bir fotoğraf kioskuna götürün."
     },
     "download": "İndir",
-    "downloadN": "{count} dosya indir"
+    "downloadN": "{count} dosya indir",
+    "findLater": "Bu siparişe daha sonra mı ihtiyacınız var? Ödeme e-postanızla istediğiniz zaman giriş yapın.",
+    "findLaterCta": "Siparişlerimi gör"
   },
   "footer": {
     "productHeading": "Ürün",
@@ -381,5 +384,39 @@
     "save": "{amount} tasarruf",
     "cta": "Fotoğrafını oluştur",
     "guarantee": "Resmî olarak kabul edilir veya paranız iade edilir"
+  },
+  "account": {
+    "title": "Siparişleriniz",
+    "subtitle": "Ödemede kullandığınız e-postayı girin, size tek kullanımlık bir giriş bağlantısı gönderelim — şifre yok, hesap oluşturmak yok.",
+    "guestNote": "Sipariş vermek için hesaba asla gerek yok. Giriş yalnızca makbuzları bulmanız ve indirmeleri yeniden açmanız içindir.",
+    "backToHome": "Ana sayfaya dön",
+    "emailLabel": "E-posta adresi",
+    "emailPlaceholder": "siz@ornek.com",
+    "sendLink": "Bana giriş bağlantısı gönder",
+    "sending": "Gönderiliyor…",
+    "linkSent": "Gelen kutunuzu kontrol edin — {email} adresine bir giriş bağlantısı gönderdik. 15 dakika içinde geçerliliğini yitirir.",
+    "devLink": "Bu ortamda e-posta yapılandırılmamış; bağlantınız doğrudan burada:",
+    "devLinkCta": "Giriş bağlantısını aç",
+    "invalidEmail": "Lütfen geçerli bir e-posta adresi girin.",
+    "tooMany": "Çok fazla deneme. Lütfen birkaç dakika bekleyip tekrar deneyin.",
+    "sendFailed": "Bağlantıyı gönderemedik. Lütfen tekrar deneyin.",
+    "authUnavailable": "Bu ortamda giriş kullanılamıyor.",
+    "linkInvalid": "Bu giriş bağlantısı geçersiz veya süresi dolmuş. Aşağıdan yeni bir tane isteyin.",
+    "signedInAs": "{email} olarak giriş yapıldı",
+    "signOut": "Çıkış yap",
+    "signingOut": "Çıkış yapılıyor…",
+    "noOrders": "Bu e-posta için henüz tamamlanmış sipariş yok.",
+    "noOrdersHint": "Ödeme onaylandığında siparişler burada görünür. Ödemede kullandığınız e-postayı kullandığınızdan emin olun.",
+    "startPhoto": "Fotoğraf oluştur",
+    "paid": "Ödendi",
+    "reopenDownloads": "İndirmeleri aç",
+    "receipt": "Makbuz",
+    "deviceNote": "Fotoğraflarınız cihazınızdan asla çıkmaz; bu yüzden indirmeler yalnızca onları oluşturduğunuz tarayıcıda yeniden açılabilir.",
+    "notConfigured": "Demo modunda sipariş geçmişi kullanılamaz (Stripe yapılandırılmamış).",
+    "loadFailed": "Siparişleriniz şu anda yüklenemedi. Lütfen birazdan tekrar deneyin.",
+    "emailSubject": "{brand} giriş bağlantınız",
+    "emailIntro": "Giriş yapıp siparişlerinizi görmek için aşağıdaki düğmeye tıklayın. Şifre gerekmez.",
+    "emailCta": "VisaPass Photo’ya giriş yap",
+    "emailFootnote": "Bu bağlantı 15 dakika içinde geçerliliğini yitirir ve yalnızca bu e-posta için çalışır. Siz istemediyseniz bu mesajı yok sayabilirsiniz."
   }
 }

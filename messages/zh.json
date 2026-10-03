@@ -19,7 +19,8 @@
   "nav": {
     "countries": "国家",
     "pricing": "价格",
-    "editor": "编辑器"
+    "editor": "编辑器",
+    "account": "我的订单"
   },
   "languageSwitcher": {
     "label": "语言",
@@ -298,7 +299,9 @@
       "body": "以实际尺寸打印 4×6 相纸（关闭“适合页面”/缩放），或将文件带到任意照片自助机打印。"
     },
     "download": "下载",
-    "downloadN": "下载 {count} 个文件"
+    "downloadN": "下载 {count} 个文件",
+    "findLater": "以后需要查看此订单？随时使用结账邮箱登录即可。",
+    "findLaterCta": "查看我的订单"
   },
   "footer": {
     "productHeading": "产品",
@@ -381,5 +384,39 @@
     "save": "省 {amount}",
     "cta": "制作照片",
     "guarantee": "政府认可，否则退款"
+  },
+  "account": {
+    "title": "您的订单",
+    "subtitle": "输入结账时使用的邮箱，我们会发送一次性登录链接——无需密码，无需注册账户。",
+    "guestNote": "购买无需账户。登录仅用于查找收据和重新打开下载。",
+    "backToHome": "返回首页",
+    "emailLabel": "邮箱地址",
+    "emailPlaceholder": "you@example.com",
+    "sendLink": "发送登录链接到我的邮箱",
+    "sending": "发送中…",
+    "linkSent": "请查看收件箱——登录链接已发送至 {email}，15 分钟内有效。",
+    "devLink": "当前环境未配置邮件服务，以下是您的直接链接：",
+    "devLinkCta": "打开登录链接",
+    "invalidEmail": "请输入有效的邮箱地址。",
+    "tooMany": "尝试次数过多，请几分钟后再试。",
+    "sendFailed": "无法发送链接，请重试。",
+    "authUnavailable": "当前环境不支持登录。",
+    "linkInvalid": "该登录链接无效或已过期，请在下方重新获取。",
+    "signedInAs": "当前登录：{email}",
+    "signOut": "退出登录",
+    "signingOut": "正在退出…",
+    "noOrders": "此邮箱暂无已完成的订单。",
+    "noOrdersHint": "付款确认后订单会显示在这里。请确保使用与结账时相同的邮箱。",
+    "startPhoto": "制作照片",
+    "paid": "已付款",
+    "reopenDownloads": "打开下载",
+    "receipt": "收据",
+    "deviceNote": "您的照片从不离开设备，因此只能在创建时使用的浏览器中重新打开下载。",
+    "notConfigured": "演示模式下无法查看订单历史（未配置 Stripe）。",
+    "loadFailed": "暂时无法加载您的订单，请稍后重试。",
+    "emailSubject": "您的 {brand} 登录链接",
+    "emailIntro": "点击下方按钮登录并查看您的订单，无需密码。",
+    "emailCta": "登录 VisaPass Photo",
+    "emailFootnote": "此链接 15 分钟内有效，且仅适用于此邮箱。如果不是您本人操作，请忽略此邮件。"
   }
 }

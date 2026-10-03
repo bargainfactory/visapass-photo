@@ -137,7 +137,21 @@ you can self-host these under your own origin and tighten the CSP accordingly.
 
 ---
 
-## 7. Notes
+## 7. Customer sign-in (optional)
+
+Ordering is **guest-only** — no account is ever required to buy. `/account` is an optional order
+history: a buyer enters the email they used at checkout, receives a **one-time sign-in link**
+(15-minute, HMAC-signed, `AUTH_SECRET`), and a verified click sets a 30-day signed session
+cookie. There is **no database**: orders are read live from Stripe by `customer_details.email`
+(`lib/orders.ts`), and the page links back to `/success?session_id=…` to reopen downloads —
+which only works in the browser that holds the encrypted deliverables (the photo never leaves
+the device). Sign-in links are sent through Resend (`RESEND_API_KEY`, `EMAIL_FROM`); without
+them local dev shows the link on screen and production returns "not configured". Routes:
+`/api/auth/request-link`, `/api/auth/verify`, `/api/auth/logout`; all rate limited.
+
+---
+
+## 8. Notes
 
 - **Not-yet-durable:** the webhook order store is in-memory (fine — status reads Stripe
   directly). Wire a real DB + `event.id` dedupe before relying on webhook side-effects.

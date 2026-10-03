@@ -257,6 +257,17 @@ function SuccessContent() {
             <Button asChild variant={paid && stashed ? 'outline' : 'brand'} size="lg" className="w-full">
               <Link href="/editor">{t('another')}</Link>
             </Button>
+
+            {/* Accounts are optional — a soft pointer so a buyer can find this
+                order again later by signing in with their checkout email. */}
+            {paid && (
+              <p className="text-xs text-muted-foreground">
+                {t('findLater')}{' '}
+                <Link href="/account" className="font-medium text-brand-600 underline underline-offset-2">
+                  {t('findLaterCta')}
+                </Link>
+              </p>
+            )}
           </CardContent>
         </Card>
       </motion.div>

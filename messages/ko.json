@@ -19,7 +19,8 @@
   "nav": {
     "countries": "국가",
     "pricing": "요금",
-    "editor": "에디터"
+    "editor": "에디터",
+    "account": "내 주문"
   },
   "languageSwitcher": {
     "label": "언어",
@@ -298,7 +299,9 @@
       "body": "4×6 시트를 실제 크기로('페이지에 맞춤'/배율 끄기) 인화지에 인쇄하거나, 파일을 사진 인화 키오스크로 가져가세요."
     },
     "download": "다운로드",
-    "downloadN": "파일 {count}개 다운로드"
+    "downloadN": "파일 {count}개 다운로드",
+    "findLater": "나중에 이 주문을 확인하려면 결제 시 사용한 이메일로 언제든 로그인하세요.",
+    "findLaterCta": "내 주문 보기"
   },
   "footer": {
     "productHeading": "제품",
@@ -381,5 +384,39 @@
     "save": "{amount} 절약",
     "cta": "사진 만들기",
     "guarantee": "정부 승인 또는 환불 보장"
+  },
+  "account": {
+    "title": "내 주문",
+    "subtitle": "결제 시 사용한 이메일을 입력하면 일회용 로그인 링크를 보내드립니다. 비밀번호도, 계정 생성도 필요 없습니다.",
+    "guestNote": "구매에는 계정이 필요하지 않습니다. 로그인은 영수증 확인과 다운로드 재열기를 위한 기능일 뿐입니다.",
+    "backToHome": "홈으로 돌아가기",
+    "emailLabel": "이메일 주소",
+    "emailPlaceholder": "you@example.com",
+    "sendLink": "로그인 링크 이메일로 받기",
+    "sending": "보내는 중…",
+    "linkSent": "받은 편지함을 확인하세요. {email}(으)로 로그인 링크를 보냈습니다. 15분 후 만료됩니다.",
+    "devLink": "이 환경에는 이메일이 설정되어 있지 않아 링크를 바로 표시합니다:",
+    "devLinkCta": "로그인 링크 열기",
+    "invalidEmail": "올바른 이메일 주소를 입력하세요.",
+    "tooMany": "시도 횟수가 너무 많습니다. 몇 분 후 다시 시도하세요.",
+    "sendFailed": "링크를 보내지 못했습니다. 다시 시도하세요.",
+    "authUnavailable": "이 환경에서는 로그인을 사용할 수 없습니다.",
+    "linkInvalid": "이 로그인 링크는 유효하지 않거나 만료되었습니다. 아래에서 새 링크를 요청하세요.",
+    "signedInAs": "{email}(으)로 로그인됨",
+    "signOut": "로그아웃",
+    "signingOut": "로그아웃 중…",
+    "noOrders": "이 이메일로 완료된 주문이 아직 없습니다.",
+    "noOrdersHint": "결제가 확인되면 주문이 여기에 표시됩니다. 결제 시 사용한 이메일과 동일한지 확인하세요.",
+    "startPhoto": "사진 만들기",
+    "paid": "결제 완료",
+    "reopenDownloads": "다운로드 열기",
+    "receipt": "영수증",
+    "deviceNote": "사진은 기기 밖으로 나가지 않으므로, 다운로드는 사진을 만들 때 사용한 브라우저에서만 다시 열 수 있습니다.",
+    "notConfigured": "데모 모드에서는 주문 내역을 볼 수 없습니다(Stripe 미설정).",
+    "loadFailed": "지금은 주문을 불러올 수 없습니다. 잠시 후 다시 시도하세요.",
+    "emailSubject": "{brand} 로그인 링크",
+    "emailIntro": "아래 버튼을 눌러 로그인하고 주문을 확인하세요. 비밀번호가 필요 없습니다.",
+    "emailCta": "VisaPass Photo에 로그인",
+    "emailFootnote": "이 링크는 15분 후 만료되며 이 이메일에서만 사용할 수 있습니다. 요청한 적이 없다면 이 메일을 무시하셔도 됩니다."
   }
 }

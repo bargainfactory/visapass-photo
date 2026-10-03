@@ -19,7 +19,8 @@
   "nav": {
     "countries": "Pays",
     "pricing": "Tarifs",
-    "editor": "Éditeur"
+    "editor": "Éditeur",
+    "account": "Mes commandes"
   },
   "languageSwitcher": {
     "label": "Langue",
@@ -298,7 +299,9 @@
       "body": "Imprimez la planche 4×6 à taille réelle (désactivez « ajuster à la page » / mise à l'échelle) sur papier photo, ou apportez le fichier à une borne photo."
     },
     "download": "Télécharger",
-    "downloadN": "Télécharger {count} fichiers"
+    "downloadN": "Télécharger {count} fichiers",
+    "findLater": "Besoin de retrouver cette commande ? Connectez-vous à tout moment avec l’e-mail de votre achat.",
+    "findLaterCta": "Voir mes commandes"
   },
   "footer": {
     "productHeading": "Produit",
@@ -381,5 +384,39 @@
     "save": "Économisez {amount}",
     "cta": "Créez votre photo",
     "guarantee": "Acceptée par l'administration ou remboursée"
+  },
+  "account": {
+    "title": "Vos commandes",
+    "subtitle": "Saisissez l’e-mail utilisé lors du paiement et nous vous enverrons un lien de connexion à usage unique — sans mot de passe ni compte à créer.",
+    "guestNote": "Aucun compte n’est nécessaire pour commander. La connexion sert uniquement à retrouver vos reçus et rouvrir vos téléchargements.",
+    "backToHome": "Retour à l’accueil",
+    "emailLabel": "Adresse e-mail",
+    "emailPlaceholder": "vous@exemple.com",
+    "sendLink": "M’envoyer un lien de connexion",
+    "sending": "Envoi…",
+    "linkSent": "Consultez votre boîte de réception : un lien de connexion a été envoyé à {email}. Il expire dans 15 minutes.",
+    "devLink": "L’e-mail n’est pas configuré dans cet environnement ; voici votre lien directement :",
+    "devLinkCta": "Ouvrir le lien de connexion",
+    "invalidEmail": "Veuillez saisir une adresse e-mail valide.",
+    "tooMany": "Trop de tentatives. Patientez quelques minutes puis réessayez.",
+    "sendFailed": "Impossible d’envoyer le lien. Veuillez réessayer.",
+    "authUnavailable": "La connexion n’est pas disponible dans cet environnement.",
+    "linkInvalid": "Ce lien de connexion est invalide ou a expiré. Demandez-en un nouveau ci-dessous.",
+    "signedInAs": "Connecté en tant que {email}",
+    "signOut": "Se déconnecter",
+    "signingOut": "Déconnexion…",
+    "noOrders": "Aucune commande finalisée pour cet e-mail pour l’instant.",
+    "noOrdersHint": "Les commandes apparaissent ici une fois le paiement confirmé. Utilisez le même e-mail qu’au paiement.",
+    "startPhoto": "Créer une photo",
+    "paid": "Payé",
+    "reopenDownloads": "Ouvrir les téléchargements",
+    "receipt": "Reçu",
+    "deviceNote": "Vos photos ne quittent jamais votre appareil : les téléchargements ne peuvent être rouverts que dans le navigateur utilisé pour les créer.",
+    "notConfigured": "L’historique des commandes est indisponible en mode démo (Stripe non configuré).",
+    "loadFailed": "Impossible de charger vos commandes pour le moment. Réessayez dans un instant.",
+    "emailSubject": "Votre lien de connexion {brand}",
+    "emailIntro": "Cliquez sur le bouton ci-dessous pour vous connecter et voir vos commandes. Sans mot de passe.",
+    "emailCta": "Se connecter à VisaPass Photo",
+    "emailFootnote": "Ce lien expire dans 15 minutes et ne fonctionne que pour cet e-mail. Si vous n’êtes pas à l’origine de cette demande, ignorez ce message."
   }
 }

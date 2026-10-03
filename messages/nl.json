@@ -19,7 +19,8 @@
   "nav": {
     "countries": "Landen",
     "pricing": "Prijzen",
-    "editor": "Editor"
+    "editor": "Editor",
+    "account": "Mijn bestellingen"
   },
   "languageSwitcher": {
     "label": "Taal",
@@ -298,7 +299,9 @@
       "body": "Druk het 4×6-vel op ware grootte af (schaal / 'passend maken' uit) op fotopapier, of neem het bestand mee naar een fotokiosk."
     },
     "download": "Downloaden",
-    "downloadN": "{count} bestanden downloaden"
+    "downloadN": "{count} bestanden downloaden",
+    "findLater": "Deze bestelling later terugvinden? Log op elk moment in met het e-mailadres van je aankoop.",
+    "findLaterCta": "Mijn bestellingen bekijken"
   },
   "footer": {
     "productHeading": "Product",
@@ -381,5 +384,39 @@
     "save": "Bespaar {amount}",
     "cta": "Maak je foto",
     "guarantee": "Door de overheid geaccepteerd of geld terug"
+  },
+  "account": {
+    "title": "Je bestellingen",
+    "subtitle": "Vul het e-mailadres in dat je bij het afrekenen gebruikte en we sturen je een eenmalige inloglink – geen wachtwoord, geen account nodig.",
+    "guestNote": "Je hebt nooit een account nodig om te bestellen. Inloggen is er alleen om bonnen terug te vinden en downloads later opnieuw te openen.",
+    "backToHome": "Terug naar home",
+    "emailLabel": "E-mailadres",
+    "emailPlaceholder": "jij@voorbeeld.nl",
+    "sendLink": "Stuur mij een inloglink",
+    "sending": "Versturen…",
+    "linkSent": "Controleer je inbox – we hebben een inloglink naar {email} gestuurd. Deze verloopt over 15 minuten.",
+    "devLink": "E-mail is in deze omgeving niet geconfigureerd; hier is je link direct:",
+    "devLinkCta": "Inloglink openen",
+    "invalidEmail": "Vul een geldig e-mailadres in.",
+    "tooMany": "Te veel pogingen. Wacht een paar minuten en probeer het opnieuw.",
+    "sendFailed": "We konden de link niet versturen. Probeer het opnieuw.",
+    "authUnavailable": "Inloggen is in deze omgeving niet beschikbaar.",
+    "linkInvalid": "Deze inloglink is ongeldig of verlopen. Vraag hieronder een nieuwe aan.",
+    "signedInAs": "Ingelogd als {email}",
+    "signOut": "Uitloggen",
+    "signingOut": "Uitloggen…",
+    "noOrders": "Nog geen afgeronde bestellingen voor dit e-mailadres.",
+    "noOrdersHint": "Bestellingen verschijnen hier zodra de betaling is bevestigd. Gebruik hetzelfde e-mailadres als bij het afrekenen.",
+    "startPhoto": "Een foto maken",
+    "paid": "Betaald",
+    "reopenDownloads": "Downloads openen",
+    "receipt": "Bon",
+    "deviceNote": "Je foto’s verlaten je apparaat nooit, dus downloads kun je alleen opnieuw openen in de browser waarin je ze hebt gemaakt.",
+    "notConfigured": "Bestelgeschiedenis is niet beschikbaar in demomodus (Stripe niet geconfigureerd).",
+    "loadFailed": "We konden je bestellingen nu niet laden. Probeer het zo opnieuw.",
+    "emailSubject": "Je inloglink voor {brand}",
+    "emailIntro": "Klik op de knop om in te loggen en je bestellingen te bekijken. Geen wachtwoord nodig.",
+    "emailCta": "Inloggen bij VisaPass Photo",
+    "emailFootnote": "Deze link verloopt over 15 minuten en werkt alleen voor dit e-mailadres. Heb je hem niet aangevraagd, negeer dit bericht dan."
   }
 }

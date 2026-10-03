@@ -19,7 +19,8 @@
   "nav": {
     "countries": "Países",
     "pricing": "Preços",
-    "editor": "Editor"
+    "editor": "Editor",
+    "account": "Meus pedidos"
   },
   "languageSwitcher": {
     "label": "Idioma",
@@ -298,7 +299,9 @@
       "body": "Imprima a folha 4×6 em tamanho real (desative 'ajustar à página' / escala) em papel fotográfico, ou leve o arquivo a qualquer quiosque de fotos."
     },
     "download": "Baixar",
-    "downloadN": "Baixar {count} arquivos"
+    "downloadN": "Baixar {count} arquivos",
+    "findLater": "Precisa deste pedido depois? Entre com o e-mail da compra a qualquer momento.",
+    "findLaterCta": "Ver meus pedidos"
   },
   "footer": {
     "productHeading": "Produto",
@@ -381,5 +384,39 @@
     "save": "Economize {amount}",
     "cta": "Faça sua foto",
     "guarantee": "Aceita pelo governo ou seu dinheiro de volta"
+  },
+  "account": {
+    "title": "Seus pedidos",
+    "subtitle": "Informe o e-mail usado no pagamento e enviaremos um link de acesso de uso único — sem senha, sem criar conta.",
+    "guestNote": "Você nunca precisa de conta para comprar. O acesso serve apenas para encontrar recibos e reabrir downloads depois.",
+    "backToHome": "Voltar ao início",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "voce@exemplo.com",
+    "sendLink": "Enviar link de acesso por e-mail",
+    "sending": "Enviando…",
+    "linkSent": "Verifique sua caixa de entrada — enviamos um link de acesso para {email}. Ele expira em 15 minutos.",
+    "devLink": "O e-mail não está configurado neste ambiente; aqui está seu link diretamente:",
+    "devLinkCta": "Abrir link de acesso",
+    "invalidEmail": "Informe um endereço de e-mail válido.",
+    "tooMany": "Muitas tentativas. Aguarde alguns minutos e tente novamente.",
+    "sendFailed": "Não foi possível enviar o link. Tente novamente.",
+    "authUnavailable": "O acesso não está disponível neste ambiente.",
+    "linkInvalid": "Esse link de acesso é inválido ou expirou. Solicite um novo abaixo.",
+    "signedInAs": "Conectado como {email}",
+    "signOut": "Sair",
+    "signingOut": "Saindo…",
+    "noOrders": "Ainda não há pedidos concluídos para este e-mail.",
+    "noOrdersHint": "Os pedidos aparecem aqui assim que o pagamento é confirmado. Use o mesmo e-mail do pagamento.",
+    "startPhoto": "Criar uma foto",
+    "paid": "Pago",
+    "reopenDownloads": "Abrir downloads",
+    "receipt": "Recibo",
+    "deviceNote": "Suas fotos nunca saem do seu dispositivo, então os downloads só podem ser reabertos no navegador em que foram criados.",
+    "notConfigured": "O histórico de pedidos não está disponível no modo demo (Stripe não configurado).",
+    "loadFailed": "Não foi possível carregar seus pedidos agora. Tente novamente em instantes.",
+    "emailSubject": "Seu link de acesso ao {brand}",
+    "emailIntro": "Clique no botão abaixo para entrar e ver seus pedidos. Sem senha.",
+    "emailCta": "Entrar no VisaPass Photo",
+    "emailFootnote": "Este link expira em 15 minutos e só funciona para este e-mail. Se você não o solicitou, ignore esta mensagem."
   }
 }

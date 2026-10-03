@@ -25,6 +25,13 @@ import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 import { cookies } from 'next/headers';
 
 export const SESSION_COOKIE = 'vp_session';
+/**
+ * Non-httpOnly companion flag ("1") set/cleared alongside the session cookie.
+ * Carries no data and grants nothing — it only lets client components (the
+ * header Sign-in button) render "My orders" vs "Sign in" without a request and
+ * without forcing statically generated pages to read cookies on the server.
+ */
+export const SESSION_HINT_COOKIE = 'vp_signed_in';
 const LOGIN_TTL_MS = 15 * 60 * 1000; // 15 minutes
 const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 const DEV_FALLBACK = 'dev-only-auth-secret-change-me';
@@ -141,6 +148,17 @@ export function readSessionToken(token: string | null | undefined, now = Date.no
 export function sessionCookieOptions() {
   return {
     httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax' as const,
+    path: '/',
+    maxAge: Math.floor(SESSION_TTL_MS / 1000),
+  };
+}
+
+/** Options for the readable hint cookie — same lifetime/scope, but NOT httpOnly. */
+export function hintCookieOptions() {
+  return {
+    httpOnly: false,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax' as const,
     path: '/',

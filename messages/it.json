@@ -20,7 +20,8 @@
     "countries": "Paesi",
     "pricing": "Prezzi",
     "editor": "Editor",
-    "account": "I miei ordini"
+    "account": "I miei ordini",
+    "signIn": "Accedi"
   },
   "languageSwitcher": {
     "label": "Lingua",

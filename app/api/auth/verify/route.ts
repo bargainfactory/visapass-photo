@@ -11,7 +11,9 @@ import { hasLocale } from 'next-intl';
 import { routing } from '@/i18n/routing';
 import {
   SESSION_COOKIE,
+  SESSION_HINT_COOKIE,
   createSessionToken,
+  hintCookieOptions,
   sessionCookieOptions,
   verifyLoginToken,
 } from '@/lib/auth';
@@ -44,5 +46,6 @@ export async function GET(req: NextRequest) {
 
   const res = NextResponse.redirect(account, { status: 303 });
   res.cookies.set(SESSION_COOKIE, createSessionToken(email), sessionCookieOptions());
+  res.cookies.set(SESSION_HINT_COOKIE, '1', hintCookieOptions());
   return res;
 }

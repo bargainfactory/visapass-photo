@@ -20,7 +20,8 @@
     "countries": "国一覧",
     "pricing": "料金",
     "editor": "エディター",
-    "account": "注文履歴"
+    "account": "注文履歴",
+    "signIn": "サインイン"
   },
   "languageSwitcher": {
     "label": "言語",

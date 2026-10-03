@@ -20,7 +20,8 @@
     "countries": "Страны",
     "pricing": "Цены",
     "editor": "Редактор",
-    "account": "Мои заказы"
+    "account": "Мои заказы",
+    "signIn": "Войти"
   },
   "languageSwitcher": {
     "label": "Язык",

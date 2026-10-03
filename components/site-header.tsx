@@ -1,10 +1,11 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { ShieldCheck, UserRound } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageSwitcher } from '@/components/language-switcher';
+import { SignInButton } from '@/components/account/sign-in-button';
 import { COUNTRIES } from '@/lib/countries';
 
 export function SiteHeader() {
@@ -37,17 +38,11 @@ export function SiteHeader() {
           >
             {t('nav.editor')}
           </Link>
-          <Link
-            href="/account"
-            aria-label={t('nav.account')}
-            title={t('nav.account')}
-            className="inline-flex h-9 items-center gap-1.5 rounded-xl px-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          >
-            <UserRound className="size-4" />
-            <span className="hidden md:inline">{t('nav.account')}</span>
-          </Link>
           <LanguageSwitcher />
           <ThemeToggle />
+          {/* Sign in / My orders — guests go to the email sign-in form, returning
+              customers to their order history. Ordering never requires it. */}
+          <SignInButton className="ms-1" />
         </nav>
       </div>
 

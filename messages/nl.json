@@ -20,7 +20,8 @@
     "countries": "Landen",
     "pricing": "Prijzen",
     "editor": "Editor",
-    "account": "Mijn bestellingen"
+    "account": "Mijn bestellingen",
+    "signIn": "Inloggen"
   },
   "languageSwitcher": {
     "label": "Taal",

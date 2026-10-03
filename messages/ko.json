@@ -20,7 +20,8 @@
     "countries": "국가",
     "pricing": "요금",
     "editor": "에디터",
-    "account": "내 주문"
+    "account": "내 주문",
+    "signIn": "로그인"
   },
   "languageSwitcher": {
     "label": "언어",

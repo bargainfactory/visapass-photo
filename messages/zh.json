@@ -20,7 +20,8 @@
     "countries": "国家",
     "pricing": "价格",
     "editor": "编辑器",
-    "account": "我的订单"
+    "account": "我的订单",
+    "signIn": "登录"
   },
   "languageSwitcher": {
     "label": "语言",

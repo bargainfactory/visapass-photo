@@ -7,4 +7,4 @@ Disallow: /*/checkout
 Disallow: /*/success
 Disallow: /*/account
 
-Sitemap: https://visapassphoto.com/sitemap.xml
+Sitemap: https://www.visapassphoto.com/sitemap.xml

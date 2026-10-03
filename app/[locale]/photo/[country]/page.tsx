@@ -65,7 +65,7 @@ export default async function CountryPhotoPage({
 
   // Structured data — BreadcrumbList + FAQPage. Content is server-controlled
   // (country data + localized copy); escape `<` defensively for the inline tag.
-  const site = 'https://visapassphoto.com';
+  const site = 'https://www.visapassphoto.com';
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [

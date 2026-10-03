@@ -31,7 +31,7 @@ export async function generateMetadata({
   const tHero = await getTranslations({ locale, namespace: 'hero' });
 
   return {
-    metadataBase: new URL('https://visapassphoto.com'),
+    metadataBase: new URL('https://www.visapassphoto.com'),
     title: { default: t('name'), template: `%s · ${t('name')}` },
     description: tHero('subtitle'),
     openGraph: {

@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { routing } from '@/i18n/routing';
 import { COUNTRIES, countrySlug } from '@/lib/countries';
 
-const SITE = 'https://visapassphoto.com';
+const SITE = 'https://www.visapassphoto.com';
 
 // Indexable content routes only (locale-less paths). The editor/checkout/
 // success flow is transactional and disallowed in robots.txt, so it's omitted.
